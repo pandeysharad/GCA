@@ -1,0 +1,149 @@
+﻿/*GridViewCSS Soft Grey Style*/
+.GridViewStyle
+{
+    font-family: Arial, Sans-Serif;
+    font-size:13px;
+    table-layout: auto;
+    border-collapse: collapse;
+	margin-top: 0px;
+    background-color:slategray;
+}
+/*Header and Pager styles*/
+.HeaderStyle, .PagerStyle /*Common Styles*/
+{
+    background-image: url(Images/HeaderSoftGrey.png);
+    background-position:center;
+    background-repeat:repeat-x;
+    background-color:#1d1d1d;
+}
+.HeaderStyle th
+{
+    padding: 5px;
+    color: #ffffff;
+}
+.HeaderStyle a
+{
+    text-decoration:none;
+    color:#ffffff;
+    display:block;
+    text-align:left;
+    font-weight:normal;
+}
+.PagerStyle table
+{
+    text-align:center;
+    margin:auto;
+}
+.PagerStyle table td
+{
+    border:0px;
+    padding:5px;
+}
+.PagerStyle td
+{
+    border-top: #1d1d1d 1px solid;
+}
+.PagerStyle a
+{
+    color:#ffffff;
+    text-decoration:none;
+    padding:2px 5px 2px 5px;
+    border-top:solid 1px #777777;
+    border-right:solid 1px #333333;
+    border-bottom:solid 1px #333333;
+    border-left:solid 1px #777777;
+}
+.PagerStyle span
+{
+    font-weight:bold;
+    color:#FFFFFF;
+    text-decoration:none;
+    padding:2px 5px 2px 5px;
+}
+/*RowStyles*/
+.RowStyle td, .AltRowStyle td, .SelectedRowStyle td, .EditRowStyle td /*Common Styles*/
+{
+    padding: 3px;
+    border-right: solid 1px #1d1d1d;
+    color:Black;
+}
+.RowStyle td
+{
+    background-color: #c9c9c9;
+}
+.AltRowStyle td
+{
+    background-color: #f0f0f0;
+}
+.SelectedRowStyle td
+{
+    background-color: #ffff66;
+}
+
+.GridViewStyle_List
+{
+    font-family: Arial, Sans-Serif;
+    font-size:13px;
+    table-layout: auto;
+    border-collapse: collapse;
+    border:#444 1px solid;
+}
+.GridViewStyle_List_Head
+{
+	font-family: Arial, Sans-Serif;
+	font-size: 13px;
+	table-layout: auto;
+	border-collapse: collapse;
+	border-bottom: #2A2A2A 1px solid;
+	background-color: #E6E6E6;
+	color: #2A2A2A;
+}
+.GridViewStyle_List_Head_No
+{
+	font-family: Arial, Sans-Serif;
+	font-size: 13px;
+	table-layout: auto;	
+	background-color: #E6E6E6;
+	color: #2A2A2A;
+}
+
+.GridViewStyle_List_Data
+{
+	font-family: Arial, Sans-Serif;
+	font-size: 13px;
+	table-layout: auto;
+	border-collapse: collapse;
+	border-bottom: #2A2A2A 1px solid;
+
+	color: #2A2A2A;
+}
+.GridViewStyle_List_Data_No
+{
+	font-family: Arial, Sans-Serif;
+	font-size: 13px;
+	table-layout: auto;	
+	
+	color: #2A2A2A;
+}
+.install
+{
+	 width:60px;
+	 border-right:1px solid  #2A2A2A;
+	 border-bottom:1px solid  #2A2A2A;
+}
+.installr
+{
+	 width:100px;
+	 border-right:1px solid  #2A2A2A;
+	 border-bottom:1px solid  #2A2A2A;
+	 text-align:right;
+	 padding-right:5px;
+}
+
+.installgr
+{
+	width: 60px;
+	border-right: 1px solid #2A2A2A;
+	border-bottom: 1px solid #2A2A2A;
+	background-color: #AAFF9D;
+}

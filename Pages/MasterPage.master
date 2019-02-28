@@ -1,0 +1,284 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="Pages_MasterPage" %>
+<%@ Register Assembly="TimePicker" Namespace="MKB.TimePicker" TagPrefix="cc1" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<script src="../Links/jquery/jquery.min.js" type="text/javascript"></script>
+<script src="../Links/Bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="../Links/metisMenu/metisMenu.min.js" type="text/javascript"></script>
+<script src="../Links/raphael/raphael.min.js" type="text/javascript"></script>
+<script src="../Links/dist/js/sb-admin-2.min.js" type="text/javascript"></script>
+<link href="../Links/Bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="../Links/dist/css/sb-admin-2.css" rel="stylesheet" type="text/css" />
+<link href="../Links/morrisjs/morris.css" rel="stylesheet" type="text/css" />
+<link href="../Links/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<script src="../Scripts/quicksearch.js" type="text/javascript"></script>
+<link href="../css1/jquery-ui.css" rel="stylesheet" type="text/css" />
+<!-- FOR Side Menu -->
+<!-- FOR Date -->
+<link href="../CalenderTheme/black.css" rel="stylesheet" type="text/css" />
+<link href="../CalenderTheme/orange.css" rel="stylesheet" type="text/css" />
+<link href="../CalenderTheme/red.css" rel="stylesheet" type="text/css" />
+
+<script src="../Scripts/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+<link href="../css/jquery-ui-1.10.1.custom.min.css" rel="stylesheet" type="text/css" />
+<link href="../Links/Css/blitzer_jquery-ui.css" rel="stylesheet" type="text/css" />
+<link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/themes/blitzer/jquery-ui.css" rel="Stylesheet" type="text/css" />
+
+<link rel="shortcut icon" href="../img/favicon.ico">
+
+   <style type="text/css">
+        input[type=text],input[type=submit],input[type=file],textarea,select,td
+        {
+           
+        }
+        input[type=text]:focus,input[type=submit]:focus,input[type=file]:focus,textarea:focus,select:focus,td:focus
+        {
+            background-color: Black;
+            border: 1px solid Red;
+            color:White;
+            font-size:14px;
+        }
+        .completionList {
+        border:solid 1px red;
+        margin:0px;
+        padding:0px;
+        height: auto;
+        overflow:auto;
+        background-color:Black;
+        color:White;
+        }
+
+        .listItem {
+        color:White;
+        }
+
+        .itemHighlighted {
+        background-color: #ADD6FF;        
+        }
+        
+    .gridview{
+    background-color:#fff;
+   
+   padding:2px;
+   margin:2% auto;
+   
+   
+}
+.gridview a{
+  margin:auto 1%;
+    border-radius:50%;
+      background-color:#444;
+      padding:5px 10px 5px 10px;
+      color:#fff;
+      text-decoration:none;
+      -o-box-shadow:1px 1px 1px #111;
+      -moz-box-shadow:1px 1px 1px #111;
+      -webkit-box-shadow:1px 1px 1px #111;
+      box-shadow:1px 1px 1px #111;
+     
+}
+.gridview a:hover{
+    background-color:#1e8d12;
+    color:#fff;
+}
+.gridview span{
+    background-color:#ae2676;
+    color:#fff;
+     -o-box-shadow:1px 1px 1px #111;
+      -moz-box-shadow:1px 1px 1px #111;
+      -webkit-box-shadow:1px 1px 1px #111;
+      box-shadow:1px 1px 1px #111;
+
+    border-radius:50%;
+    padding:5px 10px 5px 10px;
+
+    }
+    </style>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <link rel="Shortcut Icon" href="../educator.ico" type="image/x-icon"/>
+    <title></title>
+    
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body style="background-color:#538cc6;">
+
+ <form id="form1" runat="server" style="border:none">
+     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods = "true">
+    </asp:ScriptManager>
+<div style="background-color:#000000;width:100%;height:50px;font-size:xx-large;color:White;font-family:Maiandra GD;font-weight:bold">&nbsp;Educator+ <asp:Label style="margin-right:1%;padding:0px;font-size:large;float:right" ID="lblSessionName" runat="server" ></asp:Label>
+    <asp:DropDownList ID="ddlSpecific" runat="server" Visible="false">
+    </asp:DropDownList>
+    <asp:DropDownList ID="ddlPerticular" runat="server" Visible="false">
+    </asp:DropDownList>
+</div>
+
+<div class="panel panel-default"> 
+       <div class="panel-b"> 
+   <div class="col-sm-2" style="border-radius:6px;margin-top:10px;">
+    <div class="form-horizontal">   
+                <div class="form-group"> 
+       <div class="navbar-default sidebar" role="navigation" style="height:auto">
+              <div class="sidebar-nav navbar-collapse">  
+                    <ul class="nav" id="side-menu">
+                        <li style="background-color:Black;color:White;font-family:Maiandra GD">
+                       <p style="text-align:center"><asp:Label  ID="CompanyName" runat="server" ></asp:Label></p> 
+                       <p  style="text-align:center"><asp:Label ID="lbUser" runat="server" ></asp:Label></p> 
+                       <p style="text-align:center">Your Coll. <asp:Label  ID="TodayCollection" runat="server" ></asp:Label></p>
+                        </li>
+                        <li>
+                            <a href="../Pages/Dashboard.aspx"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+                        <li id="StudentInfo"  runat="server" visible="true" >
+                            <a href="#"><i class="fa fa-graduation-cap"></i> Students<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li id="LiEnquiry"  runat="server" visible="true"><a href="../Pages/Enquiry.aspx"><i class="fa fa-angle-double-right"></i> Enquiry</a></li>
+                                 <li id="Li1"  runat="server" visible="true"><a href="../Pages/RegistrationForm.aspx" ><i class="fa fa-angle-double-right"></i>Admission Form</a></li>
+                                <li  id="LiAddmision"  runat="server" visible="true"><a href="../Pages/Addmision.aspx"><i class="fa fa-angle-double-right"></i> Admission</a></li>
+                                <li  id="Li2"  runat="server" visible="true"><a href="../Pages/UpdateSections.aspx"><i class="fa fa-angle-double-right"></i> Update <%=Session["SectionLableText"]%></a></li>
+                                <li  id="Li7"  runat="server" visible="true"><a href="../Pages/UpdateStream.aspx"><i class="fa fa-angle-double-right"></i> Update <%=Session["StreamLableText"]%></a></li>
+                                <li  id="Li5"  runat="server" visible="true"><a href="../Reports/AddmisionReportDataAll.aspx" target="_blank"><i class="fa fa-angle-double-right"></i> Admission All Details</a></li>
+                                <li  id="Li8"  runat="server" visible="true"><a href="../Reports/SecondChildStatusReport.aspx" target="_blank"><i class="fa fa-angle-double-right"></i> Second Child Report</a></li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li id="Feesmgnt"  runat="server" visible="true">
+                            <a href="#"><i class="fa fa-rupee"></i> Fees Management<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li><a href="../Pages/FeesRecieve.aspx"><i class="fa fa-angle-double-right"></i> Fees Manage</a></li>
+                                <li><a href="../Pages/Reports.aspx"><i class="fa fa-angle-double-right"></i> Fess Reports</a></li>
+                                <li><a href="../Reports/CourseWiseReports.aspx" target="_blank"><i class="fa fa-angle-double-right"></i> Class Wise Rpt</a></li>
+                                <li><a href="../Pages/ReportMaster.aspx" ><i class="fa fa-angle-double-right"></i> Collection Report</a></li>
+                                <li><a href="../Reports/FeeDueReport.aspx" target="_blank" ><i class="fa fa-angle-double-right"></i> Fee Due Report</a></li>
+                                
+                                <li><a href="../Pages/AssetFine.aspx"><i class="fa fa-angle-double-right"></i> + Event & Activities</a></li>
+                                <li><a href="../Pages/UpdaetFee.aspx" target="_blank" ><i class="fa fa-angle-double-right"></i> Update Grid Fee</a></li>
+                                
+                            </ul>
+                        </li>
+                        <li id="Staff"  runat="server" visible="true"> 
+                            <a href="#"><i class="fa fa-group"></i> Staff<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li><a href="../Pages/JobEnquiry.aspx"><i class="fa fa-angle-double-right"></i> Job Enquiry</a></li>
+                                <li><a href="../Pages/Staff.aspx"><i class="fa fa-angle-double-right"></i> Staff Info</a></li>
+                                <li><a href="../Pages/StaffList.aspx"><i class="fa fa-angle-double-right"></i> Staff List</a></li>
+                            </ul>
+                        </li>
+                        <li id="librarymgnt"  runat="server" visible="true">
+                            <a href="#"><i class="fa fa-book"></i> Library Management<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li><a href="../Pages/BookInfo.aspx"><i class="fa fa-angle-double-right"></i> Add/Edit Books</a></li>
+                                <li><a href="../Pages/MembersInfo.aspx"><i class="fa fa-angle-double-right"></i> Member Info</a></li>
+                                <li><a href="../Pages/BookIssue.aspx"><i class="fa fa-angle-double-right"></i> Book Issue</a></li>
+                            </ul>
+                        </li>
+                        <li id="Inventory"  runat="server" visible="true">
+                            <a href="#"><i class="fa fa-rupee" ></i> Inventory<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li><a href="../Pages/ProductPurchase.aspx"><i class="fa fa-angle-double-right"></i> Purchase Info</a></li>
+                                <li><a href="../Pages/ProductRelease.aspx"><i class="fa fa-angle-double-right"></i> Release Stock</a></li>
+                                <li><a href="../Pages/AvailableStock.aspx"><i class="fa fa-angle-double-right"></i> Available Stock</a></li>
+                                <li><a href="../Pages/ItemsCategory.aspx"><i class="fa fa-angle-double-right"></i> Add Category/Items</a></li>
+                                <li><a href="../Pages/VendorInfo.aspx"><i class="fa fa-angle-double-right"></i> Add Vendor</a></li>
+                            </ul>
+                        </li>
+                        <li id="Examination"  runat="server" visible="true">
+                            <a href="#"><i class="fa fa-tachometer"></i> Examination<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li><a href="../Pages/CreateExamTitle.aspx"><i class="fa fa-angle-double-right"></i> Exam Title</a></li>
+                                <li><a href="../Pages/SubjectCreation.aspx"><i class="fa fa-angle-double-right"></i> Subject Creation</a></li>
+                                <li><a href="../Pages/CreateExamSchedule.aspx"><i class="fa fa-angle-double-right"></i> Schedule Exam</a></li>
+                            </ul>
+                        </li>
+                         <li id="Result"  runat="server" visible="true">
+                            <a href="#"><i class="fa fa-trophy"></i> Result<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li><a href="../Pages/FillMarks.aspx"><i class="fa fa-angle-double-right"></i> Fill Marks</a></li>
+                            </ul>
+                        </li>
+                         <li id="MessagePortal"  runat="server" visible="true">
+                            <a href="#"><i class="fa fa-envelope"></i> Message Portal<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li><a href="../Pages/CreateMsgTemplate.aspx"><i class="fa fa-angle-double-right"></i> Create Template</a></li>
+                                <li><a href="../Pages/MsgDashBoard.aspx"><i class="fa fa-angle-double-right"></i> Message DashBoard</a></li>
+                            </ul>
+                        </li>
+                        <li id="Master"  runat="server" visible="true">
+                            <a href="#"><i class="fa fa-tasks"></i> Masters<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                    <li><a href="../Pages/CreateClassHead.aspx"><i class="fa fa-angle-double-right"></i>Fee Head</a></li>
+                                    <li><a href="../Pages/CreateCourse.aspx"><i class="fa fa-angle-double-right"></i>Class/Course Fee</a></li>
+                                    <li><a href="../Pages/CreateBusTransport.aspx"><i class="fa fa-angle-double-right"></i> Transport</a></li>
+                                    <li><a href="../Pages/OtherFees.aspx"><i class="fa fa-angle-double-right"></i> Other Fees</a></li>
+                                    <li id="liMaster"  runat="server"  visible="false" ><a href="Session.aspx"><i class="fa fa-angle-double-right"></i> Session Creation</a></li>
+                                    <li><a href="../Pages/AllInOne.aspx"><i class="fa fa-angle-double-right"></i> All In One</a></li>
+                                    <li visible="false"><a onclick="javascript:window.open('../Pages/StudentTranfer.aspx','','height=500,width=600');"
+                                    href="javascript:void(0);"><i class="fa fa-angle-double-right"></i> Transfer Student</a></li>
+                                    <li><a href="../Pages/Setting.aspx"><i class="fa fa-angle-double-right"></i> Setting</a></li>
+                                    <li><a href="TransferDataCurrentSessionToOtherSession.aspx"><i class="fa fa-angle-double-right"></i> Transfer Data</a></li>
+                            </ul>
+                        </li>
+                          <li id="Li6"  runat="server" visible="true">
+                            <a href="#"><i class="fa fa-envelope"></i> TC Management<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li><a href="../TC Management/TCManage.aspx"><i class="fa fa-angle-double-right"></i> TC/CC ISSUE</a></li>
+                               <%--<li><a href="MsgDashBoard.aspx"><i class="fa fa-angle-double-right"></i> Message DashBoard</a></li>--%>
+                            </ul>
+                        </li>
+                         <li runat="server" id="Li3" visible="false"  style="background-color:#004080;font-size:medium;">
+                               <a href="Test2.aspx"  style="color:White"><i class="fa fa-gears fa-fw" ></i> Test</a>
+                        </li>
+                         <li runat="server" id="admincontrol" visible="true"  style="background-color:#004080;font-size:medium;">
+                               <a href="../Pages/AdminControl.aspx"  style="color:White"><i class="fa fa-gears fa-fw" ></i> Admin Controls</a>
+                        </li>
+                        <li id="Li4" runat="server" style="background-color:#004080;">
+                              <asp:LinkButton id="myLink"  runat="server" OnClick="myLink_Click">
+                                <span aria-hidden="true" class="glyphicon glyphicon-log-out" style="color:White;font-size:medium;"> LOGOUT</span>
+                                </asp:LinkButton>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            </div>
+   </div>
+    </div>
+
+   <div class="col-sm-10" style="margin-top:11px;margin-left:-5px;margin-right:5px">
+  
+     <div class="form-horizontal">  
+        <div class="form-group"  style="background-color: aliceblue;">
+        <div class="container">
+
+            <%-- <div style="position: fixed;z-index: 999;height: 100%;width: 100%;top: 0;background-color: Black;filter: alpha(opacity=60);opacity: 0.6;-moz-opacity: 0.8;">
+             <img style="width: 130px;position: fixed;top: 40%;left: 50%;z-index: 9999;filter: alpha(opacity=90); opacity: 1;" src="../img/loader.gif" />
+            </div>--%>
+            <asp:UpdateProgress ID="UpdateProgresspnl" AssociatedUpdatePanelID="UpdatePanel6" runat="server">
+            <ProgressTemplate>
+            <div style="position: fixed;z-index: 999;height: 100%;width: 100%;top: 0;filter: alpha(opacity=60);-moz-opacity: 0.8;">
+             <img style="width: 130px;position: fixed;top: 40%;left: 50%;z-index: 9999;filter: alpha(opacity=90); opacity: 1;" src="../img/loader.gif" />
+            </div>
+            </ProgressTemplate>
+            </asp:UpdateProgress>
+             <asp:UpdatePanel ID="UpdatePanel6" runat="server">
+              <ContentTemplate>
+
+             <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">  
+             
+                </asp:ContentPlaceHolder>
+           </ContentTemplate>
+           </asp:UpdatePanel>
+         
+            </div>
+       </div>
+   </div>
+
+   </div>
+   </div>
+   </div>
+</form>
+
+</body>
+</html>
+

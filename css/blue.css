@@ -1,0 +1,22 @@
+/* ---- ONE REALTY Developers blue theme ---- */
+
+    .navbar-inner {
+        background: #062c4c;
+        color:White !important;
+    }
+    .navbar .nav .active > a, .navbar .nav .active > a:hover {
+        background:#062c4c !important;
+    }
+    .dropdown-menu li > a:hover,
+    .dropdown-menu li > a:focus,
+    .dropdown-menu .active > a,
+	.dropdown-menu .active > a:hover,
+    .nav-pills > .active > a, .nav-pills > .active > a:hover,
+    span.dynatree-active a {
+        background: #48a6d2 !important;
+    }
+	
+	.table thead th {background-color:#ebf2f6 !important}
+	.dataTables_wrapper th.sorting_asc,.dataTables_wrapper th.sorting_desc {background-color:#d4e3eb !important}
+.mr5 {
+  margin-right: 5px !important; }

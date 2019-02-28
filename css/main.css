@@ -1,0 +1,468 @@
+﻿    input[type=text]:focus
+{
+  
+   background-color: #04768e !important;
+    color:White!important;
+    font-weight:bold !important;
+    border: 1px solid #04768e !important;
+}
+ input[type=text]:active
+{
+  
+  background-color: #04768e !important;color:White!important;
+    font-weight:bold !important;
+    border: 1px solid #04768e !important;
+}
+
+ input[type=submit]:focus
+{
+  
+    background-color: #04768e !important;
+    color:White!important;
+    font-weight:bold !important;
+    border: 1px solid #04768e !important;
+}
+
+input[type=checkbox]:focus
+{
+  background-color: #04768e !important;
+    color:White!important;
+    font-weight:bold !important;
+    border: 2px solid #04768e !important;
+}
+ select:focus
+{
+    background-color: #04768e !important;
+    color:White!important;
+    font-weight:bold !important;
+    border: 2px solid #04768e !important;
+    height:30px !important;
+}
+textarea:focus
+{
+    
+    background-color: #04768e !important;
+    color:White!important;
+    font-weight:bold !important;
+    border: 2px solid #04768e !important;
+}
+/*a:focus
+{
+   background-color: #04768e !important;
+    color:White !important;
+    font-weight:bold !important;
+    border: 2px solid #04768e !important;
+}*/
+
+/*end*/
+
+/*___________ FORM FIELC __________*/
+input[type="text"]{padding:1px; margin-top:2px; margin-left:2px;margin-right:2px; height:28px; border:1px solid #4396CA; font-family:Verdana ; font-size:12px;border-radius: unset;}
+input[type="text"]:focus{background:#E3F4FF; border:1px solid #4396CA;}
+
+select{border:1px solid #4396CA !important; font-family:OpenSansLight; font-size:14px; margin-left: 2px;height:30px !important;
+    margin-right: 2px;color:#4396CA;
+    }
+
+input[type="submit"]
+{
+border-style: none;
+    border-color: inherit;
+    border-width: 0px;
+    color:White;
+    padding:1px 15px;
+    /*font-family:OpenSansLight;*/
+    cursor:pointer;
+    position:relative;
+    background:#0b5390;
+    -webkit-transition:background .3s;
+    margin-left:3px;
+    margin-top:2px;
+    top: 0px;
+    left: 11px;
+    width: 76px;
+    height:28px;
+}
+input[type="submit"]:hover
+{
+color:white;
+box-shadow:1px 1px 2px silver; -webkit-box-shadow:1px 1px 2px silver; -o-box-shadow:1px 1px 2px silver; -moz-box-shadow:1px 1px 2px silver;
+background:#dc3c00;
+height:29px;
+}
+
+
+
+
+.requisition_details_pannel
+{
+	border:0px solid red;
+	padding:10px;	
+	}
+
+.requisition_details_pannel1
+{
+	border:0px solid red;
+	padding:10px;	
+}
+
+.requisition_details_pannel tr:nth-child(1)
+{
+	font-weight:bold;
+	font-size:14px;
+}
+
+.requisition_details_pannel .table3 tr:nth-child(1)
+{
+	background: #e0f3fa; /* Old browsers */
+background: -moz-linear-gradient(top,  #e0f3fa 0%, #d8f0fc 50%, #b8e2f6 51%, #b6dffd 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e0f3fa), color-stop(50%,#d8f0fc), color-stop(51%,#b8e2f6), color-stop(100%,#b6dffd)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top,  #e0f3fa 0%,#d8f0fc 50%,#b8e2f6 51%,#b6dffd 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top,  #e0f3fa 0%,#d8f0fc 50%,#b8e2f6 51%,#b6dffd 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top,  #e0f3fa 0%,#d8f0fc 50%,#b8e2f6 51%,#b6dffd 100%); /* IE10+ */
+background: linear-gradient(to bottom,  #e0f3fa 0%,#d8f0fc 50%,#b8e2f6 51%,#b6dffd 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0f3fa', endColorstr='#b6dffd',GradientType=0 ); /* IE6-9 */
+font-size:11px;
+color:#ffffff !important;
+font-family:OpenSansLight;
+}
+
+.requisition_details_pannel .table3 td
+{
+background:white;
+}
+
+.totalvalue{text-align:right; float:right;}
+.totalvalue input{width:80px; border:0px solid black; font-weight:bold; text-align:right}
+.totalvalue td:nth-child(1){padding-top:6px; text-align:right}
+
+
+
+
+
+.paymentmode
+{
+	background:#b9e2d3;
+	border:1px solid #7bc7ab;
+	padding:9px;
+}
+
+
+.Returnpaymentmode
+{
+	background:#F5D0A9;
+	border:1px solid #7bc7ab;
+	padding:9px;
+}
+/* Accordion */
+.accordionHeader
+{
+    border: 1px solid #11a9cc;
+    color: white;
+    background-color:#11a9cc;
+	font-family: Arial, Sans-Serif;
+	font-size: 12px;
+	font-weight: bold;
+    padding: 5px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+#master_content .accordionHeader a
+{
+	color: #FFFFFF;
+	background: none;
+	text-decoration: none;
+}
+
+#master_content .accordionHeader a:hover
+{
+	background: none;
+	text-decoration: underline;
+}
+
+.accordionHeaderSelected
+{
+    border: 1px solid #2F4F4F;
+    color: white;
+    background-color: #57b5e3;
+	font-family: Arial, Sans-Serif;
+	font-size: 12px;
+	font-weight: bold;
+    padding: 5px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+#master_content .accordionHeaderSelected a
+{
+	color: #FFFFFF;
+	background: none;
+	text-decoration: none;
+}
+
+#master_content .accordionHeaderSelected a:hover
+{
+	background: none;
+	text-decoration: underline;
+}
+
+.accordionContent
+{
+    background-color: #FCFCFC;
+    border: 1px dashed #2F4F4F;
+    border-top: none;
+    padding: 5px;
+    padding-top: 10px;
+}
+.emptygridcls
+{
+border:1px solid gray;
+color:red;height:20px;
+padding-top:5px;padding-left:5px;
+}
+.formsubheadings
+{
+	background-color: #F8F8FF;
+	 font-family:Calibri; 
+	 font-size: 15px; 
+	 color: #808080;
+      
+      text-align: left;
+       
+       
+}
+
+.ipdcls
+{
+	border-style: none;
+	border-color: inherit;
+	border-width: 0;
+	font-size: 14px;
+	line-height: 22px;
+	font-family: 'WOL_SB','Segoe UI Semibold','Segoe UI',Tahoma,Helvetica,sans-serif;
+	font-weight: 600;
+	margin-right: 1px;
+	margin-left: 0;
+	margin-bottom: 5px;
+	padding: 5px 10px;
+background-color:#00bcf2;
+}
+.ipdcls:hover
+{
+
+background-color: #00acf2;
+
+}
+
+.opdcls
+{
+	border-style: none;
+	border-color: inherit;
+	border-width: 0;
+	font-size: 14px;
+	line-height: 22px;
+	font-family: 'WOL_SB','Segoe UI Semibold','Segoe UI',Tahoma,Helvetica,sans-serif;
+	font-weight: 600;
+	margin-right: 1px;
+	margin-left: 0;
+	margin-bottom: 5px;
+	padding: 5px 10px;
+	background-color:#f0e00e; 
+}
+.opdcls:hover
+{
+
+background-color: #f0e00f;
+
+}
+
+.dctcls
+{	border-style: none;
+	border-color: inherit;
+	border-width: 0;
+	font-size: 14px;
+	line-height: 22px;
+	font-family: 'WOL_SB','Segoe UI Semibold','Segoe UI',Tahoma,Helvetica,sans-serif;
+	font-weight: 600;
+	margin-right: 1px;
+	margin-left: 0;
+	margin-bottom: 5px;
+	padding: 5px 10px;
+	background-color:#8ac53e;
+}.dctcls:hover
+{
+
+background-color: #8ac53f;
+
+}
+.esticls
+{
+	border-style: none;
+	border-color: inherit;
+	border-width: 0;
+	font-size: 14px;
+	line-height: 22px;
+	font-family: 'WOL_SB','Segoe UI Semibold','Segoe UI',Tahoma,Helvetica,sans-serif;
+	font-weight: 600;
+	margin-right: 1px;
+	margin-left: 0;
+	margin-bottom: 5px;
+	padding: 5px 10px;
+	background-color:#f0c00e; 
+}
+/*for gridview*/
+
+.grdcls
+{
+	
+}
+
+
+.AlternatingRowStyle{ background-color:White; color:#284775;height:25px; }
+.EditRowStyle{ background-color:#999999 ; }                                
+.FooterStyle {background-color: #5D7B9D ; font-weight: bold ; Color: White ; }
+.HeaderStyle{ background-color: #5D7B9D ; font-weight: bold ; Color: White ; height:25px;text-align:left; }
+.PagerStyle{ background-color: #284775 ; Color: White ; text-align: Center  }
+.RowStyle{ background-color: #F7F6F3 ; Color: #333333;text-align:left ;height:25px;}
+.SelectedRowStyle{ background-color: #E2DED6 ; font-weight: bold ; Color: #333333  }
+.SortedAscendingCellStyle{ background-color: #E9E7E2 ; }
+.SortedAscendingHeaderStyle{ background-color: #506C8C ; }
+.SortedDescendingCellStyle{ background-color: #FFFDF8 ; }
+.SortedDescendingHeaderStyle{ background-color: #6F8DAE ;}
+
+
+/*main menus*/
+.mastermenu{border:0px solid green; margin:0px auto; width:820px;}
+.mastermenu ul {
+    list-style-type:none;
+    margin:15px auto;
+    padding:0px;
+    width:810px;
+    border:0px red solid;
+}
+
+.mastermenu ul li {
+        float:left;
+        background:#FFFFFF;
+        border:1px solid #EEEEEE;
+}
+.mastermenu ul li a{float:left; width:200px; height:100px;}
+.mastermenu ul li:nth-child(1) {-webkit-transition:box-shadow .5s}
+.mastermenu ul li:nth-child(1):hover {box-shadow:inset 0px 0px 40px #EAA269}
+        
+.loadingbar{
+ background:red;
+ height:20px;
+ border:1px solid #F2F2F2;
+ background:#FAFAFA;
+ width:91%;
+ margin-bottom:5px;       
+}
+
+.formdiv
+{
+border:1px solid #F2F2F2;
+width:700px;
+}
+/*accordionContent*/
+.accordionContent
+{
+    background-color: #FCFCFC;
+    border: 1px dashed #2F4F4F;
+    border-top: none;
+    padding: 5px;
+    padding-top: 10px;
+}
+.accordionHeaderSelected
+{
+    border: 1px solid #2F4F4F;
+    color: white;
+    background-color: #5078B3;
+	font-family: Arial, Sans-Serif;
+	font-size: 12px;
+	font-weight: bold;
+    padding: 5px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.accordionHeader
+{
+    border: 1px solid #2F4F4F;
+    color: white;
+    background-color: #2E4d7B;
+	font-family: Arial, Sans-Serif;
+	font-size: 12px;
+	font-weight: bold;
+    padding: 5px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+#master_content .accordionHeader a
+{
+	color: #FFFFFF;
+	background: none;
+	text-decoration: none;
+}
+
+#master_content .accordionHeader a:hover
+{
+	background: none;
+	text-decoration: underline;
+}
+
+
+.autocomplete_completionListElement 
+{  
+	
+	margin : 0px!important;
+	background:green;
+	color : windowtext;
+	border : buttonshadow;
+	border-width : 1px;
+	border-style : solid;
+	cursor : 'default';
+	overflow : auto;
+	height : 200px;
+    text-align : left; 
+    list-style-type : none;
+}
+.completionListElement div{padding-top:3px !important; padding-bottom:3px !important}
+.completionListElement div:hover{background-color:#0066CB !important; color:White !important}
+
+.completionListElement 
+{  
+    visibility : hidden; 
+    margin : 0px! important; 
+    border : solid 1px gray; 
+    background:white;
+    cursor : pointer; 
+    text-align : left; 
+    list-style-type : none; 
+    font-family : Verdana; 
+    font-size: 13px; 
+    height : 300px;
+    overflow-y:scroll;
+    width:400px !important;
+    padding : 0; 
+} 
+
+.abutton
+{border-style: none;
+    border-color: inherit;
+    border-width: 0px;
+    color: White;
+    padding: 1px 15px;
+    /* font-family: OpenSansLight; */
+    cursor: pointer;
+    position: relative;
+    background: #0b5390;
+    -webkit-transition: background .3s;
+    margin-left: 3px;
+    margin-top: 2px;
+    top: 0px;
+    left: 11px;
+    width: 76px;
+    height: 28px;}

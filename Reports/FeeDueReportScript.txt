@@ -1,0 +1,572 @@
+
+USE [DATABASE]
+GO
+/****** Object:  UserDefinedFunction [dbo].[GetDueFeeyMonth]    Script Date: 02/13/2019 21:26:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+Alter FUNCTION [dbo].[GetDueFeeyMonth]
+(
+@CompanyId int,
+@SessionId int,
+@MonthName Date,
+@FirstMonth date ='2000-04-01 00:00:00.000'
+)
+
+--select * from [GetDueFeeyMonth] (1,1, '2018-09-25 00:00:00.000','2000-04-01 00:00:00.000')
+RETURNS TABLE
+AS
+RETURN
+
+
+select AdmissionId,
+(select CourseName+'-'+section from Addmision where AdmissionId=MI.AdmissionId)CourseName,
+(select AdmissionNo from Addmision where AdmissionId=MI.AdmissionId)AdmissionNo,
+(select StudentName from Addmision where AdmissionId=MI.AdmissionId)StudentName,
+(select FatherName from Addmision where AdmissionId=MI.AdmissionId)FatherName,
+(select EnrollmentNo from Addmision where AdmissionId=MI.AdmissionId)EnrollmentNo,
+(select ContactNo from Addmision where AdmissionId=MI.AdmissionId)ContactNo,
+ --InstallmentDate  AS DueDate,
+ case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end CourseBalance,
+ 
+ SUM(TransportBalance) as TransportBalance,
+ ((case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end)+SUM(TransportBalance)+ISNULL((select PreviousBalance from PreviousBalance where AdmissionId=MI.AdmissionId and PreviousBalance > 0),'0'))as TotBla,
+ ISNULL((select PreviousBalance from PreviousBalance where AdmissionId=MI.AdmissionId and PreviousBalance > 0),'0') as PreviousBalance--, Months
+ ,(select (ISNULL(Sum(CourseFees),0)+ISNULL(Sum(TransportFees),0))from payment where AdmissionId=MI.AdmissionId and Remove=0 and ComapanyId=@CompanyId)CourseFeesRec
+ ,(select ((case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end)+SUM(TransportBalance)) from MonthlyInstallments where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllBal
+ --new
+ ,(select (case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseFees) end+SUM(TransportFees)) from MonthlyInstallments where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllFee
+ ,(select (SUM(CousePaid)+SUM(TransportPaid)) from MonthlyInstallments where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllPaid
+ ,(select (case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end+SUM(TransportBalance)) from MonthlyInstallments where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllBla
+ ,(case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseFees) end+Sum(TransportFees))StellBla
+ ,((case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseFees) end+Sum(TransportFees))-(select (SUM(CousePaid)+SUM(TransportPaid)) from MonthlyInstallments where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId))StellBla1
+ ,(select Sum(Fees) from Other_Fees where Remove=0 and Courseid=(select CourseId from Addmision where AdmissionId=MI.AdmissionId))CMT1T2
+ ,ISNULL((select Sum(OtherFees) from payment where Remove=0 and AdmissionId=MI.AdmissionId),0)CMT1T2REC
+ ,ISNULL((select Sum(Fees) from Other_Fees where Remove=0 and Courseid=(select CourseId from Addmision where AdmissionId=MI.AdmissionId)),0)-ISNULL((select Sum(OtherFees) from payment where Remove=0 and AdmissionId=MI.AdmissionId),0)CMT1T2BLA
+ ,SUM(TransportFees)TransportFees
+ ,SUM(TransportPaid)TransportPaid
+ ,SUM(CourseFees)CourseFees
+ ,SUM(CousePaid)CousePaid
+ --New End  
+   from MonthlyInstallments MI where  
+ AdmissionId in (select AdmissionId from addmision where Remove=0 and r1 not in ('TC ISSUED','INACTIVE')) and
+  CONVERT(date, InstallmentDate) between    CONVERT(date, @FirstMonth) and CONVERT(date, @MonthName) and
+      CompanyId=@CompanyId and Remove=0 
+      and SessionId=@SessionId
+group by AdmissionId 
+--select * from MonthlyInstallments
+ --order by (select CourseName from Addmision where AdmissionId=MI.AdmissionId)
+--declare @YN nvarchar(50), @MN nvarchar(50);
+--set @YN=CONVERT(nvarchar,(DATEPART(YEAR, @MonthName)),23)
+--set @MN=CONVERT(nvarchar,(DATEPART(month, @MonthName)),23)
+--update #tempDueFee set DueDate=  convert(varchar,@yn,23)+ '-' +convert(varchar,@mn,23) +'-' + '10'-- where Months=(SELECT DATENAME(month,@MonthName ))
+--select * from #tempDueFee where Months=(SELECT DATENAME(month,@MonthName )) order by CourseName asc
+--drop table #tempDueFee
+
+
+--exec Sp_GetAllFeeDetailsInEnquiry 1,5
+GO
+/****** Object:  UserDefinedFunction [dbo].[GetDueFeeyInstallments]    Script Date: 02/13/2019 21:26:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+Alter FUNCTION [dbo].[GetDueFeeyInstallments]
+(
+@CompanyId int,
+@SessionId int,
+@MonthName Date,
+@FirstMonth date ='2000-04-01 00:00:00.000'
+)
+
+--select * from [GetDueFeeyMonth] (1,1, '2018-09-25 00:00:00.000','2000-04-01 00:00:00.000')
+RETURNS TABLE
+AS
+RETURN
+
+select 
+AdmissionId,
+(select CourseName+'-'+section from Addmision where AdmissionId=MI.AdmissionId)CourseName,
+(select AdmissionNo from Addmision where AdmissionId=MI.AdmissionId)AdmissionNo,
+(select StudentName from Addmision where AdmissionId=MI.AdmissionId)StudentName,
+(select FatherName from Addmision where AdmissionId=MI.AdmissionId)FatherName,
+(select EnrollmentNo from Addmision where AdmissionId=MI.AdmissionId)EnrollmentNo,
+(select ContactNo from Addmision where AdmissionId=MI.AdmissionId)ContactNo,--InstallmentDate as DueDate,
+case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end CourseBalance,
+SUM(TransportBalance) as TransportBalance,
+((case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end)+SUM(TransportBalance)+ISNULL((select PreviousBalance from PreviousBalance where AdmissionId=MI.AdmissionId and PreviousBalance > 0),'0'))as TotBla,
+ISNULL((select PreviousBalance from PreviousBalance where AdmissionId=MI.AdmissionId and PreviousBalance > 0),'0') as PreviousBalance--,'Installments' as Months
+,(select (ISNULL(Sum(CourseFees),0)+ISNULL(Sum(TransportFees),0))from payment where AdmissionId=MI.AdmissionId and Remove=0 and ComapanyId=@CompanyId)CourseFeesRec
+ ,(select ((case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end)+SUM(TransportBalance)) from Installments where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllBal
+ --new
+ ,(select (case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseFees) end+SUM(TransportFees)) from Installments where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllFee
+ ,(select (SUM(CousePaid)+SUM(TransportPaid)) from Installments where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllPaid
+ ,(select (case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end+SUM(TransportBalance)) from Installments where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllBla
+ ,(case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseFees) end+Sum(TransportFees))StellBla
+ ,((case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseFees) end+Sum(TransportFees))-(select (SUM(CousePaid)+SUM(TransportPaid)) from Installments where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId))StellBla1
+ ,(select Sum(Fees) from Other_Fees where Remove=0 and Courseid=(select CourseId from Addmision where AdmissionId=MI.AdmissionId))CMT1T2
+ ,ISNULL((select Sum(OtherFees) from payment where Remove=0 and AdmissionId=MI.AdmissionId),0)CMT1T2REC
+ ,ISNULL((select Sum(Fees) from Other_Fees where Remove=0 and Courseid=(select CourseId from Addmision where AdmissionId=MI.AdmissionId)),0)-ISNULL((select Sum(OtherFees) from payment where Remove=0 and AdmissionId=MI.AdmissionId),0)CMT1T2BLA
+ ,SUM(TransportFees)TransportFees
+ ,SUM(TransportPaid)TransportPaid
+ ,SUM(CourseFees)CourseFees
+ ,SUM(CousePaid)CousePaid
+ --New End
+ from Installments MI where AdmissionId in (select AdmissionId from addmision where Remove=0 and r1 not in ('TC ISSUED','INACTIVE')) and 
+ remove=0 and CompanyId=@CompanyId 
+ and CONVERT(date, InstallmentDate) between   CONVERT(date, @FirstMonth) and CONVERT(date, @MonthName) 
+ group by AdmissionId --order by CourseName asc
+GO
+/****** Object:  UserDefinedFunction [dbo].[GetDueFeeCourseWise]    Script Date: 02/13/2019 21:26:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+Alter FUNCTION [dbo].[GetDueFeeCourseWise]
+(
+@CompanyId int,
+@SessionId int,
+@MonthName Date,
+@FirstMonth date ='2000-04-01 00:00:00.000',
+@CourseId int
+)
+
+--select * from [GetDueFeeCourseWise] (1,1, '2018-09-25 00:00:00.000','2000-04-01 00:00:00.000')
+RETURNS TABLE
+AS
+RETURN
+select AdmissionId,
+(select CourseName+'-'+section from Addmision where AdmissionId=MI.AdmissionId)CourseName,
+(select AdmissionNo from Addmision where AdmissionId=MI.AdmissionId)AdmissionNo,
+(select StudentName from Addmision where AdmissionId=MI.AdmissionId)StudentName,
+(select FatherName from Addmision where AdmissionId=MI.AdmissionId)FatherName,
+(select EnrollmentNo from Addmision where AdmissionId=MI.AdmissionId)EnrollmentNo,
+(select ContactNo from Addmision where AdmissionId=MI.AdmissionId)ContactNo,
+case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end CourseBalance,
+SUM(TransportBalance) as TransportBalance,
+((case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end)+SUM(TransportBalance)+ISNULL((select PreviousBalance from PreviousBalance where AdmissionId=MI.AdmissionId and PreviousBalance > 0),'0'))as TotBla,
+ ISNULL((select PreviousBalance from PreviousBalance where AdmissionId=MI.AdmissionId and PreviousBalance > 0),'0') as PreviousBalance--, Months
+ ,(select (ISNULL(Sum(CourseFees),0)+ISNULL(Sum(TransportFees),0))from payment where AdmissionId=MI.AdmissionId and Remove=0 and ComapanyId=@CompanyId)CourseFeesRec
+ ,(select ((case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end)+SUM(TransportBalance)) from MonthlyInstallments where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllBal
+  --new
+ ,(select (case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseFees) end+SUM(TransportFees)) from MonthlyInstallments  where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllFee
+ ,(select (SUM(CousePaid)+SUM(TransportPaid)) from MonthlyInstallments  where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllPaid
+ ,(select (case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end+SUM(TransportBalance)) from MonthlyInstallments  where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllBla
+ ,(case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseFees) end+Sum(TransportFees))StellBla
+ ,((case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseFees) end+Sum(TransportFees))-(select (SUM(CousePaid)+SUM(TransportPaid)) from MonthlyInstallments  where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId))StellBla1
+ ,(select Sum(Fees) from Other_Fees where Remove=0 and Courseid=(select CourseId from Addmision where AdmissionId=MI.AdmissionId))CMT1T2
+ ,ISNULL((select Sum(OtherFees) from payment where Remove=0 and AdmissionId=MI.AdmissionId),0)CMT1T2REC
+ ,ISNULL((select Sum(Fees) from Other_Fees where Remove=0 and Courseid=(select CourseId from Addmision where AdmissionId=MI.AdmissionId)),0)-ISNULL((select Sum(OtherFees) from payment where Remove=0 and AdmissionId=MI.AdmissionId),0)CMT1T2BLA
+ ,SUM(TransportFees)TransportFees
+ ,SUM(TransportPaid)TransportPaid
+ ,SUM(CourseFees)CourseFees
+ ,SUM(CousePaid)CousePaid
+ --New End
+   from MonthlyInstallments MI where
+   AdmissionId in (select AdmissionId from addmision where Remove=0 and CourseId=@CourseId and r1 not in ('TC ISSUED','INACTIVE')) and
+     CompanyId=@CompanyId
+and CONVERT(date, InstallmentDate) between   CONVERT(date, @FirstMonth) and CONVERT(date, @MonthName) group by AdmissionId
+--select * from MonthlyInstallments
+union
+select 
+AdmissionId,
+(select CourseName+'-'+section from Addmision where AdmissionId=MI.AdmissionId)CourseName,
+(select AdmissionNo from Addmision where AdmissionId=MI.AdmissionId)AdmissionNo,
+(select StudentName from Addmision where AdmissionId=MI.AdmissionId)StudentName,
+(select FatherName from Addmision where AdmissionId=MI.AdmissionId)FatherName,
+(select EnrollmentNo from Addmision where AdmissionId=MI.AdmissionId)EnrollmentNo,
+(select ContactNo from Addmision where AdmissionId=MI.AdmissionId)ContactNo,--InstallmentDate as DueDate,
+case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end CourseBalance,
+SUM(TransportBalance) as TransportBalance,
+((case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end)+SUM(TransportBalance)+ISNULL((select PreviousBalance from PreviousBalance where AdmissionId=MI.AdmissionId and PreviousBalance > 0),'0'))as TotBla,
+ISNULL((select PreviousBalance from PreviousBalance where AdmissionId=MI.AdmissionId and PreviousBalance > 0),'0') as PreviousBalance--,'Installments' as Months
+,(select (ISNULL(Sum(CourseFees),0)+ISNULL(Sum(TransportFees),0))from payment where AdmissionId=MI.AdmissionId and Remove=0 and ComapanyId=@CompanyId)CourseFeesRec
+ ,(select ((case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end)+SUM(TransportBalance)) from Installments where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllBal
+  --new
+ ,(select (case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseFees) end+SUM(TransportFees)) from Installments  where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllFee
+ ,(select (SUM(CousePaid)+SUM(TransportPaid)) from Installments  where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllPaid
+ ,(select (case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end+SUM(TransportBalance)) from Installments  where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllBla
+ ,(case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseFees) end+Sum(TransportFees))StellBla
+ ,((case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseFees) end+Sum(TransportFees))-(select (SUM(CousePaid)+SUM(TransportPaid)) from Installments  where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId))StellBla1
+ ,(select Sum(Fees) from Other_Fees where Remove=0 and Courseid=(select CourseId from Addmision where AdmissionId=MI.AdmissionId))CMT1T2
+ ,ISNULL((select Sum(OtherFees) from payment where Remove=0 and AdmissionId=MI.AdmissionId),0)CMT1T2REC
+ ,ISNULL((select Sum(Fees) from Other_Fees where Remove=0 and Courseid=(select CourseId from Addmision where AdmissionId=MI.AdmissionId)),0)-ISNULL((select Sum(OtherFees) from payment where Remove=0 and AdmissionId=MI.AdmissionId),0)CMT1T2BLA
+ ,SUM(TransportFees)TransportFees
+ ,SUM(TransportPaid)TransportPaid
+ ,SUM(CourseFees)CourseFees
+ ,SUM(CousePaid)CousePaid
+ --New End
+ from Installments MI where
+ AdmissionId in (select AdmissionId from addmision where Remove=0 and CourseId=@CourseId and r1 not in ('TC ISSUED','INACTIVE')) and
+  remove=0 and CompanyId=@CompanyId  
+ and CONVERT(date, InstallmentDate) between   CONVERT(date, @FirstMonth) and CONVERT(date, @MonthName) group by AdmissionId
+GO
+/****** Object:  UserDefinedFunction [dbo].[GetDueFeeByYearly]    Script Date: 02/13/2019 21:26:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+Alter FUNCTION [dbo].[GetDueFeeByYearly]
+(
+@CompanyId int,
+@SessionId int,
+@MonthName Date,
+@FirstMonth date ='2000-04-01 00:00:00.000'
+)
+
+--select * from [GetDueFeeyMonth] (1,1, '2018-09-25 00:00:00.000','2000-04-01 00:00:00.000')
+RETURNS TABLE
+AS
+RETURN
+
+select AdmissionId,
+(select CourseName+'-'+section from Addmision where AdmissionId=MI.AdmissionId)CourseName,
+(select AdmissionNo from Addmision where AdmissionId=MI.AdmissionId)AdmissionNo,
+(select StudentName from Addmision where AdmissionId=MI.AdmissionId)StudentName,
+(select FatherName from Addmision where AdmissionId=MI.AdmissionId)FatherName,
+(select EnrollmentNo from Addmision where AdmissionId=MI.AdmissionId)EnrollmentNo,
+(select ContactNo from Addmision where AdmissionId=MI.AdmissionId)ContactNo,
+ --InstallmentDate  AS DueDate,
+case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end CourseBalance,
+SUM(TransportBalance)TransportBalance,
+((case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end)+SUM(TransportBalance)+ISNULL((select PreviousBalance from PreviousBalance where AdmissionId=MI.AdmissionId and PreviousBalance > 0),'0'))as TotBla,
+ ISNULL((select PreviousBalance from PreviousBalance where AdmissionId=MI.AdmissionId and PreviousBalance > 0),'0') as PreviousBalance
+ ,(select (ISNULL(Sum(CourseFees),0)+ISNULL(Sum(TransportFees),0))from payment where AdmissionId=MI.AdmissionId and Remove=0 and ComapanyId=@CompanyId)CourseFeesRec
+ ,(select ((case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end)+SUM(TransportBalance)) from MonthlyInstallments where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllBal
+   --new
+ ,(select (case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseFees) end+SUM(TransportFees)) from MonthlyInstallments  where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllFee
+ ,(select (SUM(CousePaid)+SUM(TransportPaid)) from MonthlyInstallments  where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllPaid
+ ,(select (case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end+SUM(TransportBalance)) from MonthlyInstallments  where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllBla
+ ,(case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseFees) end+Sum(TransportFees))StellBla
+ ,((case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseFees) end+Sum(TransportFees))-(select (SUM(CousePaid)+SUM(TransportPaid)) from MonthlyInstallments  where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId))StellBla1
+ ,(select Sum(Fees) from Other_Fees where Remove=0 and Courseid=(select CourseId from Addmision where AdmissionId=MI.AdmissionId))CMT1T2
+ ,ISNULL((select Sum(OtherFees) from payment where Remove=0 and AdmissionId=MI.AdmissionId),0)CMT1T2REC
+ ,ISNULL((select Sum(Fees) from Other_Fees where Remove=0 and Courseid=(select CourseId from Addmision where AdmissionId=MI.AdmissionId)),0)-ISNULL((select Sum(OtherFees) from payment where Remove=0 and AdmissionId=MI.AdmissionId),0)CMT1T2BLA
+  ,SUM(TransportFees)TransportFees
+ ,SUM(TransportPaid)TransportPaid
+ ,SUM(CourseFees)CourseFees
+ ,SUM(CousePaid)CousePaid
+ --New End
+   from MonthlyInstallments MI where AdmissionId in (select AdmissionId from addmision where Remove=0 and r1 not in ('TC ISSUED','INACTIVE')) and
+    CompanyId=@CompanyId
+ --and CONVERT(date, InstallmentDate) between   CONVERT(date, @FirstMonth) and CONVERT(date, @MonthName) 
+group by AdmissionId
+union
+select 
+AdmissionId,
+(select CourseName+'-'+section from Addmision where AdmissionId=MI.AdmissionId)CourseName,
+(select AdmissionNo from Addmision where AdmissionId=MI.AdmissionId)AdmissionNo,
+(select StudentName from Addmision where AdmissionId=MI.AdmissionId)StudentName,
+(select FatherName from Addmision where AdmissionId=MI.AdmissionId)FatherName,
+(select EnrollmentNo from Addmision where AdmissionId=MI.AdmissionId)EnrollmentNo,
+(select ContactNo from Addmision where AdmissionId=MI.AdmissionId)ContactNo,--InstallmentDate as DueDate,
+case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end CourseBalance,
+SUM(TransportBalance)TransportBalance,
+((case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end)+SUM(TransportBalance)+ISNULL((select PreviousBalance from PreviousBalance where AdmissionId=MI.AdmissionId and PreviousBalance > 0),'0'))as TotBla,
+ISNULL((select PreviousBalance from PreviousBalance where AdmissionId=MI.AdmissionId and PreviousBalance > 0),'0') as PreviousBalance
+,(select (ISNULL(Sum(CourseFees),0)+ISNULL(Sum(TransportFees),0))from payment where AdmissionId=MI.AdmissionId and Remove=0 and ComapanyId=@CompanyId)CourseFeesRec
+ ,(select ((case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end)+SUM(TransportBalance)) from Installments where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllBal
+  --new
+ ,(select (case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseFees) end+SUM(TransportFees)) from Installments where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllFee
+ ,(select (SUM(CousePaid)+SUM(TransportPaid)) from Installments where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllPaid
+ ,(select (case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end+SUM(TransportBalance)) from Installments where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllBla
+ ,(case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseFees) end+Sum(TransportFees))StellBla
+ ,((case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseFees) end+Sum(TransportFees))-(select (SUM(CousePaid)+SUM(TransportPaid)) from Installments where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId))StellBla1
+ ,(select Sum(Fees) from Other_Fees where Remove=0 and Courseid=(select CourseId from Addmision where AdmissionId=MI.AdmissionId))CMT1T2
+ ,ISNULL((select Sum(OtherFees) from payment where Remove=0 and AdmissionId=MI.AdmissionId),0)CMT1T2REC
+ ,ISNULL((select Sum(Fees) from Other_Fees where Remove=0 and Courseid=(select CourseId from Addmision where AdmissionId=MI.AdmissionId)),0)-ISNULL((select Sum(OtherFees) from payment where Remove=0 and AdmissionId=MI.AdmissionId),0)CMT1T2BLA
+ ,SUM(TransportFees)TransportFees
+ ,SUM(TransportPaid)TransportPaid
+ ,SUM(CourseFees)CourseFees
+ ,SUM(CousePaid)CousePaid
+ --New End
+ from Installments MI where AdmissionId in (select AdmissionId from addmision where Remove=0 and r1 not in ('TC ISSUED','INACTIVE')) and remove=0 
+ --and CompanyId=@CompanyId and CONVERT(date, InstallmentDate) between   CONVERT(date, @FirstMonth) and CONVERT(date, @MonthName) 
+group by AdmissionId
+
+
+--select * from Installments
+GO
+/****** Object:  UserDefinedFunction [dbo].[GetDueFee_Month_Installments]    Script Date: 02/13/2019 21:26:14 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+Alter FUNCTION [dbo].[GetDueFee_Month_Installments]
+(
+@CompanyId int,
+@SessionId int,
+@MonthName Date,
+@FirstMonth date ='2000-04-01 00:00:00.000'
+)
+
+--select * from [GetDueFeeyMonth] (1,1, '2018-09-25 00:00:00.000','2000-04-01 00:00:00.000')
+RETURNS TABLE
+AS
+RETURN
+select AdmissionId,
+(select CourseName+'-'+section from Addmision where AdmissionId=MI.AdmissionId)CourseName,
+(select AdmissionNo from Addmision where AdmissionId=MI.AdmissionId)AdmissionNo,
+(select StudentName from Addmision where AdmissionId=MI.AdmissionId)StudentName,
+(select FatherName from Addmision where AdmissionId=MI.AdmissionId)FatherName,
+(select EnrollmentNo from Addmision where AdmissionId=MI.AdmissionId)EnrollmentNo,
+(select ContactNo from Addmision where AdmissionId=MI.AdmissionId)ContactNo,
+ --InstallmentDate  AS DueDate,
+ case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end CourseBalance,
+ SUM(TransportBalance) as TransportBalance,
+ ((case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end)+SUM(TransportBalance)+ISNULL((select PreviousBalance from PreviousBalance where AdmissionId=MI.AdmissionId and PreviousBalance > 0),'0'))as TotBla,
+ ISNULL((select PreviousBalance from PreviousBalance where AdmissionId=MI.AdmissionId and PreviousBalance > 0),'0') as PreviousBalance--, Months
+ ,(select (ISNULL(Sum(CourseFees),0)+ISNULL(Sum(TransportFees),0))from payment where AdmissionId=MI.AdmissionId and Remove=0 and ComapanyId=@CompanyId)CourseFeesRec
+ ,(select ((case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end)+SUM(TransportBalance)) from MonthlyInstallments where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllBal
+  --new
+ ,(select (case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseFees) end+SUM(TransportFees)) from MonthlyInstallments  where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllFee
+ ,(select (SUM(CousePaid)+SUM(TransportPaid)) from MonthlyInstallments  where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllPaid
+ ,(select (case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end+SUM(TransportBalance)) from MonthlyInstallments  where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllBla
+ ,(case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseFees) end+Sum(TransportFees))StellBla
+ ,((case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseFees) end+Sum(TransportFees))-(select (SUM(CousePaid)+SUM(TransportPaid)) from MonthlyInstallments  where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId))StellBla1
+ ,(select Sum(Fees) from Other_Fees where Remove=0 and Courseid=(select CourseId from Addmision where AdmissionId=MI.AdmissionId))CMT1T2
+ ,ISNULL((select Sum(OtherFees) from payment where Remove=0 and AdmissionId=MI.AdmissionId),0)CMT1T2REC
+ ,ISNULL((select Sum(Fees) from Other_Fees where Remove=0 and Courseid=(select CourseId from Addmision where AdmissionId=MI.AdmissionId)),0)-ISNULL((select Sum(OtherFees) from payment where Remove=0 and AdmissionId=MI.AdmissionId),0)CMT1T2BLA
+ ,SUM(TransportFees)TransportFees
+ ,SUM(TransportPaid)TransportPaid
+ ,SUM(CourseFees)CourseFees
+ ,SUM(CousePaid)CousePaid
+ --New End
+  --into #tempDueFee1
+   from MonthlyInstallments MI where
+   AdmissionId in (select AdmissionId from addmision where Remove=0 and r1 not in ('TC ISSUED', 'INACTIVE')) and
+     CompanyId=@CompanyId
+and CONVERT(date, InstallmentDate) between   CONVERT(date, @FirstMonth) and CONVERT(date, @MonthName) group by AdmissionId
+ --order by (select CourseName from Addmision where AdmissionId=MI.AdmissionId) 
+--declare @YN1 nvarchar(50), @MN1 nvarchar(50);
+--set @YN1=CONVERT(nvarchar,(DATEPART(YEAR, @MonthName)),23)
+--set @MN1=CONVERT(nvarchar,(DATEPART(month, @MonthName)),23)
+--update #tempDueFee1 set DueDate=  convert(varchar,@yn,23)+ '-' +convert(varchar,@mn,23) +'-' + '10'-- where Months=(SELECT DATENAME(month,@MonthName ))
+union
+select 
+AdmissionId,
+(select CourseName+'-'+section from Addmision where AdmissionId=MI.AdmissionId)CourseName,
+(select AdmissionNo from Addmision where AdmissionId=MI.AdmissionId)AdmissionNo,
+(select StudentName from Addmision where AdmissionId=MI.AdmissionId)StudentName,
+(select FatherName from Addmision where AdmissionId=MI.AdmissionId)FatherName,
+(select EnrollmentNo from Addmision where AdmissionId=MI.AdmissionId)EnrollmentNo,
+(select ContactNo from Addmision where AdmissionId=MI.AdmissionId)ContactNo,--InstallmentDate as DueDate,
+case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end CourseBalance,
+SUM(TransportBalance) as TransportBalance,
+((case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end)+SUM(TransportBalance)+ISNULL((select PreviousBalance from PreviousBalance where AdmissionId=MI.AdmissionId and PreviousBalance > 0),'0'))as TotBla,
+ISNULL((select PreviousBalance from PreviousBalance where AdmissionId=MI.AdmissionId and PreviousBalance > 0),'0') as PreviousBalance--,'Installments' as Months
+,(select (ISNULL(Sum(CourseFees),0)+ISNULL(Sum(TransportFees),0))from payment where AdmissionId=MI.AdmissionId and Remove=0 and ComapanyId=@CompanyId)CourseFeesRec
+ ,(select ((case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end)+SUM(TransportBalance)) from Installments where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllBal
+  --new
+ ,(select (case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseFees) end+SUM(TransportFees)) from Installments where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllFee
+ ,(select (SUM(CousePaid)+SUM(TransportPaid)) from Installments where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllPaid
+ ,(select (case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseBalance) end+SUM(TransportBalance)) from Installments where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId)OverAllBla
+ ,(case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseFees) end+Sum(TransportFees))StellBla
+ ,((case  (select R1 from Addmision where AdmissionId=MI.AdmissionId) when 'ACTIVE RTE' then '0' else SUM(CourseFees) end+Sum(TransportFees))-(select (SUM(CousePaid)+SUM(TransportPaid)) from Installments where AdmissionId=MI.AdmissionId and Remove=0 and CompanyId=@CompanyId))StellBla1
+ ,(select Sum(Fees) from Other_Fees where Remove=0 and Courseid=(select CourseId from Addmision where AdmissionId=MI.AdmissionId))CMT1T2
+ ,ISNULL((select Sum(OtherFees) from payment where Remove=0 and AdmissionId=MI.AdmissionId),0)CMT1T2REC
+ ,ISNULL((select Sum(Fees) from Other_Fees where Remove=0 and Courseid=(select CourseId from Addmision where AdmissionId=MI.AdmissionId)),0)-ISNULL((select Sum(OtherFees) from payment where Remove=0 and AdmissionId=MI.AdmissionId),0)CMT1T2BLA
+ ,SUM(TransportFees)TransportFees
+ ,SUM(TransportPaid)TransportPaid
+ ,SUM(CourseFees)CourseFees
+ ,SUM(CousePaid)CousePaid
+ --New End
+ from Installments MI where
+ AdmissionId in (select AdmissionId from addmision where Remove=0 and r1 not in ('TC ISSUED','INACTIVE')) and
+  remove=0 and CompanyId=@CompanyId  
+ and CONVERT(date, InstallmentDate) between   CONVERT(date, @FirstMonth) and CONVERT(date, @MonthName) group by AdmissionId
+ -- order by (select CourseName from Addmision where AdmissionId=MI.AdmissionId)
+--union
+--select * from #tempDueFee1 where Months=(SELECT DATENAME(month,@MonthName )) order by CourseName asc
+--drop table #tempDueFee1
+GO
+/****** Object:  StoredProcedure [dbo].[SP_FeeDueReport]    Script Date: 02/13/2019 21:26:11 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+--select * from Addmision
+--select * from PreviousBalance
+--declare @MonthName1 date set  @MonthName1=getdate()
+--exec SP_FeeDueReport 1,1,1, '2019-01-25 00:00:00.000',5,1
+--exec SP_FeeDueReport 2,1,1, '2018-09-25 00:00:00.000',5,200
+--exec SP_FeeDueReport 3,1,1, '2018-09-25 00:00:00.000',5,2000	
+--exec SP_FeeDueReport 4,1,1, '2018-09-25 00:00:00.000',5,2000	
+--exec SP_FeeDueReport 5,1,1, '2018-09-25 00:00:00.000',5,2
+
+ALter Proc [dbo].[SP_FeeDueReport]
+@ACID int,
+@CompanyId int,
+@SessionId int,
+@MonthName Date,
+@CourseId int,
+@MinAmount float
+as
+Declare @FirstMonth date set @FirstMonth='2000-04-01 00:00:00.000';
+DECLARE @NotInHead nvarchar(max) ='ADMISSION FEES,REGISTRATION FEES,CAUTION MONEY';
+--select * from fnSplitString(@NotInHead,',')
+begin
+--declare @MinAmount float = 1;
+if(@ACID=1)
+begin
+select [GetDueFeeyMonth].AdmissionId, [GetDueFeeyMonth].CourseName, [GetDueFeeyMonth].AdmissionNo, 
+[GetDueFeeyMonth].StudentName, [GetDueFeeyMonth].FatherName, [GetDueFeeyMonth].EnrollmentNo, [GetDueFeeyMonth].ContactNo,
+CourseBalance, TransportBalance
+,CASE WHEN left(CONVERT(date, ADM.AdmissionDate),4)=SUBSTRING(s.SessionName,0,5)
+	THEN TotBla+(CASE WHEN left(CONVERT(date, ADM.AdmissionDate),4)!=SUBSTRING(s.SessionName,0,5)
+	THEN CMT1T2BLA-OFee.Fees ELSE CMT1T2BLA END) ELSE TotBla+OFee.Fees END AS TotBla
+, PreviousBalance, 
+CourseFeesRec, 
+OverAllFee, OverAllPaid, OverAllBla, StellBla, StellBla1 
+,CASE WHEN left(CONVERT(date, ADM.AdmissionDate),4)!=SUBSTRING(s.SessionName,0,5)
+	THEN CMT1T2-OFee.Fees ELSE CMT1T2 END AS CMT1T2	
+, CMT1T2REC
+,CASE WHEN left(CONVERT(date, ADM.AdmissionDate),4)!=SUBSTRING(s.SessionName,0,5)
+	THEN CMT1T2BLA-OFee.Fees ELSE CMT1T2BLA END AS CMT1T2BLA 
+,[GetDueFeeyMonth].TransportFees
+,[GetDueFeeyMonth].TransportPaid
+,[GetDueFeeyMonth].CourseFees
+,[GetDueFeeyMonth].CousePaid
+--,OFee.Fees
+--,CMT1T2BLA-OFee.Fees
+--,SUBSTRING(s.SessionName,0,5) as SS
+--,left(CONVERT(date, ADM.AdmissionDate),4)
+into #tempDueFee from [GetDueFeeyMonth] 
+                      (@CompanyId,@SessionId,@MonthName,@FirstMonth)
+                      inner join Addmision ADM on [GetDueFeeyMonth].AdmissionId=ADM.AdmissionId
+                      LEFT join Other_Fees OFee on ADM.CourseId=OFee.CourseId and FeesType in (select * from fnSplitString(@NotInHead,','))
+                      inner join [session] s on s.Sessionid=ADM.SessionId --and s.CompanyId=ADM.CompanyId                      
+					  ORDER BY ADM.CourseId ASC
+	select * from #tempDueFee WHERE TotBla >= @MinAmount
+	drop table #tempDueFee
+	--exec SP_FeeDueReport 1,1,1, '2018-12-25 00:00:00.000',5,15000
+                      --select * from [session]
+end
+--Installment
+if(@ACID=2)
+begin
+select [GetDueFeeyInstallments].AdmissionId, [GetDueFeeyInstallments].CourseName, [GetDueFeeyInstallments].AdmissionNo, 
+[GetDueFeeyInstallments].StudentName, [GetDueFeeyInstallments].FatherName, [GetDueFeeyInstallments].EnrollmentNo, [GetDueFeeyInstallments].ContactNo,
+CourseBalance, TransportBalance
+,CASE WHEN left(CONVERT(date, ADM.AdmissionDate),4)=SUBSTRING(s.SessionName,0,5)
+	THEN TotBla+(CASE WHEN left(CONVERT(date, ADM.AdmissionDate),4)!=SUBSTRING(s.SessionName,0,5)
+	THEN CMT1T2BLA-OFee.Fees ELSE CMT1T2BLA END) ELSE TotBla+OFee.Fees END AS TotBla
+, PreviousBalance, 
+CourseFeesRec, 
+OverAllFee, OverAllPaid, OverAllBla, StellBla, StellBla1 
+,CASE WHEN left(CONVERT(date, ADM.AdmissionDate),4)!=SUBSTRING(s.SessionName,0,5)
+	THEN CMT1T2-OFee.Fees ELSE CMT1T2 END AS CMT1T2	
+, CMT1T2REC
+,CASE WHEN left(CONVERT(date, ADM.AdmissionDate),4)!=SUBSTRING(s.SessionName,0,5)
+	THEN CMT1T2BLA-OFee.Fees ELSE CMT1T2BLA END AS CMT1T2BLA 
+,[GetDueFeeyInstallments].TransportFees
+,[GetDueFeeyInstallments].TransportPaid
+,[GetDueFeeyInstallments].CourseFees
+,[GetDueFeeyInstallments].CousePaid
+into #tempDueFeeInstall from GetDueFeeyInstallments 
+                      (@CompanyId,@SessionId,@MonthName,'2000-04-01 00:00:00.000')
+                      inner join Addmision ADM on [GetDueFeeyInstallments].AdmissionId=ADM.AdmissionId
+                      LEFT join Other_Fees OFee on ADM.CourseId=OFee.CourseId and FeesType in (select * from fnSplitString(@NotInHead,','))
+                      inner join [session] s on s.Sessionid=ADM.SessionId --and s.CompanyId=ADM.CompanyId                      
+					  ORDER BY ADM.CourseId ASC
+	select * from #tempDueFeeInstall WHERE TotBla >= @MinAmount
+	drop table #tempDueFeeInstall
+end
+if(@ACID=3)
+begin
+select [GetDueFee_Month_Installments].AdmissionId, [GetDueFee_Month_Installments].CourseName, [GetDueFee_Month_Installments].AdmissionNo, 
+[GetDueFee_Month_Installments].StudentName, [GetDueFee_Month_Installments].FatherName, [GetDueFee_Month_Installments].EnrollmentNo, [GetDueFee_Month_Installments].ContactNo,
+CourseBalance, TransportBalance
+,CASE WHEN left(CONVERT(date, ADM.AdmissionDate),4)=SUBSTRING(s.SessionName,0,5)
+	THEN TotBla+(CASE WHEN left(CONVERT(date, ADM.AdmissionDate),4)!=SUBSTRING(s.SessionName,0,5)
+	THEN CMT1T2BLA-OFee.Fees ELSE CMT1T2BLA END) ELSE TotBla+OFee.Fees END AS TotBla
+, PreviousBalance, 
+CourseFeesRec, 
+OverAllFee, OverAllPaid, OverAllBla, StellBla, StellBla1 
+,CASE WHEN left(CONVERT(date, ADM.AdmissionDate),4)!=SUBSTRING(s.SessionName,0,5)
+	THEN CMT1T2-OFee.Fees ELSE CMT1T2 END AS CMT1T2	
+, CMT1T2REC
+,CASE WHEN left(CONVERT(date, ADM.AdmissionDate),4)!=SUBSTRING(s.SessionName,0,5)
+	THEN CMT1T2BLA-OFee.Fees ELSE CMT1T2BLA END AS CMT1T2BLA 
+,[GetDueFee_Month_Installments].TransportFees
+,[GetDueFee_Month_Installments].TransportPaid
+,[GetDueFee_Month_Installments].CourseFees
+,[GetDueFee_Month_Installments].CousePaid
+into #tempDueFeeInstall_Month from [GetDueFee_Month_Installments] 
+                      (@CompanyId,@SessionId,@MonthName,'2000-04-01 00:00:00.000')
+                      inner join Addmision ADM on [GetDueFee_Month_Installments].AdmissionId=ADM.AdmissionId
+                      LEFT join Other_Fees OFee on ADM.CourseId=OFee.CourseId and FeesType in (select * from fnSplitString(@NotInHead,','))
+                      inner join [session] s on s.Sessionid=ADM.SessionId --and s.CompanyId=ADM.CompanyId                      
+					  ORDER BY ADM.CourseId ASC
+	select * from #tempDueFeeInstall_Month WHERE TotBla >= @MinAmount
+	drop table #tempDueFeeInstall_Month
+end
+
+
+if(@ACID=4)
+begin
+select [GetDueFeeByYearly].AdmissionId, [GetDueFeeByYearly].CourseName, [GetDueFeeByYearly].AdmissionNo, 
+[GetDueFeeByYearly].StudentName, [GetDueFeeByYearly].FatherName, [GetDueFeeByYearly].EnrollmentNo, [GetDueFeeByYearly].ContactNo,
+CourseBalance, TransportBalance
+,CASE WHEN left(CONVERT(date, ADM.AdmissionDate),4)=SUBSTRING(s.SessionName,0,5)
+	THEN TotBla+(CASE WHEN left(CONVERT(date, ADM.AdmissionDate),4)!=SUBSTRING(s.SessionName,0,5)
+	THEN CMT1T2BLA-OFee.Fees ELSE CMT1T2BLA END) ELSE TotBla+OFee.Fees END AS TotBla
+, PreviousBalance, 
+CourseFeesRec, 
+OverAllFee, OverAllPaid, OverAllBla, StellBla, StellBla1 
+,CASE WHEN left(CONVERT(date, ADM.AdmissionDate),4)!=SUBSTRING(s.SessionName,0,5)
+	THEN CMT1T2-OFee.Fees ELSE CMT1T2 END AS CMT1T2	
+, CMT1T2REC
+,CASE WHEN left(CONVERT(date, ADM.AdmissionDate),4)!=SUBSTRING(s.SessionName,0,5)
+	THEN CMT1T2BLA-OFee.Fees ELSE CMT1T2BLA END AS CMT1T2BLA 
+,[GetDueFeeByYearly].TransportFees
+,[GetDueFeeByYearly].TransportPaid
+,[GetDueFeeByYearly].CourseFees
+,[GetDueFeeByYearly].CousePaid
+--,OFee.Fees
+--,CMT1T2BLA-OFee.Fees
+--,SUBSTRING(s.SessionName,0,5) as SS
+--,left(CONVERT(date, ADM.AdmissionDate),4)
+into #tempDueFeeYearly from [GetDueFeeByYearly] 
+                      (@CompanyId,@SessionId,@MonthName,@FirstMonth)
+                      inner join Addmision ADM on [GetDueFeeByYearly].AdmissionId=ADM.AdmissionId
+                      LEFT join Other_Fees OFee on ADM.CourseId=OFee.CourseId and FeesType in (select * from fnSplitString(@NotInHead,','))
+                      inner join [session] s on s.Sessionid=ADM.SessionId --and s.CompanyId=ADM.CompanyId                      
+					  ORDER BY ADM.CourseId ASC
+	select * from #tempDueFeeYearly WHERE TotBla >= @MinAmount
+	drop table #tempDueFeeYearly
+end
+--COurse wise
+if(@ACID=5)
+begin
+select [GetDueFeeCourseWise].AdmissionId, [GetDueFeeCourseWise].CourseName, [GetDueFeeCourseWise].AdmissionNo, 
+[GetDueFeeCourseWise].StudentName, [GetDueFeeCourseWise].FatherName, [GetDueFeeCourseWise].EnrollmentNo, [GetDueFeeCourseWise].ContactNo,
+CourseBalance, TransportBalance,
+CASE WHEN left(CONVERT(date, ADM.AdmissionDate),4)=SUBSTRING(s.SessionName,0,5)
+	THEN TotBla+(CASE WHEN left(CONVERT(date, ADM.AdmissionDate),4)!=SUBSTRING(s.SessionName,0,5)
+	THEN CMT1T2BLA-OFee.Fees ELSE CMT1T2BLA END) ELSE TotBla+OFee.Fees END AS TotBla
+, PreviousBalance, 
+CourseFeesRec, 
+OverAllFee, OverAllPaid, OverAllBla, StellBla, StellBla1 
+,CASE WHEN left(CONVERT(date, ADM.AdmissionDate),4)!=SUBSTRING(s.SessionName,0,5)
+	THEN CMT1T2-OFee.Fees ELSE CMT1T2 END AS CMT1T2	
+, CMT1T2REC
+,CASE WHEN left(CONVERT(date, ADM.AdmissionDate),4)!=SUBSTRING(s.SessionName,0,5)
+	THEN CMT1T2BLA-OFee.Fees ELSE CMT1T2BLA END AS CMT1T2BLA 
+,[GetDueFeeCourseWise].TransportFees
+,[GetDueFeeCourseWise].TransportPaid
+,[GetDueFeeCourseWise].CourseFees
+ ,[GetDueFeeCourseWise].CousePaid
+into #tempDueFeeCourse from [GetDueFeeCourseWise] 
+                      (@CompanyId,@SessionId,@MonthName,'2000-04-01 00:00:00.000',@CourseId)
+                      inner join Addmision ADM on [GetDueFeeCourseWise].AdmissionId=ADM.AdmissionId
+                      LEFT join Other_Fees OFee on ADM.CourseId=OFee.CourseId and FeesType in (select * from fnSplitString(@NotInHead,','))
+                      inner join [session] s on s.Sessionid=ADM.SessionId --and s.CompanyId=ADM.CompanyId                      
+					  ORDER BY ADM.CourseId ASC
+	select * from #tempDueFeeCourse WHERE TotBla >= @MinAmount
+	drop table #tempDueFeeCourse
+ end
+end
+--exec SP_FeeDueReport 4,1, '2019-01-10'
+GO
