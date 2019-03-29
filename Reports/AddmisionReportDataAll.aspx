@@ -304,7 +304,7 @@
                         </div>
                     </div>--%>
                     
-             <asp:Button ID="BtnSubmit" runat="server" Text="Save" OnClick="BtnSubmit_OnClick" />&nbsp;&nbsp;&nbsp;&nbsp;
+             <asp:Button ID="BtnSubmit" runat="server" Text="Save" OnClick="BtnSubmit_OnClick" />&nbsp;&nbsp;&nbsp;&nbsp; <asp:LinkButton Text="Go To Admission" ID="lnkGoToAdm" ForeColor="#0487B2" OnClick="lnkGoToAdm_Click" runat="server"/>
                     <br /><br /><asp:Label ID="lblMsg" runat="server" Text="" Visible="false"></asp:Label>
                 </ContentTemplate>
             </asp:UpdatePanel>
@@ -395,7 +395,7 @@
                 Schol.-No.
             </HeaderTemplate>
             <ItemTemplate>
-                <%# Eval("AdmissionNo")%>
+                 <asp:LinkButton Text='<%# Eval("AdmissionNo")%>' ID="lnkAdmissionNo" ForeColor="#0487B2" OnClick="AdmissionNo_Click" runat="server" CommandArgument='<%# Eval("AdmissionNo") %>' />
             </ItemTemplate>
         </asp:TemplateField>
          <asp:TemplateField>

@@ -12,10 +12,10 @@
         console.log("Hello world!");
         var ddlMsgType = document.getElementById("ContentPlaceHolder1_ddlMsgType").value;
         if (ddlMsgType == 'English') {
-            nLength = 286;
+            nLength = 290;
         }
-        else if (ddlMsgType == 'English') {
-            nLength = 105;
+        else if (ddlMsgType == 'Hindi') {
+            nLength = 190;
         }
         //console.log(document.getElementById("txtMsg").value);
         if (objTxtCtrl.getAttribute && objTxtCtrl.value.length > nLength)
@@ -27,7 +27,6 @@
             document.getElementById('<%= lblCaption.ClientID %>').textContent = objTxtCtrl.value.length + ' Out Of ' + nLength;
 
     }
-  
     </script>
     
 </asp:Content>
@@ -73,7 +72,7 @@
                              <label for="message" class="col-xs-3"  style="margin-left:150px;">Message:<span for="message" style="color:Red">*</span></label>
                               <div class="col-xs-4">
                              <asp:TextBox ID="txtMsg" CssClass="form-control  input-sm"  runat="server" 
-                                      Height="80px"  onkeyup="return ismaxlength(this, 286)" TextMode="MultiLine"></asp:TextBox>
+                                      Height="80px"  onkeyup="return ismaxlength(this, 290)" TextMode="MultiLine"></asp:TextBox>
                              </div>
                          </div>
                           <div class="form-group" style="margin-top: -12px;">
@@ -120,6 +119,7 @@
                                                     <asp:ListItem>ALL CLASS</asp:ListItem>
                                                     <asp:ListItem>SPECIFIC CLASS</asp:ListItem>
                                                     <asp:ListItem>PERTICULAR STUDENT</asp:ListItem>
+                                                    <asp:ListItem>ENQUIRY STUDENT</asp:ListItem>
                                                 </asp:DropDownList>
                                             </div>
                                         </div>
@@ -169,8 +169,51 @@
                                                 </asp:GridView>
                                             </div>
                                         </div>
+                                        <div class="form-group" runat="server" id="DivEnquiryStudent" visible="false">
+                                            <div class="col-sm-3"  style="margin-left:150px;">
+                                                <asp:RadioButtonList ID="RadioEnquiryStudent" runat="server"  RepeatDirection="Vertical" AutoPostBack="True"
+                                                onselectedindexchanged="RadioEnquiryStudent_SelectedIndexChanged">
+                                                <asp:ListItem Text="INTERESTED" Value="INTERESTED"></asp:ListItem>
+                                                <asp:ListItem Text="NOT INTERESTED" Value="NOT INTERESTED"></asp:ListItem>
+                                                </asp:RadioButtonList>
+                                            </div>
+                                            <div class="col-sm-7">
+                                            <div class="col-sm-6">
+                                              <asp:TextBox ID="txtSearchEnquiry" CssClass="form-control  input-sm" placeholder="By Student Name" style="margin-left:-15px;margin-bottom:10px" runat="server" ></asp:TextBox>
+                                              </div>
+                                               <div class="col-sm-6">
+                                                <asp:Button ID="btnSearchEnquiry" runat="server" Text="Search" 
+                                                    onclick="btnSearchEnquiry_Click" />
+                                                    </div>
+                                                <asp:GridView ID="GridEnquiryStudent" CssClass="GridViewStyle_List" Width="100%" PageSize="15" DataKeyNames="EnquiryId"
+                                                    runat="server" AutoGenerateColumns="false">
+                                                    <PagerStyle CssClass="PagerStyle" />
+                                                    <Columns>
+                                                        <asp:TemplateField>
+                                                        <HeaderTemplate>
+                                                            <asp:CheckBox ID="chkHeader" OnCheckedChanged="chkHeader_CheckedChanged" runat="server" AutoPostBack="true" />
+                                                        </HeaderTemplate>
+                                                            <ItemTemplate>
+                                                                <asp:CheckBox ID="chkRow" OnCheckedChanged="chkRow_CheckedChanged" runat="server" AutoPostBack="true" />
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="SN.">
+                                                            <ItemTemplate>
+                                                                <%=SrNo++ %>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:BoundField HeaderText="ENQUIRY NO." DataField="EnquiryNo" ItemStyle-VerticalAlign="Top" />
+                                                        <asp:BoundField HeaderText="STUDENT NAME" DataField="StudentName" />
+                                                        <asp:BoundField HeaderText="CONTACT NO." DataField="ContactNo" />
+                                                    </Columns>
+                                                    <HeaderStyle BackColor="#EDEDED" ForeColor="#0487B2" />
+                                                    <FooterStyle BackColor="#EDEDED" ForeColor="#0487B2" />
+                                                    <FooterStyle Font-Bold="true" />
+                                                </asp:GridView>
+                                            </div>
+                                        </div>
                                     </asp:Panel>
-                                      <asp:Panel ID="pnlStaff" runat="server" Visible="False" Width="900px"
+                                    <asp:Panel ID="pnlStaff" runat="server" Visible="False" Width="900px"
                                         Height="300px">
                                         <div class="form-group">
                                             <div class="col-sm-4" style="margin-left:150px;">

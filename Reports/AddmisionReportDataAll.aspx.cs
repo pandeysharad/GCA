@@ -699,6 +699,36 @@ public partial class Reports_AddmisionReportDataAll : System.Web.UI.Page
         }
         //ScriptManager.RegisterClientScriptBlock(Page, Page.GetType(), "", "window.open('StudentWiseData.aspx?CourseId=" + CourseId + "','');", true);
     }
+    protected void AdmissionNo_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            string URL = string.Empty;
+            string AdmissionNo = (sender as LinkButton).CommandArgument;
+            URL = "javascript:window.open('../Pages/FeesRecieve.aspx?AdmissionNoFromAllReport=" + AdmissionNo +"','','');";
+            ScriptManager.RegisterClientScriptBlock(Page, Page.GetType(), "", URL, true);
+        }
+        catch (Exception ex)
+        {
+            this.LogError(ex);
+        }
+        //ScriptManager.RegisterClientScriptBlock(Page, Page.GetType(), "", "window.open('StudentWiseData.aspx?CourseId=" + CourseId + "','');", true);
+    }
+    protected void lnkGoToAdm_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            string URL = string.Empty;
+            string AdmissionID = Session["ARAdmissionId"].ToString();
+            URL = "javascript:window.open('../Pages/Addmision.aspx?AdmissionIdFromGoTo=" + AdmissionID + "','','');";
+            ScriptManager.RegisterClientScriptBlock(Page, Page.GetType(), "", URL, true);
+        }
+        catch (Exception ex)
+        {
+            this.LogError(ex);
+        }
+        //ScriptManager.RegisterClientScriptBlock(Page, Page.GetType(), "", "window.open('StudentWiseData.aspx?CourseId=" + CourseId + "','');", true);
+    }
     protected void SectionChanged(object sender, EventArgs e)
     {
         try

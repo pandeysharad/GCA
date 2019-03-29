@@ -477,7 +477,7 @@
       <Column Name="TransportFees" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
       <Column Name="AdmissionFees" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
       <Column Name="LateFees" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
-      <Column Name="OtherFeesType" Type="System.String" DbType="VarChar(max)" CanBeNull="true" />
+      <Column Name="OtherFeesType" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="OtherFees" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
       <Column Name="TotalFees" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
       <Column Name="Remove" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
@@ -591,20 +591,6 @@
       <Column Name="UpdateID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="UpdateDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="cdate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.Setting" Member="Settings">
-    <Type Name="Setting">
-      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="SchoolName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="Address" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
-      <Column Name="PhoneNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="ContactNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="Website" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="EmailId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="MsgAPI" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
-      <Column Name="SendMsg" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="CompanyType" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.Other_Fees" Member="Other_Fees">
@@ -732,19 +718,18 @@
       <Column Name="SessionId" Type="System.Int32" DbType="Int" CanBeNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.ErrorLogs" Member="ErrorLogs">
-    <Type Name="ErrorLog">
-      <Column Name="id" Type="System.Int64" DbType="BigInt NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="PageName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="MethodName" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="ErrorMsg" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="ExceptionMsg" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="InnerException" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="F1" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
-      <Column Name="F2" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="cdate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="CompanyId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="SessionId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+  <Table Name="dbo.Setting" Member="Settings">
+    <Type Name="Setting">
+      <Column Name="CompanyId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SchoolName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Address" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="PhoneNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ContactNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Website" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="EmailId" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="MsgAPI" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="SendMsg" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="CompanyType" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
     </Type>
   </Table>
   <Function Name="dbo.SP_Session" Method="SP_Session">
@@ -1091,41 +1076,6 @@
     <Parameter Name="sessionid" Type="System.Int32" DbType="Int" />
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.Sp_Payment" Method="Sp_Payment">
-    <Parameter Name="Action" Parameter="action" Type="System.Int32" DbType="Int" />
-    <Parameter Name="PaymentId" Parameter="paymentId" Type="System.Int32" DbType="Int" />
-    <Parameter Name="AdmissionId" Parameter="admissionId" Type="System.Int32" DbType="Int" />
-    <Parameter Name="CourseId" Parameter="courseId" Type="System.Int32" DbType="Int" />
-    <Parameter Name="AdmissionNo" Parameter="admissionNo" Type="System.String" DbType="VarChar(50)" />
-    <Parameter Name="ReceiptNo" Parameter="receiptNo" Type="System.Int32" DbType="Int" />
-    <Parameter Name="PaymentDate" Parameter="paymentDate" Type="System.DateTime" DbType="DateTime" />
-    <Parameter Name="PaymentType" Parameter="paymentType" Type="System.String" DbType="VarChar(50)" />
-    <Parameter Name="CourseFees" Parameter="courseFees" Type="System.Decimal" DbType="Decimal(18,2)" />
-    <Parameter Name="TransportFees" Parameter="transportFees" Type="System.Decimal" DbType="Decimal(18,2)" />
-    <Parameter Name="AdmissionFees" Parameter="admissionFees" Type="System.Decimal" DbType="Decimal(18,2)" />
-    <Parameter Name="LateFees" Parameter="lateFees" Type="System.Decimal" DbType="Decimal(18,2)" />
-    <Parameter Name="OtherFeesType" Parameter="otherFeesType" Type="System.String" DbType="VarChar(50)" />
-    <Parameter Name="OtherFees" Parameter="otherFees" Type="System.Decimal" DbType="Decimal(18,2)" />
-    <Parameter Name="TotalFees" Parameter="totalFees" Type="System.Decimal" DbType="Decimal(18,2)" />
-    <Parameter Name="ComapanyId" Parameter="comapanyId" Type="System.Int32" DbType="Int" />
-    <Parameter Name="UserId" Parameter="userId" Type="System.Int32" DbType="Int" />
-    <Parameter Name="SessionId" Parameter="sessionId" Type="System.Int32" DbType="Int" />
-    <Parameter Name="BankName" Parameter="bankName" Type="System.String" DbType="VarChar(200)" />
-    <Parameter Name="ChequeNo" Parameter="chequeNo" Type="System.String" DbType="VarChar(100)" />
-    <Parameter Name="ChequeDate" Parameter="chequeDate" Type="System.DateTime" DbType="DateTime" />
-    <Parameter Name="Discount" Parameter="discount" Type="System.Decimal" DbType="Decimal(18,2)" />
-    <Parameter Name="Remarks" Parameter="remarks" Type="System.String" DbType="VarChar(MAX)" />
-    <Parameter Name="InDisc" Parameter="inDisc" Type="System.String" DbType="VarChar(50)" />
-    <Parameter Name="PreviousSession" Parameter="previousSession" Type="System.String" DbType="VarChar(50)" />
-    <Parameter Name="PreviousPaid" Parameter="previousPaid" Type="System.Decimal" DbType="Decimal(18,2)" />
-    <Parameter Name="PayMonths" Parameter="payMonths" Type="System.String" DbType="NVarChar(200)" />
-    <Parameter Name="PayMonthClass" Parameter="payMonthClass" Type="System.String" DbType="NVarChar(200)" />
-    <Parameter Name="PayMonthTransport" Parameter="payMonthTransport" Type="System.String" DbType="NVarChar(200)" />
-    <Parameter Name="DiscountType" Parameter="discountType" Type="System.String" DbType="NVarChar(50)" />
-    <Parameter Name="PayOtherFeeDetails" Parameter="payOtherFeeDetails" Type="System.String" DbType="NVarChar(500)" />
-    <Parameter Name="LateFeeType" Parameter="lateFeeType" Type="System.Int32" DbType="Int" />
-    <Return Type="System.Int32" />
-  </Function>
   <Function Name="dbo.SP_AssetFine" Method="SP_AssetFine">
     <Parameter Name="ACID" Parameter="aCID" Type="System.Int32" DbType="Int" />
     <Parameter Name="id" Type="System.Int64" DbType="BigInt" />
@@ -1409,11 +1359,6 @@
     <Parameter Name="Flag" Parameter="flag" Type="System.Int32" DbType="Int" />
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.Sp_DiscountApproval" Method="Sp_DiscountApproval">
-    <Parameter Name="Action" Parameter="action" Type="System.Int32" DbType="Int" />
-    <Parameter Name="AdmissionId" Parameter="admissionId" Type="System.Int32" DbType="Int" />
-    <Return Type="System.Int32" />
-  </Function>
   <Function Name="dbo.SP_BusTransport" Method="SP_BusTransport">
     <Parameter Name="Action" Parameter="action" Type="System.Int32" DbType="Int" />
     <Parameter Name="TransportId" Parameter="transportId" Type="System.Int32" DbType="Int" />
@@ -1425,6 +1370,16 @@
     <Parameter Name="UserId" Parameter="userId" Type="System.Int32" DbType="Int" />
     <Parameter Name="CompanyId" Parameter="companyId" Type="System.Int32" DbType="Int" />
     <Parameter Name="SessionId" Parameter="sessionId" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_UpdateTransportStatus" Method="SP_UpdateTransportStatus">
+    <Parameter Name="ACID" Parameter="aCID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="MonthlyInstId" Parameter="monthlyInstId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="TransportStatus" Parameter="transportStatus" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="TransportFees" Parameter="transportFees" Type="System.Decimal" DbType="Decimal(18,0)" />
+    <Parameter Name="AdmissionId" Parameter="admissionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="AreaId" Parameter="areaId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="CompanyId" Parameter="companyId" Type="System.Int32" DbType="Int" />
     <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.SP_Addmision" Method="SP_Addmision">
@@ -1534,26 +1489,62 @@
     <Parameter Name="aa" Type="System.Int32" DbType="Int" />
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.SP_UpdateTransportStatus" Method="SP_UpdateTransportStatus">
-    <Parameter Name="ACID" Parameter="aCID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="MonthlyInstId" Parameter="monthlyInstId" Type="System.Int32" DbType="Int" />
-    <Parameter Name="TransportStatus" Parameter="transportStatus" Type="System.Boolean" DbType="Bit" />
-    <Parameter Name="TransportFees" Parameter="transportFees" Type="System.Decimal" DbType="Decimal(18,0)" />
-    <Parameter Name="AdmissionId" Parameter="admissionId" Type="System.Int32" DbType="Int" />
-    <Parameter Name="AreaId" Parameter="areaId" Type="System.Int32" DbType="Int" />
-    <Parameter Name="CompanyId" Parameter="companyId" Type="System.Int32" DbType="Int" />
+  <Function Name="dbo.SP_SetEnquiryNextCall" Method="SP_SetEnquiryNextCall">
+    <Parameter Name="EnquiryId" Parameter="enquiryId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="NextCallDate" Parameter="nextCallDate" Type="System.DateTime" DbType="Date" />
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.SP_ErrorLogs" Method="SP_ErrorLogs">
-    <Parameter Name="PageName" Parameter="pageName" Type="System.String" DbType="NVarChar(100)" />
-    <Parameter Name="MethodName" Parameter="methodName" Type="System.String" DbType="NVarChar(100)" />
-    <Parameter Name="ErrorMsg" Parameter="errorMsg" Type="System.String" DbType="NVarChar(MAX)" />
-    <Parameter Name="ExceptionMsg" Parameter="exceptionMsg" Type="System.String" DbType="NVarChar(MAX)" />
-    <Parameter Name="InnerException" Parameter="innerException" Type="System.String" DbType="NVarChar(MAX)" />
-    <Parameter Name="F1" Parameter="f1" Type="System.String" DbType="NVarChar(500)" />
-    <Parameter Name="F2" Parameter="f2" Type="System.String" DbType="NVarChar(MAX)" />
-    <Parameter Name="CompanyId" Parameter="companyId" Type="System.Int32" DbType="Int" />
-    <Parameter Name="SessionId" Parameter="sessionId" Type="System.Int32" DbType="Int" />
+  <Function Name="dbo.Sp_DiscountApproval" Method="Sp_DiscountApproval">
+    <Parameter Name="Action" Parameter="action" Type="System.Int32" DbType="Int" />
+    <Parameter Name="AdmissionId" Parameter="admissionId" Type="System.Int32" DbType="Int" />
     <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.Sp_Payment" Method="Sp_Payment">
+    <Parameter Name="Action" Parameter="action" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PaymentId" Parameter="paymentId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="AdmissionId" Parameter="admissionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="CourseId" Parameter="courseId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="AdmissionNo" Parameter="admissionNo" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="ReceiptNo" Parameter="receiptNo" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PaymentDate" Parameter="paymentDate" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="PaymentType" Parameter="paymentType" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="CourseFees" Parameter="courseFees" Type="System.Decimal" DbType="Decimal(18,2)" />
+    <Parameter Name="TransportFees" Parameter="transportFees" Type="System.Decimal" DbType="Decimal(18,2)" />
+    <Parameter Name="AdmissionFees" Parameter="admissionFees" Type="System.Decimal" DbType="Decimal(18,2)" />
+    <Parameter Name="LateFees" Parameter="lateFees" Type="System.Decimal" DbType="Decimal(18,2)" />
+    <Parameter Name="OtherFeesType" Parameter="otherFeesType" Type="System.String" DbType="VarChar(MAX)" />
+    <Parameter Name="OtherFees" Parameter="otherFees" Type="System.Decimal" DbType="Decimal(18,2)" />
+    <Parameter Name="TotalFees" Parameter="totalFees" Type="System.Decimal" DbType="Decimal(18,2)" />
+    <Parameter Name="ComapanyId" Parameter="comapanyId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="UserId" Parameter="userId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="SessionId" Parameter="sessionId" Type="System.Int32" DbType="Int" />
+    <Parameter Name="BankName" Parameter="bankName" Type="System.String" DbType="VarChar(200)" />
+    <Parameter Name="ChequeNo" Parameter="chequeNo" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="ChequeDate" Parameter="chequeDate" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="Discount" Parameter="discount" Type="System.Decimal" DbType="Decimal(18,2)" />
+    <Parameter Name="Remarks" Parameter="remarks" Type="System.String" DbType="VarChar(MAX)" />
+    <Parameter Name="InDisc" Parameter="inDisc" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="PreviousSession" Parameter="previousSession" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="PreviousPaid" Parameter="previousPaid" Type="System.Decimal" DbType="Decimal(18,2)" />
+    <Parameter Name="PayMonths" Parameter="payMonths" Type="System.String" DbType="NVarChar(200)" />
+    <Parameter Name="PayMonthClass" Parameter="payMonthClass" Type="System.String" DbType="NVarChar(200)" />
+    <Parameter Name="PayMonthTransport" Parameter="payMonthTransport" Type="System.String" DbType="NVarChar(200)" />
+    <Parameter Name="DiscountType" Parameter="discountType" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="PayOtherFeeDetails" Parameter="payOtherFeeDetails" Type="System.String" DbType="NVarChar(500)" />
+    <Parameter Name="LateFeeType" Parameter="lateFeeType" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_GetDataMonthWise" Method="SP_GetDataMonthWise">
+    <ElementType Name="SP_GetDataMonthWiseResult">
+      <Column Name="AdmissionId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AdmissionNo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="StudentName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="FatherName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CourseName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="SamegraId" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Months" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CousePaid" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+      <Column Name="ReceiptNoWitDate" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+    </ElementType>
   </Function>
 </Database>

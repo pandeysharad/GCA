@@ -42,7 +42,10 @@ public partial class Pages_Reports : System.Web.UI.Page
         {
             if (Session["CompanyId"] != null)
             {
-                ddlClassName.DataSource = obj.Courses.Distinct();
+                var D = from Cons in obj.Courses
+                        where Cons.Remove == false && Cons.CompanyId == Convert.ToInt32(Session["CompanyId"]) && Cons.SessionId == Convert.ToInt32(Session["SessionId"])
+                        select Cons;
+                ddlClassName.DataSource = D.Distinct();
                 ddlClassName.DataValueField = "CourseId";
                 ddlClassName.DataTextField = "CourseName";
                 ddlClassName.DataBind();

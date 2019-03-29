@@ -136,18 +136,18 @@ public partial class Reports_FeeDueReport : System.Web.UI.Page
             Globals.Message(Page, "Record Not Found!!!");
         }
     }
-    public static string sendsmsapi(string mobileNumber, string msgtext, string msgtype)
-    {
-        string ucode = "text";
-        if (msgtype == "Hindi")
-            ucode = "unicode";
+    //public static string sendsmsapi(string mobileNumber, string msgtext, string msgtype)
+    //{
+    //    string ucode = "text";
+    //    if (msgtype == "Hindi")
+    //        ucode = "unicode";
 
-        string MSG = "http://203.129.225.68/API/WebSMS/Http/v1.0a/index.php?username=GCA-Jabalpur&password=NetrawGCA&sender=GCAjbp&to=" + mobileNumber + "&message=" + msgtext + "&reqid=1&format={json|text}&route_id=113&msgtype=" + ucode + "";
-        WebClient client = new WebClient();
-        client.OpenRead(MSG);
-        return null;
-    }
-    protected void SendSMS(DataSet ds)
+    //    string MSG = "http://203.129.225.68/API/WebSMS/Http/v1.0a/index.php?username=GCA-Jabalpur&password=NetrawGCA&sender=GCAjbp&to=" + mobileNumber + "&message=" + msgtext + "&reqid=1&format={json|text}&route_id=113&msgtype=" + ucode + "";
+    //    WebClient client = new WebClient();
+    //    client.OpenRead(MSG);
+    //    return null;
+    //}
+    protected void SendSMS1(DataSet ds)
     {
         if (ds.Tables[0].Rows.Count != null && ds.Tables[0].Rows.Count > 0)
         {
@@ -196,7 +196,9 @@ public partial class Reports_FeeDueReport : System.Web.UI.Page
                         //{
                         //    sendsmsapi(mobile, msg, "Hindi"); 
                         //}
-                        sendsmsapi(mobile, msg, "Hindi");
+                        //sendsmsapi(mobile, msg, "Hindi");
+                        
+                        SendSMS.sendsmsapi(mobile, msg, "", Session["MsgAPI"].ToString());
                         if (obj.SP_SMSTable(1, 0, msg, mobile, "HINDI", "ReportsFeeDueReport.aspx/GetDueFee()/SendSMS()", System.DateTime.Now, ReportType, MonthName, dr[0].ToString(), "", "", "", Convert.ToInt32(Session["CompanyId"]),Convert.ToInt32(Session["SessionId"])) == 0)
                         {
 
@@ -234,7 +236,7 @@ public partial class Reports_FeeDueReport : System.Web.UI.Page
                 ddlReportType.ClearSelection();
                 if (isEnableSMS == true)
                 {
-                    SendSMS(ds);
+                    SendSMS1(ds);
                 }
             }
             string dateName = "";
@@ -276,7 +278,7 @@ public partial class Reports_FeeDueReport : System.Web.UI.Page
                 SetGrid(ds);
                 if (isEnableSMS==true)
                 {
-                    SendSMS(ds);
+                    SendSMS1(ds);
                 }
             }
             else if (ddlReportType.SelectedItem.Text == "Class Wise" && ddlReportType.SelectedIndex > 0 && ddlMonth.SelectedIndex > 0)

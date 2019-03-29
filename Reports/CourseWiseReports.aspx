@@ -73,18 +73,12 @@
       
         <PagerStyle CssClass="PagerStyle" />        
        <Columns> 
-        
           <asp:TemplateField HeaderText="SN.">
                <ItemTemplate>
                <%=SrNo++ %>
                </ItemTemplate>
           </asp:TemplateField>
-          <asp:TemplateField HeaderText="SN.">
-               <ItemTemplate>
-               <%=SrNo++ %>
-               </ItemTemplate>
-          </asp:TemplateField>
-          <asp:TemplateField Visible="true" HeaderText="Class">
+          <asp:TemplateField Visible="true" HeaderText="CLASS/COURSE">
                             <ItemTemplate>
                             <asp:LinkButton Text='<%# Eval("CourseName")%>' ID="lnkPrint" ForeColor="#0487B2" runat="server" OnClick="Print_Click" CommandArgument='<%# Eval("CourseId") %>' />
                              <%-- <a href='StudentWiseData.aspx?CourseId=<%#DataBinder.Eval(Container.DataItem,"CourseId")%>' title=" Click To View Course Wise Details" style="visibility:inherit"  >
@@ -92,19 +86,19 @@
                             </ItemTemplate>
           </asp:TemplateField>
           <%--<asp:BoundField DataField="CourseName" HeaderText="Class Name" />--%>
-          <asp:BoundField DataField="CourseFees" HeaderText="Class Fees" DataFormatString="{0:###,###,###}" />
-          <asp:BoundField DataField="CourseFeesRec" HeaderText="Recived" DataFormatString="{0:###,###,###}"/>
-          <asp:BoundField DataField="CourseDiscount" HeaderText="Discount" DataFormatString="{0:###,###,###}"/>
-          <asp:BoundField DataField="CourseFeesBla" HeaderText="Blance" DataFormatString="{0:###,###,###}"/>
-          <asp:BoundField DataField="TransportFees" HeaderText="Trans. Fees" DataFormatString="{0:###,###,###}"/>
-          <asp:BoundField DataField="TransportFeesRec" HeaderText="Recived" DataFormatString="{0:###,###,###}"/>
-          <asp:BoundField DataField="TransportDiscount" HeaderText="Discount" DataFormatString="{0:###,###,###}"/>
-          <asp:BoundField DataField="TransportFeesBla" HeaderText="Blance" DataFormatString="{0:###,###,###}"/>
-          <asp:BoundField DataField="AdmissionFees" HeaderText="Admission Fees" DataFormatString="{0:###,###,###}"/>
-          <asp:BoundField DataField="LateFees" HeaderText="Miscel." DataFormatString="{0:###,###,###}"/>
-          <asp:BoundField DataField="OtherFees" HeaderText="Other Fee Rec." DataFormatString="{0:###,###,###}"/>
-          <asp:BoundField DataField="OtherFeeDiscount" HeaderText="Other Disc." DataFormatString="{0:###,###,###}"/>
-          <asp:BoundField DataField="PreviousPaid" HeaderText="Previous Paid" DataFormatString="{0:###,###,###}"/>
+          <asp:BoundField DataField="CourseFees" HeaderText="CLASS/COURSE FEE" DataFormatString="{0:###,###,###}" />
+          <asp:BoundField DataField="CourseFeesRec" HeaderText="RECEIVED" DataFormatString="{0:###,###,###}"/>
+          <asp:BoundField DataField="CourseDiscount" HeaderText="DISCOUNT" DataFormatString="{0:###,###,###}"/>
+          <asp:BoundField DataField="CourseFeesBla" HeaderText="BALANCE" DataFormatString="{0:###,###,###}"/>
+          <asp:BoundField DataField="TransportFees" HeaderText="TRANS. FEE" DataFormatString="{0:###,###,###}"/>
+          <asp:BoundField DataField="TransportFeesRec" HeaderText="RECEIVED" DataFormatString="{0:###,###,###}"/>
+          <asp:BoundField DataField="TransportDiscount" HeaderText="DISCOUNT" DataFormatString="{0:###,###,###}"/>
+          <asp:BoundField DataField="TransportFeesBla" HeaderText="BALANCE" DataFormatString="{0:###,###,###}"/>
+          <asp:BoundField DataField="AdmissionFees" HeaderText="ANY OTHER FEE REC." DataFormatString="{0:###,###,###}"/>
+          <asp:BoundField DataField="LateFees" HeaderText="MISCELL." DataFormatString="{0:###,###,###}"/>
+          <asp:BoundField DataField="OtherFees" HeaderText="OTHER FEE REC." DataFormatString="{0:###,###,###}"/>
+          <asp:BoundField DataField="OtherFeeDiscount" HeaderText="OTHER FEE DISC." DataFormatString="{0:###,###,###}"/>
+          <asp:BoundField DataField="PreviousPaid" HeaderText="PREVIOUS REC." DataFormatString="{0:###,###,###}"/>
           <%--<asp:BoundField DataField="PaymentReciveingTimeDiscount" HeaderText="Pay. Rec. Time Discount" />--%>
           <%--<asp:BoundField DataField="CourseName" HeaderText="Class Name" />--%>
           

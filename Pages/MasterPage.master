@@ -1,5 +1,15 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="Pages_MasterPage" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="Pages_MasterPage"%>
 <%@ Register Assembly="TimePicker" Namespace="MKB.TimePicker" TagPrefix="cc1" %>
+<%@ Register Src="~/Controls/TodayEnquiryCall.ascx" TagName="EnquiryCall" TagPrefix="uc" %>
+<%@ Register Src="~/Controls/TodayStudentBirthday.ascx" TagName="TodayStudentBirthday" TagPrefix="uc" %>
+<%@ Register Src="~/Controls/OverAllFeeDetails.ascx" TagName="OverAllFeeDetails" TagPrefix="uc" %>
+<%@ Register Src="~/Controls/StudentStatus.ascx" TagName="StudentStatus" TagPrefix="uc" %>
+<%@ Register Src="~/Controls/Top20DefaulterStudent.ascx" TagName="Top20DefaulterStudent" TagPrefix="uc" %>
+<%@ Register Src="~/Controls/GridUpdateApprovals.ascx" TagName="GridUpdateApprovals" TagPrefix="uc" %>
+<%@ Register Src="~/Controls/DiscountApprovals.ascx" TagName="DiscountApprovals" TagPrefix="uc" %>
+<%@ Register Src="~/Controls/ParentAnniversary.ascx" TagName="ParentAnniversary" TagPrefix="uc" %>
+<%@ Register Src="~/Controls/StaffBirthday.ascx" TagName="StaffBirthday" TagPrefix="uc" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
@@ -26,8 +36,64 @@
 <link href="http://ajax.aspnetcdn.com/ajax/jquery.ui/1.9.2/themes/blitzer/jquery-ui.css" rel="Stylesheet" type="text/css" />
 
 <link rel="shortcut icon" href="../img/favicon.ico">
-
+    
    <style type="text/css">
+       
+            .View_header {
+            background: #2380ae;
+            color: #fff;
+            border: none;
+            padding: 9px 20px 5px 20px;
+
+            }
+            .modal-dialog1 {
+            max-width: 90% !important;
+            margin: 1.75rem auto;
+            }
+
+            .modal-backdrop.show {
+            opacity: .5;  }
+
+
+            .close:not(:disabled):not(.disabled) {
+            cursor: pointer;
+            }
+            .modal-header .close {
+            padding: 1rem;
+            margin: -1rem -1rem -1rem auto;
+            }
+            .modal-header .close {
+            font-size: x-large;
+            margin-top: -34px !important;
+            }
+            button.close {
+            padding: 0;
+            background-color: transparent;
+            border: 0;
+            -webkit-appearance: none;
+            }
+            [type=reset], [type=submit], button, html [type=button] {
+            -webkit-appearance: button;
+            }
+            button.close {
+            -webkit-appearance: none;
+            padding: 0;
+            cursor: pointer;
+            background: 0 0;
+            border: 0;
+            }
+            .close {
+            float: right;
+            font-size: 1.5rem;
+            font-weight: 700;
+            line-height: 1;
+            color: #000;
+            text-shadow: 0 1px 0 #fff;
+            opacity: .5;
+            }  
+
+
+
         input[type=text],input[type=submit],input[type=file],textarea,select,td
         {
            
@@ -94,7 +160,40 @@
     padding:5px 10px 5px 10px;
 
     }
+    .ButtonRinght
+    {
+        float:right;
+        margin-right: 12px;
+    }
     </style>
+    
+<script type="text/javascript">
+    $(function () {
+        blinkeffect('#txtblnk');
+    })
+    $(function () {
+        blinkeffect('#IdB');
+    })
+    $(function () {
+        blinkeffect('#IdGridUpdateApprovals');
+    })
+    $(function () {
+        blinkeffect('#IdDiscountApprovals');
+    })
+    $(function () {
+        blinkeffect('#IdParentAnniversary');
+    })
+    $(function () {
+        blinkeffect('#IdStaffBirthday');
+    })
+    function blinkeffect(selector) {
+        $(selector).fadeOut('slow', function () {
+            $(this).fadeIn('slow', function () {
+                blinkeffect(this);
+            });
+        });
+    }
+</script>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
     <link rel="Shortcut Icon" href="../educator.ico" type="image/x-icon"/>
@@ -108,7 +207,48 @@
  <form id="form1" runat="server" style="border:none">
      <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods = "true">
     </asp:ScriptManager>
-<div style="background-color:#000000;width:100%;height:50px;font-size:xx-large;color:White;font-family:Maiandra GD;font-weight:bold">&nbsp;Educator+ <asp:Label style="margin-right:1%;padding:0px;font-size:large;float:right" ID="lblSessionName" runat="server" ></asp:Label>
+<div style="background-color:#000000;width:100%;height:50px;font-size:xx-large;color:White;font-family:Maiandra GD;font-weight:bold">&nbsp;Educator+ 
+
+
+<a id="IdOverAllFeeDetails" visible="false" runat="server" onclick="modalOverAllFeeDetails()" style="color: red;font-family: helvetica;text-decoration: none;cursor: pointer;">
+<img id="ImgOverAllFeeDetails" runat="server" style="margin-right:1%;margin-left: 46px;height: 40px;" src="../images/todaycoll.png" />
+</a>
+
+<a id="IdTop20DefaulterStudent" visible="false" runat="server" onclick="Top20DefaulterStudent()" style="color: red;font-family: helvetica;text-decoration: none;cursor: pointer;">
+<img id="ImgTop20DefaulterStudent" runat="server" style="margin-right:1%;margin-left: 10px;height: 40px;" src="../images/due.png" />
+</a>
+
+<a id="IdStudentStatus" runat="server" visible="false"  onclick="StudentStatus()" style="color: red;font-family: helvetica;text-decoration: none;cursor: pointer;">
+<img id="ImgStudentStatus" runat="server" style="margin-right:1%;margin-left: 10px;height: 40px;" src="../images/stuStatus.png" />
+</a>
+
+<a id="IdGridUpdateApprovals" visible="false" runat="server" onclick="GridUpdateApprovals()" style="color: red;font-family: helvetica;text-decoration: none;cursor: pointer;">
+<img id="ImgGridUpdateApprovals" runat="server" style="margin-right:1%;margin-left: 10px;height: 40px;" src="../images/gridApp.png" />
+</a>
+
+<a id="IdDiscountApprovals" visible="false" runat="server" onclick="DiscountApprovals()" style="color: red;font-family: helvetica;text-decoration: none;cursor: pointer;">
+<img id="ImgDiscountApprovals" runat="server" style="margin-right:1%;margin-left: 10px;height: 40px;" src="../images/discappro.png" />
+</a>
+
+<a id="IdEnquiryCall" runat="server" onclick="Enquiry()" style="color: red;font-family: helvetica;text-decoration: none;cursor: pointer;">
+<img id="txtblnk" runat="server" style="margin-right:1%;margin-left: 10px;height: 40px;" src="../images/enquiry.png" />
+</a>
+
+<a id="IdBirthday" runat="server" onclick="Birthday()" style="color: red;font-family: helvetica;text-decoration: none;cursor: pointer;">
+<img id="IdB" runat="server" style="margin-right:1%;margin-left: 10px;height: 40px;" src="~/images/StuBirthday.png" />
+</a>
+
+<a id="IdParentAnniversary" runat="server" onclick="ParentAnniversary()" style="color: red;font-family: helvetica;text-decoration: none;cursor: pointer;">
+<img id="ImgParentrAnniversary" runat="server" style="margin-right:1%;margin-left: 10px;height: 40px;" src="~/images/parentsAniver.png" />
+</a>
+
+<a id="IdStaffBirthday" runat="server" onclick="StaffBirthday()" style="color: red;font-family: helvetica;text-decoration: none;cursor: pointer;">
+<img id="ImgStaffBirthday" runat="server" style="margin-right:1%;margin-left: 10px;height: 40px;" src="~/images/staffBirthday.png" />
+</a>
+
+<div style="display:none;">
+</div>
+<asp:Label style="margin-right:1%;padding:0px;font-size:large;float:right" ID="lblSessionName" runat="server" ></asp:Label>
     <asp:DropDownList ID="ddlSpecific" runat="server" Visible="false">
     </asp:DropDownList>
     <asp:DropDownList ID="ddlPerticular" runat="server" Visible="false">
@@ -277,8 +417,97 @@
    </div>
    </div>
    </div>
-</form>
+   
+<div class="modal" id="modalOverAllFeeDetails">
+    <uc:OverAllFeeDetails  ID="OverAllFeeDetailsControl" runat="server" />
+</div>
+<div class="modal" id="modalStudentStatus">
+    <uc:StudentStatus  ID="StudentStatusControl" runat="server" />
+</div>
+<div class="modal" id="modalTop20DefaulterStudent">
+    <uc:Top20DefaulterStudent  ID="Top20DefaulterStudentControl" runat="server" />
+</div>
 
+<div class="modal" id="modalGridUpdateApprovals">
+    <uc:GridUpdateApprovals  ID="GridUpdateApprovalsControl" runat="server" />
+</div>
+
+<div class="modal" id="modalDiscountApprovals">
+    <uc:DiscountApprovals  ID="DiscountApprovalsControl" runat="server" />
+</div>
+
+<div class="modal" id="modalEnquiry">
+    <uc:EnquiryCall  ID="EnquiryCallControl" runat="server" />
+</div>
+
+<div class="modal" id="modalBirthday">
+ <uc:TodayStudentBirthday  ID="TodayStudentBirthdayControl" runat="server" />
+</div>
+
+<div class="modal" id="modalParentAnniversary">
+ <uc:ParentAnniversary  ID="ParentAnniversaryControl" runat="server" />
+</div>
+
+<div class="modal" id="modalStaffBirthday">
+ <uc:StaffBirthday  ID="StaffBirthdayControl" runat="server" />
+</div>
+
+<%--<div class="modal" id="modalStaffBirthday">
+ <uc:StaffBirthday  ID="StaffBirthdayControl" runat="server" />
+</div>--%>
+
+</form>
 </body>
 </html>
+  
+
+<script type="text/javascript">
+    // UserComment---------
+    //var UserRemark = function (ID) {
+    //    debugger;
+    //    $("#IDH").val(ID);
+    //    $("#my1").modal("show");
+
+    //}
+    var modalOverAllFeeDetails = function () {
+        $("#modalOverAllFeeDetails").modal("show");
+
+    }
+
+    var StudentStatus = function () {
+        $("#modalStudentStatus").modal("show");
+
+    }
+    var Top20DefaulterStudent = function () {
+        $("#modalTop20DefaulterStudent").modal("show");
+
+    }
+    var GridUpdateApprovals = function () {
+        $("#modalGridUpdateApprovals").modal("show");
+
+    }
+    var DiscountApprovals = function () {
+        $("#modalDiscountApprovals").modal("show");
+
+    }
+    var Enquiry = function () {
+        $("#modalEnquiry").modal("show");
+
+    }
+    var Birthday = function () {
+        $("#modalBirthday").modal("show");
+
+    }
+
+    var ParentAnniversary = function () {
+        $("#modalParentAnniversary").modal("show");
+
+    }
+
+    var StaffBirthday = function () {
+        $("#modalStaffBirthday").modal("show");
+
+    }
+</script>
+
 

@@ -1,0 +1,47 @@
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeFile="TodayStudentBirthday.ascx.cs" Inherits="Controls_TodayStudentBirthday" %>
+<asp:UpdatePanel ID="UpdatePanel1" runat="server">
+    <ContentTemplate>
+    <div class="modal-dialog1">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header View_header">
+                <h4 class="modal-title">Today Student Birthday</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body" id="Div2">
+                    <input type="hidden" id="Hidden1" name="GUID" />
+                    <input type="hidden" value="Manual Processing" name="BT" />
+                   <%-- <table width="100%">
+                        <tr>
+                            <td align="center" valign="top">Remark : </td>
+                            <td><input type="text" id="mannual" name="mannual" style="width: 310px;"/><br /><br /></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><asp:Button id="btnExpotToExcel" runat="server" Text="Export To Excel" OnClick="btnExpotToExcel_OnClick"></asp:Button></td>
+                        </tr>
+                    </table>--%>
+                    <asp:GridView ID="GridViewTodayBirthday" runat="server" AutoGenerateColumns="false" DataKeyNames="AdmissionId"
+                            Width="100%" CssClass="table table-striped table-bordered table-hover dataTable no-footer" style="color:Black; ">
+                        <Columns>
+                        <asp:TemplateField>
+                            <ItemTemplate>
+                                <%= ++srno%>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:BoundField DataField="AdmissionNo" HeaderText="ADMISSION NO." />
+                        <asp:BoundField DataField="StudentName" HeaderText="STUDENT NAME" />
+                        <asp:BoundField DataField="FatherName" HeaderText="FATHER NAME" />
+                        <asp:BoundField DataField="ContactNo" HeaderText="CONTACT NO." />
+                        <asp:BoundField DataField="CourseName" HeaderText="CLASS/COURSE" />
+                        </Columns>
+                        </asp:GridView>
+                 <%-- <asp:Button id="Button1" runat="server" Text="Export To Excel"></asp:Button>--%>
+            </div>
+        </div>
+
+
+    </div>
+     </ContentTemplate>
+     </asp:UpdatePanel>

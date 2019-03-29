@@ -113,6 +113,7 @@ public partial class Pages_MsgDashBoard : System.Web.UI.Page
             {
                 if (ddlAllClass.SelectedIndex == 2)
                 {
+                    DivEnquiryStudent.Visible = false;
                     DivChkSpecificStudent.Visible = false;
                     DivCheckBoxClasses.Visible = true;
                     var D = from Cons in obj.Courses
@@ -125,6 +126,7 @@ public partial class Pages_MsgDashBoard : System.Web.UI.Page
                 }
                 else if (ddlAllClass.SelectedIndex == 3)
                 {
+                    DivEnquiryStudent.Visible = false;
                     DivCheckBoxClasses.Visible = false;
                     DivChkSpecificStudent.Visible = true;
                     var D = from Cons in obj.Courses
@@ -137,14 +139,25 @@ public partial class Pages_MsgDashBoard : System.Web.UI.Page
                     Grid.DataSource = null;
                     Grid.DataBind();
                 }
+                else if (ddlAllClass.SelectedIndex == 4)
+                {
+                    RadioEnquiryStudent.ClearSelection();
+                    DivCheckBoxClasses.Visible = false;
+                    DivChkSpecificStudent.Visible = false;
+                    DivEnquiryStudent.Visible = true;
+                    GridEnquiryStudent.DataSource = null;
+                    GridEnquiryStudent.DataBind();
+                }
                 else
                 {
+                    DivEnquiryStudent.Visible = false;
                     DivCheckBoxClasses.Visible = false;
                     DivChkSpecificStudent.Visible = false;
                 }
             }
             else
             {
+                DivEnquiryStudent.Visible = false;
                 DivCheckBoxClasses.Visible = false;
                 DivChkSpecificStudent.Visible = false;
             }
@@ -217,7 +230,7 @@ public partial class Pages_MsgDashBoard : System.Web.UI.Page
                                     {
                                         foreach (DataRow dr in ds.Tables[0].Rows)
                                         {
-                                            msg = "Dear " + dr[0].ToString() + ",\n" + txtMsg.Text;
+                                            msg =txtMsg.Text;
                                             string Mobile = dr[1].ToString();
                                             SendSMS.sendsmsapi(Mobile, msg, ddlMsgType.SelectedItem.Text, Session["MsgAPI"].ToString());
                                             s++;
@@ -236,7 +249,7 @@ public partial class Pages_MsgDashBoard : System.Web.UI.Page
                                             {
                                                 foreach (DataRow dr in ds.Tables[0].Rows)
                                                 {
-                                                    msg = "Dear " + dr[0].ToString() + ",\n" + txtMsg.Text;
+                                                    msg =txtMsg.Text;
                                                     string Mobile = dr[1].ToString();
                                                     SendSMS.sendsmsapi(Mobile, msg, ddlMsgType.SelectedItem.Text, Session["MsgAPI"].ToString());
                                                     s++;
@@ -259,7 +272,31 @@ public partial class Pages_MsgDashBoard : System.Web.UI.Page
                                             {
                                                 foreach (DataRow dr in ds.Tables[0].Rows)
                                                 {
-                                                    msg = "Dear " + dr[0].ToString() + ",\n" + txtMsg.Text;
+                                                    msg =txtMsg.Text;
+                                                    string Mobile = dr[1].ToString();
+                                                    SendSMS.sendsmsapi(Mobile, msg, ddlMsgType.SelectedItem.Text, Session["MsgAPI"].ToString());
+                                                    s++;
+                                                }
+                                            }
+                                        }
+                                        i = i + 1;
+                                    }
+                                }
+                                else if (ddlAllClass.SelectedIndex == 4)
+                                {
+                                    int i = 0;
+                                    foreach (DataKey d in GridEnquiryStudent.DataKeys)
+                                    {
+                                        int EId = Convert.ToInt32(d.Value.ToString());
+                                        if (((CheckBox)GridEnquiryStudent.Rows[i].FindControl("chkRow")).Checked)
+                                        {
+                                            DataSet ds = new DataSet();
+                                            ds = AllMethods.SendMsgEnquiryStudent(Convert.ToInt32(Session["CompanyId"]), Convert.ToInt32(Session["SessionId"]), EId);
+                                            if (ds.Tables[0].Rows.Count > 0)
+                                            {
+                                                foreach (DataRow dr in ds.Tables[0].Rows)
+                                                {
+                                                    msg =txtMsg.Text;
                                                     string Mobile = dr[1].ToString();
                                                     SendSMS.sendsmsapi(Mobile, msg, ddlMsgType.SelectedItem.Text, Session["MsgAPI"].ToString());
                                                     s++;
@@ -278,7 +315,7 @@ public partial class Pages_MsgDashBoard : System.Web.UI.Page
                             {
                                 for (int i = 0; i < ContactList.Count(); i++)
                                 {
-                                    msg = "Dear Admin,\n" + txtMsg.Text;
+                                    msg =txtMsg.Text;
                                     SendSMS.sendsmsapi(ContactList[i], msg, ddlMsgType.SelectedItem.Text, Session["MsgAPI"].ToString());
                                 }
                                 Globals.Message(Page, "Sent message successfully...");
@@ -439,6 +476,7 @@ public partial class Pages_MsgDashBoard : System.Web.UI.Page
         { }
     }
 
+
     private void BindGrid()
     {
         foreach (ListItem Li in chkSpecificStudent.Items)
@@ -462,6 +500,34 @@ public partial class Pages_MsgDashBoard : System.Web.UI.Page
                                 select Cons;
                     Grid.DataSource = DATA1;
                     Grid.DataBind();
+                    break;
+                }
+            }
+        }
+    }
+    private void BindGridEnquiry()
+    {
+        foreach (ListItem Li in RadioEnquiryStudent.Items)
+        {
+            if (Li.Selected)
+            {
+                if (txtSearchEnquiry.Text != "")
+                {
+                    var DATA1 = from Cons in obj.Enquiries
+                                where Cons.Status == Li.Value && Cons.Remove == false && Cons.CompanyId == Convert.ToInt32(Session["CompanyId"]) && Cons.SessionId == Convert.ToInt32(Session["SessionId"]) && (SqlMethods.Like(Cons.StudentName, "" + txtSearchEnquiry.Text + "%"))
+                                select Cons;
+                    GridEnquiryStudent.DataSource = DATA1;
+                    GridEnquiryStudent.DataBind();
+                    break;
+                }
+                else
+                {
+
+                    var DATA1 = from Cons in obj.Enquiries
+                                where Cons.Status == Li.Value && Cons.Remove == false && Cons.CompanyId == Convert.ToInt32(Session["CompanyId"]) && Cons.SessionId == Convert.ToInt32(Session["SessionId"])
+                                select Cons;
+                    GridEnquiryStudent.DataSource = DATA1;
+                    GridEnquiryStudent.DataBind();
                     break;
                 }
             }
@@ -504,7 +570,7 @@ public partial class Pages_MsgDashBoard : System.Web.UI.Page
     protected void GridStaff_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
         GridStaff.PageIndex = e.NewPageIndex;
-        BindGridStaff();
+        BindGridEnquiry();
         GridStaff.DataBind();
     }
     protected void btnSearch_Click(object sender, EventArgs e)
@@ -518,6 +584,22 @@ public partial class Pages_MsgDashBoard : System.Web.UI.Page
             else
             {
                 Globals.Message(Page, "Please select class first....");
+            }
+        }
+        catch (Exception ex)
+        { }
+    }
+    protected void btnSearchEnquiry_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            if (RadioEnquiryStudent.SelectedIndex != -1)
+            {
+                BindGridEnquiry();
+            }
+            else
+            {
+                Globals.Message(Page, "Please select student status first....");
             }
         }
         catch (Exception ex)
@@ -770,5 +852,58 @@ public partial class Pages_MsgDashBoard : System.Web.UI.Page
         }
         catch (Exception ex)
         { }
+    }
+    protected void RadioEnquiryStudent_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            txtSearchEnquiry.Text = "";
+            BindGridEnquiry();
+        }
+        catch (Exception ex)
+        { }
+    }
+
+    protected void chkHeader_CheckedChanged(object sender, EventArgs e)
+    {
+        CheckBox chkHeader = (CheckBox)GridEnquiryStudent.HeaderRow.FindControl("chkHeader");
+        if (chkHeader.Checked)
+        {
+            foreach (GridViewRow gvrow in GridEnquiryStudent.Rows)
+            {
+                CheckBox chkRow = (CheckBox)gvrow.FindControl("chkRow");
+                chkRow.Checked = true;
+            }
+        }
+        else
+        {
+            foreach (GridViewRow gvrow in GridEnquiryStudent.Rows)
+            {
+                CheckBox chkRow = (CheckBox)gvrow.FindControl("chkRow");
+                chkRow.Checked = false;
+            }
+        }
+    }
+    protected void chkRow_CheckedChanged(object sender, EventArgs e)
+    {
+        int count = 0;
+        int totalRowCountGrid = GridEnquiryStudent.Rows.Count;
+        CheckBox chkHeader = (CheckBox)GridEnquiryStudent.HeaderRow.FindControl("chkHeader");
+        foreach (GridViewRow gvrow in GridEnquiryStudent.Rows)
+        {
+            CheckBox chkRow = (CheckBox)gvrow.FindControl("chkRow");
+            if (chkRow.Checked)
+            {
+                count++;
+            }
+        }
+        if (count == totalRowCountGrid)
+        {
+            chkHeader.Checked = true;
+        }
+        else
+        {
+            chkHeader.Checked = false;
+        }
     }
 }

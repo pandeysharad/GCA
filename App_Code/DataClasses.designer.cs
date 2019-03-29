@@ -107,9 +107,6 @@ public partial class DataClassesDataContext : System.Data.Linq.DataContext
   partial void InsertTcIssue(TcIssue instance);
   partial void UpdateTcIssue(TcIssue instance);
   partial void DeleteTcIssue(TcIssue instance);
-  partial void InsertSetting(Setting instance);
-  partial void UpdateSetting(Setting instance);
-  partial void DeleteSetting(Setting instance);
   partial void InsertOther_Fee(Other_Fee instance);
   partial void UpdateOther_Fee(Other_Fee instance);
   partial void DeleteOther_Fee(Other_Fee instance);
@@ -119,6 +116,9 @@ public partial class DataClassesDataContext : System.Data.Linq.DataContext
   partial void InsertBusTransport(BusTransport instance);
   partial void UpdateBusTransport(BusTransport instance);
   partial void DeleteBusTransport(BusTransport instance);
+  partial void InsertSetting(Setting instance);
+  partial void UpdateSetting(Setting instance);
+  partial void DeleteSetting(Setting instance);
   #endregion
 	
 	public DataClassesDataContext() : 
@@ -415,14 +415,6 @@ public partial class DataClassesDataContext : System.Data.Linq.DataContext
 		}
 	}
 	
-	public System.Data.Linq.Table<Setting> Settings
-	{
-		get
-		{
-			return this.GetTable<Setting>();
-		}
-	}
-	
 	public System.Data.Linq.Table<Other_Fee> Other_Fees
 	{
 		get
@@ -447,11 +439,11 @@ public partial class DataClassesDataContext : System.Data.Linq.DataContext
 		}
 	}
 	
-	public System.Data.Linq.Table<ErrorLog> ErrorLogs
+	public System.Data.Linq.Table<Setting> Settings
 	{
 		get
 		{
-			return this.GetTable<ErrorLog>();
+			return this.GetTable<Setting>();
 		}
 	}
 	
@@ -722,45 +714,6 @@ public partial class DataClassesDataContext : System.Data.Linq.DataContext
 		return ((int)(result.ReturnValue));
 	}
 	
-	[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.Sp_Payment")]
-	public int Sp_Payment(
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Action", DbType="Int")] System.Nullable<int> action, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="PaymentId", DbType="Int")] System.Nullable<int> paymentId, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="AdmissionId", DbType="Int")] System.Nullable<int> admissionId, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="CourseId", DbType="Int")] System.Nullable<int> courseId, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="AdmissionNo", DbType="VarChar(50)")] string admissionNo, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="ReceiptNo", DbType="Int")] System.Nullable<int> receiptNo, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="PaymentDate", DbType="DateTime")] System.Nullable<System.DateTime> paymentDate, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="PaymentType", DbType="VarChar(50)")] string paymentType, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="CourseFees", DbType="Decimal(18,2)")] System.Nullable<decimal> courseFees, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="TransportFees", DbType="Decimal(18,2)")] System.Nullable<decimal> transportFees, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="AdmissionFees", DbType="Decimal(18,2)")] System.Nullable<decimal> admissionFees, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="LateFees", DbType="Decimal(18,2)")] System.Nullable<decimal> lateFees, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="OtherFeesType", DbType="VarChar(50)")] string otherFeesType, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="OtherFees", DbType="Decimal(18,2)")] System.Nullable<decimal> otherFees, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="TotalFees", DbType="Decimal(18,2)")] System.Nullable<decimal> totalFees, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="ComapanyId", DbType="Int")] System.Nullable<int> comapanyId, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="UserId", DbType="Int")] System.Nullable<int> userId, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="SessionId", DbType="Int")] System.Nullable<int> sessionId, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="BankName", DbType="VarChar(200)")] string bankName, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="ChequeNo", DbType="VarChar(100)")] string chequeNo, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="ChequeDate", DbType="DateTime")] System.Nullable<System.DateTime> chequeDate, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Discount", DbType="Decimal(18,2)")] System.Nullable<decimal> discount, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Remarks", DbType="VarChar(MAX)")] string remarks, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="InDisc", DbType="VarChar(50)")] string inDisc, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="PreviousSession", DbType="VarChar(50)")] string previousSession, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="PreviousPaid", DbType="Decimal(18,2)")] System.Nullable<decimal> previousPaid, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="PayMonths", DbType="NVarChar(200)")] string payMonths, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="PayMonthClass", DbType="NVarChar(200)")] string payMonthClass, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="PayMonthTransport", DbType="NVarChar(200)")] string payMonthTransport, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="DiscountType", DbType="NVarChar(50)")] string discountType, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="PayOtherFeeDetails", DbType="NVarChar(500)")] string payOtherFeeDetails, 
-				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="LateFeeType", DbType="Int")] System.Nullable<int> lateFeeType)
-	{
-		IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), action, paymentId, admissionId, courseId, admissionNo, receiptNo, paymentDate, paymentType, courseFees, transportFees, admissionFees, lateFees, otherFeesType, otherFees, totalFees, comapanyId, userId, sessionId, bankName, chequeNo, chequeDate, discount, remarks, inDisc, previousSession, previousPaid, payMonths, payMonthClass, payMonthTransport, discountType, payOtherFeeDetails, lateFeeType);
-		return ((int)(result.ReturnValue));
-	}
-	
 	[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_AssetFine")]
 	public int SP_AssetFine([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ACID", DbType="Int")] System.Nullable<int> aCID, [global::System.Data.Linq.Mapping.ParameterAttribute(DbType="BigInt")] System.Nullable<long> id, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Addmisionid", DbType="Int")] System.Nullable<int> addmisionid, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="AddmisionNo", DbType="NVarChar(50)")] string addmisionNo, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="AssetType", DbType="Int")] System.Nullable<int> assetType, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Fine", DbType="Float")] System.Nullable<double> fine, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Remark", DbType="NVarChar(MAX)")] string remark, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="F1", DbType="NVarChar(50)")] string f1, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="F2", DbType="NVarChar(50)")] string f2, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="F3", DbType="NVarChar(50)")] string f3, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="F4", DbType="NVarChar(MAX)")] string f4, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CompanyId", DbType="Int")] System.Nullable<int> companyId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SessionId", DbType="Int")] System.Nullable<int> sessionId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Del_Userid", DbType="Int")] System.Nullable<int> del_Userid, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Userid", DbType="Int")] System.Nullable<int> userid)
 	{
@@ -982,17 +935,17 @@ public partial class DataClassesDataContext : System.Data.Linq.DataContext
 		return ((int)(result.ReturnValue));
 	}
 	
-	[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.Sp_DiscountApproval")]
-	public int Sp_DiscountApproval([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Action", DbType="Int")] System.Nullable<int> action, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="AdmissionId", DbType="Int")] System.Nullable<int> admissionId)
-	{
-		IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), action, admissionId);
-		return ((int)(result.ReturnValue));
-	}
-	
 	[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_BusTransport")]
 	public int SP_BusTransport([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Action", DbType="Int")] System.Nullable<int> action, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TransportId", DbType="Int")] System.Nullable<int> transportId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="From", DbType="VarChar(MAX)")] string from, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="To", DbType="VarChar(MAX)")] string to, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="KM", DbType="Decimal(18,2)")] System.Nullable<decimal> kM, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="RPKM", DbType="Decimal(18,2)")] System.Nullable<decimal> rPKM, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TotalFees", DbType="Decimal(18,2)")] System.Nullable<decimal> totalFees, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="UserId", DbType="Int")] System.Nullable<int> userId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CompanyId", DbType="Int")] System.Nullable<int> companyId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SessionId", DbType="Int")] System.Nullable<int> sessionId)
 	{
 		IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), action, transportId, from, to, kM, rPKM, totalFees, userId, companyId, sessionId);
+		return ((int)(result.ReturnValue));
+	}
+	
+	[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_UpdateTransportStatus")]
+	public int SP_UpdateTransportStatus([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ACID", DbType="Int")] System.Nullable<int> aCID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="MonthlyInstId", DbType="Int")] System.Nullable<int> monthlyInstId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TransportStatus", DbType="Bit")] System.Nullable<bool> transportStatus, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TransportFees", DbType="Decimal(18,0)")] System.Nullable<decimal> transportFees, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="AdmissionId", DbType="Int")] System.Nullable<int> admissionId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="AreaId", DbType="Int")] System.Nullable<int> areaId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CompanyId", DbType="Int")] System.Nullable<int> companyId)
+	{
+		IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), aCID, monthlyInstId, transportStatus, transportFees, admissionId, areaId, companyId);
 		return ((int)(result.ReturnValue));
 	}
 	
@@ -1105,18 +1058,64 @@ public partial class DataClassesDataContext : System.Data.Linq.DataContext
 		return ((int)(result.ReturnValue));
 	}
 	
-	[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_UpdateTransportStatus")]
-	public int SP_UpdateTransportStatus([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ACID", DbType="Int")] System.Nullable<int> aCID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="MonthlyInstId", DbType="Int")] System.Nullable<int> monthlyInstId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TransportStatus", DbType="Bit")] System.Nullable<bool> transportStatus, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TransportFees", DbType="Decimal(18,0)")] System.Nullable<decimal> transportFees, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="AdmissionId", DbType="Int")] System.Nullable<int> admissionId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="AreaId", DbType="Int")] System.Nullable<int> areaId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CompanyId", DbType="Int")] System.Nullable<int> companyId)
+	[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_SetEnquiryNextCall")]
+	public int SP_SetEnquiryNextCall([global::System.Data.Linq.Mapping.ParameterAttribute(Name="EnquiryId", DbType="Int")] System.Nullable<int> enquiryId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="NextCallDate", DbType="Date")] System.Nullable<System.DateTime> nextCallDate)
 	{
-		IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), aCID, monthlyInstId, transportStatus, transportFees, admissionId, areaId, companyId);
+		IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), enquiryId, nextCallDate);
 		return ((int)(result.ReturnValue));
 	}
 	
-	[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_ErrorLogs")]
-	public int SP_ErrorLogs([global::System.Data.Linq.Mapping.ParameterAttribute(Name="PageName", DbType="NVarChar(100)")] string pageName, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="MethodName", DbType="NVarChar(100)")] string methodName, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ErrorMsg", DbType="NVarChar(MAX)")] string errorMsg, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ExceptionMsg", DbType="NVarChar(MAX)")] string exceptionMsg, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="InnerException", DbType="NVarChar(MAX)")] string innerException, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="F1", DbType="NVarChar(500)")] string f1, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="F2", DbType="NVarChar(MAX)")] string f2, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CompanyId", DbType="Int")] System.Nullable<int> companyId, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SessionId", DbType="Int")] System.Nullable<int> sessionId)
+	[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.Sp_DiscountApproval")]
+	public int Sp_DiscountApproval([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Action", DbType="Int")] System.Nullable<int> action, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="AdmissionId", DbType="Int")] System.Nullable<int> admissionId)
 	{
-		IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pageName, methodName, errorMsg, exceptionMsg, innerException, f1, f2, companyId, sessionId);
+		IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), action, admissionId);
 		return ((int)(result.ReturnValue));
+	}
+	
+	[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.Sp_Payment")]
+	public int Sp_Payment(
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Action", DbType="Int")] System.Nullable<int> action, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="PaymentId", DbType="Int")] System.Nullable<int> paymentId, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="AdmissionId", DbType="Int")] System.Nullable<int> admissionId, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="CourseId", DbType="Int")] System.Nullable<int> courseId, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="AdmissionNo", DbType="VarChar(50)")] string admissionNo, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="ReceiptNo", DbType="Int")] System.Nullable<int> receiptNo, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="PaymentDate", DbType="DateTime")] System.Nullable<System.DateTime> paymentDate, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="PaymentType", DbType="VarChar(50)")] string paymentType, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="CourseFees", DbType="Decimal(18,2)")] System.Nullable<decimal> courseFees, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="TransportFees", DbType="Decimal(18,2)")] System.Nullable<decimal> transportFees, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="AdmissionFees", DbType="Decimal(18,2)")] System.Nullable<decimal> admissionFees, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="LateFees", DbType="Decimal(18,2)")] System.Nullable<decimal> lateFees, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="OtherFeesType", DbType="VarChar(MAX)")] string otherFeesType, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="OtherFees", DbType="Decimal(18,2)")] System.Nullable<decimal> otherFees, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="TotalFees", DbType="Decimal(18,2)")] System.Nullable<decimal> totalFees, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="ComapanyId", DbType="Int")] System.Nullable<int> comapanyId, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="UserId", DbType="Int")] System.Nullable<int> userId, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="SessionId", DbType="Int")] System.Nullable<int> sessionId, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="BankName", DbType="VarChar(200)")] string bankName, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="ChequeNo", DbType="VarChar(100)")] string chequeNo, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="ChequeDate", DbType="DateTime")] System.Nullable<System.DateTime> chequeDate, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Discount", DbType="Decimal(18,2)")] System.Nullable<decimal> discount, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="Remarks", DbType="VarChar(MAX)")] string remarks, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="InDisc", DbType="VarChar(50)")] string inDisc, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="PreviousSession", DbType="VarChar(50)")] string previousSession, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="PreviousPaid", DbType="Decimal(18,2)")] System.Nullable<decimal> previousPaid, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="PayMonths", DbType="NVarChar(200)")] string payMonths, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="PayMonthClass", DbType="NVarChar(200)")] string payMonthClass, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="PayMonthTransport", DbType="NVarChar(200)")] string payMonthTransport, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="DiscountType", DbType="NVarChar(50)")] string discountType, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="PayOtherFeeDetails", DbType="NVarChar(500)")] string payOtherFeeDetails, 
+				[global::System.Data.Linq.Mapping.ParameterAttribute(Name="LateFeeType", DbType="Int")] System.Nullable<int> lateFeeType)
+	{
+		IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), action, paymentId, admissionId, courseId, admissionNo, receiptNo, paymentDate, paymentType, courseFees, transportFees, admissionFees, lateFees, otherFeesType, otherFees, totalFees, comapanyId, userId, sessionId, bankName, chequeNo, chequeDate, discount, remarks, inDisc, previousSession, previousPaid, payMonths, payMonthClass, payMonthTransport, discountType, payOtherFeeDetails, lateFeeType);
+		return ((int)(result.ReturnValue));
+	}
+	
+	[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_GetDataMonthWise")]
+	public ISingleResult<SP_GetDataMonthWiseResult> SP_GetDataMonthWise()
+	{
+		IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+		return ((ISingleResult<SP_GetDataMonthWiseResult>)(result.ReturnValue));
 	}
 }
 
@@ -12695,284 +12694,6 @@ public partial class CompanyIdWiseSetText
 	}
 }
 
-[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Setting")]
-public partial class Setting : INotifyPropertyChanging, INotifyPropertyChanged
-{
-	
-	private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-	
-	private int _CompanyId;
-	
-	private string _SchoolName;
-	
-	private string _Address;
-	
-	private string _PhoneNo;
-	
-	private string _ContactNo;
-	
-	private string _Website;
-	
-	private string _EmailId;
-	
-	private string _MsgAPI;
-	
-	private System.Nullable<bool> _SendMsg;
-	
-	private string _CompanyType;
-	
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnCompanyIdChanging(int value);
-    partial void OnCompanyIdChanged();
-    partial void OnSchoolNameChanging(string value);
-    partial void OnSchoolNameChanged();
-    partial void OnAddressChanging(string value);
-    partial void OnAddressChanged();
-    partial void OnPhoneNoChanging(string value);
-    partial void OnPhoneNoChanged();
-    partial void OnContactNoChanging(string value);
-    partial void OnContactNoChanged();
-    partial void OnWebsiteChanging(string value);
-    partial void OnWebsiteChanged();
-    partial void OnEmailIdChanging(string value);
-    partial void OnEmailIdChanged();
-    partial void OnMsgAPIChanging(string value);
-    partial void OnMsgAPIChanged();
-    partial void OnSendMsgChanging(System.Nullable<bool> value);
-    partial void OnSendMsgChanged();
-    partial void OnCompanyTypeChanging(string value);
-    partial void OnCompanyTypeChanged();
-    #endregion
-	
-	public Setting()
-	{
-		OnCreated();
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompanyId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-	public int CompanyId
-	{
-		get
-		{
-			return this._CompanyId;
-		}
-		set
-		{
-			if ((this._CompanyId != value))
-			{
-				this.OnCompanyIdChanging(value);
-				this.SendPropertyChanging();
-				this._CompanyId = value;
-				this.SendPropertyChanged("CompanyId");
-				this.OnCompanyIdChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SchoolName", DbType="VarChar(50)")]
-	public string SchoolName
-	{
-		get
-		{
-			return this._SchoolName;
-		}
-		set
-		{
-			if ((this._SchoolName != value))
-			{
-				this.OnSchoolNameChanging(value);
-				this.SendPropertyChanging();
-				this._SchoolName = value;
-				this.SendPropertyChanged("SchoolName");
-				this.OnSchoolNameChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Address", DbType="VarChar(MAX)")]
-	public string Address
-	{
-		get
-		{
-			return this._Address;
-		}
-		set
-		{
-			if ((this._Address != value))
-			{
-				this.OnAddressChanging(value);
-				this.SendPropertyChanging();
-				this._Address = value;
-				this.SendPropertyChanged("Address");
-				this.OnAddressChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PhoneNo", DbType="VarChar(50)")]
-	public string PhoneNo
-	{
-		get
-		{
-			return this._PhoneNo;
-		}
-		set
-		{
-			if ((this._PhoneNo != value))
-			{
-				this.OnPhoneNoChanging(value);
-				this.SendPropertyChanging();
-				this._PhoneNo = value;
-				this.SendPropertyChanged("PhoneNo");
-				this.OnPhoneNoChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactNo", DbType="VarChar(50)")]
-	public string ContactNo
-	{
-		get
-		{
-			return this._ContactNo;
-		}
-		set
-		{
-			if ((this._ContactNo != value))
-			{
-				this.OnContactNoChanging(value);
-				this.SendPropertyChanging();
-				this._ContactNo = value;
-				this.SendPropertyChanged("ContactNo");
-				this.OnContactNoChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Website", DbType="VarChar(50)")]
-	public string Website
-	{
-		get
-		{
-			return this._Website;
-		}
-		set
-		{
-			if ((this._Website != value))
-			{
-				this.OnWebsiteChanging(value);
-				this.SendPropertyChanging();
-				this._Website = value;
-				this.SendPropertyChanged("Website");
-				this.OnWebsiteChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmailId", DbType="VarChar(50)")]
-	public string EmailId
-	{
-		get
-		{
-			return this._EmailId;
-		}
-		set
-		{
-			if ((this._EmailId != value))
-			{
-				this.OnEmailIdChanging(value);
-				this.SendPropertyChanging();
-				this._EmailId = value;
-				this.SendPropertyChanged("EmailId");
-				this.OnEmailIdChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MsgAPI", DbType="VarChar(MAX)")]
-	public string MsgAPI
-	{
-		get
-		{
-			return this._MsgAPI;
-		}
-		set
-		{
-			if ((this._MsgAPI != value))
-			{
-				this.OnMsgAPIChanging(value);
-				this.SendPropertyChanging();
-				this._MsgAPI = value;
-				this.SendPropertyChanged("MsgAPI");
-				this.OnMsgAPIChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SendMsg", DbType="Bit")]
-	public System.Nullable<bool> SendMsg
-	{
-		get
-		{
-			return this._SendMsg;
-		}
-		set
-		{
-			if ((this._SendMsg != value))
-			{
-				this.OnSendMsgChanging(value);
-				this.SendPropertyChanging();
-				this._SendMsg = value;
-				this.SendPropertyChanged("SendMsg");
-				this.OnSendMsgChanged();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompanyType", DbType="VarChar(100)")]
-	public string CompanyType
-	{
-		get
-		{
-			return this._CompanyType;
-		}
-		set
-		{
-			if ((this._CompanyType != value))
-			{
-				this.OnCompanyTypeChanging(value);
-				this.SendPropertyChanging();
-				this._CompanyType = value;
-				this.SendPropertyChanged("CompanyType");
-				this.OnCompanyTypeChanged();
-			}
-		}
-	}
-	
-	public event PropertyChangingEventHandler PropertyChanging;
-	
-	public event PropertyChangedEventHandler PropertyChanged;
-	
-	protected virtual void SendPropertyChanging()
-	{
-		if ((this.PropertyChanging != null))
-		{
-			this.PropertyChanging(this, emptyChangingEventArgs);
-		}
-	}
-	
-	protected virtual void SendPropertyChanged(String propertyName)
-	{
-		if ((this.PropertyChanged != null))
-		{
-			this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-		}
-	}
-}
-
 [global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Other_Fees")]
 public partial class Other_Fee : INotifyPropertyChanging, INotifyPropertyChanged
 {
@@ -15799,182 +15520,65 @@ public partial class BusTransport : INotifyPropertyChanging, INotifyPropertyChan
 	}
 }
 
-[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ErrorLogs")]
-public partial class ErrorLog
+[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Setting")]
+public partial class Setting : INotifyPropertyChanging, INotifyPropertyChanged
 {
 	
-	private long _id;
+	private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 	
-	private string _PageName;
+	private int _CompanyId;
 	
-	private string _MethodName;
+	private string _SchoolName;
 	
-	private string _ErrorMsg;
+	private string _Address;
 	
-	private string _ExceptionMsg;
+	private string _PhoneNo;
 	
-	private string _InnerException;
+	private string _ContactNo;
 	
-	private string _F1;
+	private string _Website;
 	
-	private string _F2;
+	private string _EmailId;
 	
-	private System.DateTime _cdate;
+	private string _MsgAPI;
 	
-	private System.Nullable<int> _CompanyId;
+	private System.Nullable<bool> _SendMsg;
 	
-	private System.Nullable<int> _SessionId;
+	private string _CompanyType;
 	
-	public ErrorLog()
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnCompanyIdChanging(int value);
+    partial void OnCompanyIdChanged();
+    partial void OnSchoolNameChanging(string value);
+    partial void OnSchoolNameChanged();
+    partial void OnAddressChanging(string value);
+    partial void OnAddressChanged();
+    partial void OnPhoneNoChanging(string value);
+    partial void OnPhoneNoChanged();
+    partial void OnContactNoChanging(string value);
+    partial void OnContactNoChanged();
+    partial void OnWebsiteChanging(string value);
+    partial void OnWebsiteChanged();
+    partial void OnEmailIdChanging(string value);
+    partial void OnEmailIdChanged();
+    partial void OnMsgAPIChanging(string value);
+    partial void OnMsgAPIChanged();
+    partial void OnSendMsgChanging(System.Nullable<bool> value);
+    partial void OnSendMsgChanged();
+    partial void OnCompanyTypeChanging(string value);
+    partial void OnCompanyTypeChanged();
+    #endregion
+	
+	public Setting()
 	{
+		OnCreated();
 	}
 	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.Always, DbType="BigInt NOT NULL IDENTITY", IsDbGenerated=true)]
-	public long id
-	{
-		get
-		{
-			return this._id;
-		}
-		set
-		{
-			if ((this._id != value))
-			{
-				this._id = value;
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PageName", DbType="NVarChar(100)")]
-	public string PageName
-	{
-		get
-		{
-			return this._PageName;
-		}
-		set
-		{
-			if ((this._PageName != value))
-			{
-				this._PageName = value;
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MethodName", DbType="NVarChar(100)")]
-	public string MethodName
-	{
-		get
-		{
-			return this._MethodName;
-		}
-		set
-		{
-			if ((this._MethodName != value))
-			{
-				this._MethodName = value;
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ErrorMsg", DbType="NVarChar(MAX)")]
-	public string ErrorMsg
-	{
-		get
-		{
-			return this._ErrorMsg;
-		}
-		set
-		{
-			if ((this._ErrorMsg != value))
-			{
-				this._ErrorMsg = value;
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExceptionMsg", DbType="NVarChar(MAX)")]
-	public string ExceptionMsg
-	{
-		get
-		{
-			return this._ExceptionMsg;
-		}
-		set
-		{
-			if ((this._ExceptionMsg != value))
-			{
-				this._ExceptionMsg = value;
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_InnerException", DbType="NVarChar(MAX)")]
-	public string InnerException
-	{
-		get
-		{
-			return this._InnerException;
-		}
-		set
-		{
-			if ((this._InnerException != value))
-			{
-				this._InnerException = value;
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F1", DbType="NVarChar(500)")]
-	public string F1
-	{
-		get
-		{
-			return this._F1;
-		}
-		set
-		{
-			if ((this._F1 != value))
-			{
-				this._F1 = value;
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_F2", DbType="NVarChar(MAX)")]
-	public string F2
-	{
-		get
-		{
-			return this._F2;
-		}
-		set
-		{
-			if ((this._F2 != value))
-			{
-				this._F2 = value;
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_cdate", DbType="DateTime NOT NULL")]
-	public System.DateTime cdate
-	{
-		get
-		{
-			return this._cdate;
-		}
-		set
-		{
-			if ((this._cdate != value))
-			{
-				this._cdate = value;
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompanyId", DbType="Int")]
-	public System.Nullable<int> CompanyId
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompanyId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+	public int CompanyId
 	{
 		get
 		{
@@ -15984,24 +15588,212 @@ public partial class ErrorLog
 		{
 			if ((this._CompanyId != value))
 			{
+				this.OnCompanyIdChanging(value);
+				this.SendPropertyChanging();
 				this._CompanyId = value;
+				this.SendPropertyChanged("CompanyId");
+				this.OnCompanyIdChanged();
 			}
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SessionId", DbType="Int")]
-	public System.Nullable<int> SessionId
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SchoolName", DbType="VarChar(50)")]
+	public string SchoolName
 	{
 		get
 		{
-			return this._SessionId;
+			return this._SchoolName;
 		}
 		set
 		{
-			if ((this._SessionId != value))
+			if ((this._SchoolName != value))
 			{
-				this._SessionId = value;
+				this.OnSchoolNameChanging(value);
+				this.SendPropertyChanging();
+				this._SchoolName = value;
+				this.SendPropertyChanged("SchoolName");
+				this.OnSchoolNameChanged();
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Address", DbType="VarChar(MAX)")]
+	public string Address
+	{
+		get
+		{
+			return this._Address;
+		}
+		set
+		{
+			if ((this._Address != value))
+			{
+				this.OnAddressChanging(value);
+				this.SendPropertyChanging();
+				this._Address = value;
+				this.SendPropertyChanged("Address");
+				this.OnAddressChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PhoneNo", DbType="VarChar(50)")]
+	public string PhoneNo
+	{
+		get
+		{
+			return this._PhoneNo;
+		}
+		set
+		{
+			if ((this._PhoneNo != value))
+			{
+				this.OnPhoneNoChanging(value);
+				this.SendPropertyChanging();
+				this._PhoneNo = value;
+				this.SendPropertyChanged("PhoneNo");
+				this.OnPhoneNoChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContactNo", DbType="VarChar(50)")]
+	public string ContactNo
+	{
+		get
+		{
+			return this._ContactNo;
+		}
+		set
+		{
+			if ((this._ContactNo != value))
+			{
+				this.OnContactNoChanging(value);
+				this.SendPropertyChanging();
+				this._ContactNo = value;
+				this.SendPropertyChanged("ContactNo");
+				this.OnContactNoChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Website", DbType="VarChar(50)")]
+	public string Website
+	{
+		get
+		{
+			return this._Website;
+		}
+		set
+		{
+			if ((this._Website != value))
+			{
+				this.OnWebsiteChanging(value);
+				this.SendPropertyChanging();
+				this._Website = value;
+				this.SendPropertyChanged("Website");
+				this.OnWebsiteChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmailId", DbType="VarChar(50)")]
+	public string EmailId
+	{
+		get
+		{
+			return this._EmailId;
+		}
+		set
+		{
+			if ((this._EmailId != value))
+			{
+				this.OnEmailIdChanging(value);
+				this.SendPropertyChanging();
+				this._EmailId = value;
+				this.SendPropertyChanged("EmailId");
+				this.OnEmailIdChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MsgAPI", DbType="VarChar(MAX)")]
+	public string MsgAPI
+	{
+		get
+		{
+			return this._MsgAPI;
+		}
+		set
+		{
+			if ((this._MsgAPI != value))
+			{
+				this.OnMsgAPIChanging(value);
+				this.SendPropertyChanging();
+				this._MsgAPI = value;
+				this.SendPropertyChanged("MsgAPI");
+				this.OnMsgAPIChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SendMsg", DbType="Bit")]
+	public System.Nullable<bool> SendMsg
+	{
+		get
+		{
+			return this._SendMsg;
+		}
+		set
+		{
+			if ((this._SendMsg != value))
+			{
+				this.OnSendMsgChanging(value);
+				this.SendPropertyChanging();
+				this._SendMsg = value;
+				this.SendPropertyChanged("SendMsg");
+				this.OnSendMsgChanged();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CompanyType", DbType="VarChar(100)")]
+	public string CompanyType
+	{
+		get
+		{
+			return this._CompanyType;
+		}
+		set
+		{
+			if ((this._CompanyType != value))
+			{
+				this.OnCompanyTypeChanging(value);
+				this.SendPropertyChanging();
+				this._CompanyType = value;
+				this.SendPropertyChanged("CompanyType");
+				this.OnCompanyTypeChanged();
+			}
+		}
+	}
+	
+	public event PropertyChangingEventHandler PropertyChanging;
+	
+	public event PropertyChangedEventHandler PropertyChanged;
+	
+	protected virtual void SendPropertyChanging()
+	{
+		if ((this.PropertyChanging != null))
+		{
+			this.PropertyChanging(this, emptyChangingEventArgs);
+		}
+	}
+	
+	protected virtual void SendPropertyChanged(String propertyName)
+	{
+		if ((this.PropertyChanged != null))
+		{
+			this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 		}
 	}
 }
@@ -16385,6 +16177,176 @@ public partial class SP_GETSINGLEVALUESResult
 			if ((this._VALUE != value))
 			{
 				this._VALUE = value;
+			}
+		}
+	}
+}
+
+public partial class SP_GetDataMonthWiseResult
+{
+	
+	private System.Nullable<int> _AdmissionId;
+	
+	private string _AdmissionNo;
+	
+	private string _StudentName;
+	
+	private string _FatherName;
+	
+	private string _CourseName;
+	
+	private string _SamegraId;
+	
+	private string _Months;
+	
+	private System.Nullable<decimal> _CousePaid;
+	
+	private string _ReceiptNoWitDate;
+	
+	public SP_GetDataMonthWiseResult()
+	{
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AdmissionId", DbType="Int")]
+	public System.Nullable<int> AdmissionId
+	{
+		get
+		{
+			return this._AdmissionId;
+		}
+		set
+		{
+			if ((this._AdmissionId != value))
+			{
+				this._AdmissionId = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AdmissionNo", DbType="VarChar(50)")]
+	public string AdmissionNo
+	{
+		get
+		{
+			return this._AdmissionNo;
+		}
+		set
+		{
+			if ((this._AdmissionNo != value))
+			{
+				this._AdmissionNo = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StudentName", DbType="VarChar(50)")]
+	public string StudentName
+	{
+		get
+		{
+			return this._StudentName;
+		}
+		set
+		{
+			if ((this._StudentName != value))
+			{
+				this._StudentName = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FatherName", DbType="VarChar(50)")]
+	public string FatherName
+	{
+		get
+		{
+			return this._FatherName;
+		}
+		set
+		{
+			if ((this._FatherName != value))
+			{
+				this._FatherName = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CourseName", DbType="VarChar(50)")]
+	public string CourseName
+	{
+		get
+		{
+			return this._CourseName;
+		}
+		set
+		{
+			if ((this._CourseName != value))
+			{
+				this._CourseName = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SamegraId", DbType="VarChar(100)")]
+	public string SamegraId
+	{
+		get
+		{
+			return this._SamegraId;
+		}
+		set
+		{
+			if ((this._SamegraId != value))
+			{
+				this._SamegraId = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Months", DbType="VarChar(50)")]
+	public string Months
+	{
+		get
+		{
+			return this._Months;
+		}
+		set
+		{
+			if ((this._Months != value))
+			{
+				this._Months = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CousePaid", DbType="Decimal(18,2)")]
+	public System.Nullable<decimal> CousePaid
+	{
+		get
+		{
+			return this._CousePaid;
+		}
+		set
+		{
+			if ((this._CousePaid != value))
+			{
+				this._CousePaid = value;
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReceiptNoWitDate", DbType="NVarChar(MAX)")]
+	public string ReceiptNoWitDate
+	{
+		get
+		{
+			return this._ReceiptNoWitDate;
+		}
+		set
+		{
+			if ((this._ReceiptNoWitDate != value))
+			{
+				this._ReceiptNoWitDate = value;
 			}
 		}
 	}

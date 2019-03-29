@@ -54,7 +54,10 @@
            <tr>
              <td  style="width:33%"></td>
              <td  style="width:33%">REPORT-MONTHLY DUE SHEET</td>
-             <td  style="width:33%">From:<%=From.ToShortDateString() %>&nbsp;&nbsp; To:&nbsp;&nbsp; <%=To.ToShortDateString() %></td>
+             <td  style="width:33%">From:<%=From.ToShortDateString() %>&nbsp;&nbsp; To:&nbsp;&nbsp; <%=To.ToShortDateString() %>
+              <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="~/img/exl.png" ToolTip="Export in Excel"
+               Height="19px" Width="19px" OnClick="ExportToExcel" />
+             </td>
              </tr>
            </table>
 
@@ -104,7 +107,7 @@
          
        </div>
        <div style="margin-left:20px;">
-        <asp:GridView ID="Grid" CssClass="GridViewStyle_List" Width="70%" DataKeyNames="AdmiId" runat="server" ShowFooter="True" OnRowDataBound="Grid_RowDataBound" AutoGenerateColumns="false" >
+        <asp:GridView ID="Grid" CssClass="GridViewStyle_List" Width="80%" DataKeyNames="AdmiId" runat="server" ShowFooter="True" OnRowDataBound="Grid_RowDataBound" AutoGenerateColumns="false" >
        <%----%>
       
         <PagerStyle CssClass="PagerStyle" />        
@@ -131,13 +134,13 @@
               </a>    
                </ItemTemplate>
           </asp:TemplateField>  
-              <asp:TemplateField HeaderText="CLASS/SECTION"   ItemStyle-VerticalAlign="Top">
+              <asp:TemplateField HeaderText="CLASS/COURSE DETAILS"   ItemStyle-VerticalAlign="Top">
            <ItemTemplate>
                  <%#DataBinder.Eval(Container.DataItem, "ClassName")%><hr style="margin:0;padding:0" />
                  <%#DataBinder.Eval(Container.DataItem, "Section")%><hr style="margin:0;padding:0" /><br /><br />
                </ItemTemplate>
           </asp:TemplateField>  
-           <asp:BoundField HeaderText="TOTAL CLASS FEES" DataField="TotalCourseFees" ItemStyle-VerticalAlign="Top"  DataFormatString="{0:##,##,##,###.00}"/>
+           <asp:BoundField HeaderText="TOTAL CLASS/COURSE FEES" DataField="TotalCourseFees" ItemStyle-VerticalAlign="Top"  DataFormatString="{0:##,##,##,###.00}"/>
            <asp:BoundField HeaderText="TOTAL TRANSPORT FEES" DataField="TotalTransportFees" ItemStyle-VerticalAlign="Top"  DataFormatString="{0:##,##,##,###.00}"/>
            <asp:BoundField HeaderText="" ItemStyle-VerticalAlign="Top" />
            

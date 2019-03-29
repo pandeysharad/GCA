@@ -67,6 +67,56 @@ public class AutoComplete : System.Web.Services.WebService
     }
 
     [WebMethod]
+    public string[] GetStudentName(string prefixText, string contextKey)
+    {
+        string CompanyId = contextKey.Split(',')[0];
+        string SessionId = contextKey.Split(',')[1];
+        SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["DATABASEConnectionString"].ToString());
+
+        List<string> items = new List<string>();
+
+        SqlCommand obCom = new SqlCommand("select StudentName from Addmision where Remove=0 AND CompanyId=@CompanyId and SessionId=@SessionId AND StudentName like  '" + prefixText.Trim() + "%'", con);
+
+        obCom.Parameters.AddWithValue("@CompanyId", Convert.ToInt32(CompanyId));
+        obCom.Parameters.AddWithValue("@SessionId", Convert.ToInt32(SessionId));
+        con.Open();
+        SqlDataReader read = obCom.ExecuteReader();
+        while (read.Read())
+        {
+            items.Add(read[0].ToString());
+        }
+        con.Close();
+
+
+        return items.ToArray();
+    }
+
+    [WebMethod]
+    public string[] GetContactNo(string prefixText, string contextKey)
+    {
+        string CompanyId = contextKey.Split(',')[0];
+        string SessionId = contextKey.Split(',')[1];
+        SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["DATABASEConnectionString"].ToString());
+
+        List<string> items = new List<string>();
+
+        SqlCommand obCom = new SqlCommand("select ContactNo from Addmision where Remove=0 AND CompanyId=@CompanyId and SessionId=@SessionId AND ContactNo like  '" + prefixText.Trim() + "%'", con);
+
+        obCom.Parameters.AddWithValue("@CompanyId", Convert.ToInt32(CompanyId));
+        obCom.Parameters.AddWithValue("@SessionId", Convert.ToInt32(SessionId));
+        con.Open();
+        SqlDataReader read = obCom.ExecuteReader();
+        while (read.Read())
+        {
+            items.Add(read[0].ToString());
+        }
+        con.Close();
+
+
+        return items.ToArray();
+    }
+
+    [WebMethod]
     public string[] GetALLByOption(string prefixText, string contextKey)
     {
         SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["DATABASEConnectionString"].ToString());
@@ -128,7 +178,7 @@ public class AutoComplete : System.Web.Services.WebService
 
         List<string> items = new List<string>();
 
-        SqlCommand obCom = new SqlCommand(@"SELECT     Village
+        SqlCommand obCom = new SqlCommand(@"SELECT     DISTINCT Village
 FROM         Enquiry where Village like  '" + prefixText.Trim() + "%'", con);
         con.Open();
         SqlDataReader read = obCom.ExecuteReader();

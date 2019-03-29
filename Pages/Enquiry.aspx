@@ -340,6 +340,14 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
+                                            <label for="message" class="col-xs-4">
+                                                Enquiry For Session:</label>
+                                            <div class="col-xs-8">
+                                                <asp:DropDownList ID="ddlSession" CssClass="form-control  input-sm" runat="server">
+                                                </asp:DropDownList>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
                                             <div class="col-xs-4">
                                                 <asp:Label ID="lbFlag" runat="server" Visible="false" Text="0"></asp:Label>
                                                 <asp:Label ID="lbEnquiryId" runat="server" Visible="false" Text="0"></asp:Label>

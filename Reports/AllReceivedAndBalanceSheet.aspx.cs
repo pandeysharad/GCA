@@ -26,6 +26,7 @@ public partial class Reports_AllReceivedAndBalanceSheet : System.Web.UI.Page
             {
 
                 var DATA = from Cons in obj.Settings
+                           where Cons.CompanyId == Convert.ToInt32(Session["CompanyId"])
                            select Cons;
                 SchoolName = DATA.First().SchoolName;
                 if (!string.IsNullOrEmpty(Request.QueryString["From"]))
@@ -68,14 +69,15 @@ public partial class Reports_AllReceivedAndBalanceSheet : System.Web.UI.Page
                            && i.InstallmentDate <= @To
                           && a.AdmissionId == i.AdmissionId
                           && a.R1 == "ACTIVE"
-                          && a.Remove == false && i.CompanyId == Convert.ToInt32(Session["CompanyId"]) && i.SessionId == Convert.ToInt32(Session["SessionId"])
+                          && a.Remove == false 
+                          && i.CompanyId == Convert.ToInt32(Session["CompanyId"]) && i.SessionId == Convert.ToInt32(Session["SessionId"])
                           orderby i.InstallmentDate.Value ascending
                           select new
                           {
                               StudentName = a.StudentName,
                               ContactNumber = a.ContactNo,
-                              TotalCourseFees = a.CourseFeesAfterDisc,
-                              TotalTransportFees = a.TransportFeesAfterDisc,
+                              TotalCourseFees = a.CourseFees,
+                              TotalTransportFees = a.TransportFees,
                               AdmiId = a.AdmissionId,
                               ClassName = a.CourseName,
                               Section = a.Section,
@@ -108,7 +110,7 @@ public partial class Reports_AllReceivedAndBalanceSheet : System.Web.UI.Page
                           {
                               StudentName = a.StudentName,
                               ContactNumber = a.ContactNo,
-                              TotalCourseFees = a.CourseFeesAfterDisc,
+                              TotalCourseFees = a.CourseFees,
                               TotalTransportFees = a.TransportFeesAfterDisc,
                               AdmiId = a.AdmissionId,
                               ClassName = a.CourseName,
@@ -175,7 +177,7 @@ public partial class Reports_AllReceivedAndBalanceSheet : System.Web.UI.Page
             if (e.Row.RowType == DataControlRowType.Header)
             {
 
-                e.Row.Cells[5].Text = "<table><tr><td class='installr'>DATE</td><td class='installr'>CLASS FEES</td><td class='installr'>TRANSPORT FEES</td><td class='installr'>CLASS FEES PAID</td><td class='installr'>TRANSPORT FEES PAID</td><td class='installr'>CLASS FEES BAL.</td><td class='installr'>TRANSPORT FEES BAL.</td><td class='installr'>PAYMENT STATUS</td></tr></table>";
+                e.Row.Cells[5].Text = "<table><tr><td class='installr' style='width: 365px !important;'>DATE</td><td class='installr'>CLASS/COURSE FEES</td><td class='installr'>TRANSPORT FEES</td><td class='installr'>CLASS/COURSE FEES PAID</td><td class='installr'>TRANSPORT FEES PAID</td><td class='installr'>CLASS/COURSE FEES BAL.</td><td class='installr'>TRANSPORT FEES BAL.</td><td class='installr'>PAYMENT STATUS</td></tr></table>";
             }
             if (e.Row.RowType == DataControlRowType.Footer)
             {
@@ -191,8 +193,8 @@ public partial class Reports_AllReceivedAndBalanceSheet : System.Web.UI.Page
                                                  select i;
                     if (inv.Count<Addmision>() > 0)
                     {
-                        bookinAmt += Convert.ToDouble(inv.Sum<Addmision>(s => s.CourseFeesAfterDisc.Value));
-                        TotalPrice += Convert.ToDouble(inv.Sum<Addmision>(s => s.TransportFeesAfterDisc.Value));
+                        bookinAmt += Convert.ToDouble(inv.Sum<Addmision>(s => s.CourseFees.Value));
+                        TotalPrice += Convert.ToDouble(inv.Sum<Addmision>(s => s.TransportFees.Value));
                     }
                     if (CourseId == 0)
                     {
@@ -255,5 +257,24 @@ public partial class Reports_AllReceivedAndBalanceSheet : System.Web.UI.Page
     protected void ddlWidth_SelectedIndexChanged(object sender, EventArgs e)
     {
         Grid.Width = new Unit(double.Parse(ddlWidth.SelectedValue));
+    }
+    public override void VerifyRenderingInServerForm(Control control)
+    {
+        /* Verifies that the control is rendered */
+    }
+    protected void ExportToExcel(object sender, EventArgs e)
+    {
+        Response.Clear();
+        Response.Buffer = true;
+        Response.ContentType = "application/vnd.ms-excel";
+        Response.AddHeader("content-disposition", "attachment;filename=FeeDueReport-" + System.DateTime.Now.ToString("dd/MM/yyyy") + ".xls");
+        Response.Charset = "";
+        this.EnableViewState = false;
+        System.IO.StringWriter sw = new System.IO.StringWriter();
+        System.Web.UI.HtmlTextWriter htw = new System.Web.UI.HtmlTextWriter(sw);
+        Grid.RenderControl(htw);
+        //Page.RenderControl(htw);
+        Response.Write(sw.ToString());
+        Response.End();
     }
 }

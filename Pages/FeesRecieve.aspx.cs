@@ -10,7 +10,6 @@ using System.Net;
 using System.Drawing;
 using System.Data;
 using System.IO;
-using System.Diagnostics;
 
 public partial class Pages_FeesRecieve : System.Web.UI.Page
 {
@@ -24,7 +23,6 @@ public partial class Pages_FeesRecieve : System.Web.UI.Page
     LoginRole role = new LoginRole();
     protected void Page_Load(object sender, EventArgs e)
     {
-        
         if (Session["SessionId"] != null)
         {
             ChiledStatusDetails = "";
@@ -64,6 +62,7 @@ public partial class Pages_FeesRecieve : System.Web.UI.Page
             }
             catch (Exception ex)
             { }
+            
             if (!IsPostBack)
             {
                 FillDropdown.FillClassList(ddlClassName, Convert.ToInt32(Session["CompanyId"]));
@@ -72,6 +71,16 @@ public partial class Pages_FeesRecieve : System.Web.UI.Page
                 {
                     GetAdmissionDetailsByAddmissionNo(Request.QueryString["AdmissionNo"]);
                 }
+                try
+                {
+                    string AdmissionNo = string.Empty;
+                    if (!string.IsNullOrEmpty(Request.QueryString["AdmissionNoFromAllReport"]))
+                    {
+                        GetAdmissionDetailsByAddmissionNo(Request.QueryString["AdmissionNoFromAllReport"]);
+                    }
+                }
+                catch (Exception ex)
+                { }
                 if (Session["CompanyId"] != null)
                 {
                     if (Session["SessionId"].ToString() != "1")
@@ -304,12 +313,12 @@ public partial class Pages_FeesRecieve : System.Web.UI.Page
             GridStudentFees.Columns[5].Visible = true;
             if (role.Select.Value)
             {
-               
+
                 var DATA = from Cons in obj.Addmisions
                            where Cons.AdmissionNo == txtAdminNo.Text && Cons.Remove == false && Cons.CompanyId == Convert.ToInt32(Session["CompanyId"]) && Cons.SessionId == Convert.ToInt32(Session["SessionId"])
                            select Cons;
 
-                 
+
                 if (DATA.First().AdmissionNo != null)
                 {
                     //Showing Transport Area
@@ -329,7 +338,7 @@ public partial class Pages_FeesRecieve : System.Web.UI.Page
                     Session["AdmissionCourseId"] = DATA.First().CourseId;
                     txtAdmissionNo.Text = DATA.First().AdmissionNo;
                     txtStudentName.Text = DATA.First().StudentName;
-                    txtCourse.Text = DATA.First().CourseName + " / '" + DATA.First().Section+"'";
+                    txtCourse.Text = DATA.First().CourseName + " / '" + DATA.First().Section + "'";
                     txtCourseFees.Text = DATA.First().CourseFeesAfterDisc.ToString();
                     TotalFees = (Convert.ToDecimal(DATA.First().TotalFees) + Convert.ToDecimal(DATA.First().TransportFeesAfterDisc));
                     txtTransportFees.Text = DATA.First().TransportFeesAfterDisc.ToString();
@@ -344,9 +353,9 @@ public partial class Pages_FeesRecieve : System.Web.UI.Page
                     ScriptManager.RegisterStartupScript(this, GetType(), "MessageShow", "MessageShow('" + msg + "');", true);
                 }
                 IEnumerable<PreviousBalance> PreviousBalances = from Cons in obj.PreviousBalances
-                           where Cons.AdmissionNo == txtAdminNo.Text && Cons.Remove == false && Cons.CompanyId == Convert.ToInt32(Session["CompanyId"])
-                           select Cons;
-                if (PreviousBalances.Count<PreviousBalance>()>0)
+                                                                where Cons.AdmissionNo == txtAdminNo.Text && Cons.Remove == false && Cons.CompanyId == Convert.ToInt32(Session["CompanyId"])
+                                                                select Cons;
+                if (PreviousBalances.Count<PreviousBalance>() > 0)
                 {
                     ddlSession.Text = PreviousBalances.First().PreviousSession;
                     txtOpening.Text = PreviousBalances.First().PreviousBalance1.ToString();
@@ -372,7 +381,7 @@ public partial class Pages_FeesRecieve : System.Web.UI.Page
                     var DATA2 = from Cons in obj.Installments
                                 where Cons.AdmissionId == admId && Cons.Remove == false && Cons.CompanyId == Convert.ToInt32(Session["CompanyId"]) && Cons.SessionId == Convert.ToInt32(Session["SessionId"])
                                 select Cons;
-                    int i= DATA2.Count();
+                    int i = DATA2.Count();
                     GridInstallments.DataSource = DATA2;
                     //Set Header Text
                     GridInstallments.Columns[3].HeaderText = Session["ClassLableText"] + " Fees";
@@ -419,10 +428,10 @@ public partial class Pages_FeesRecieve : System.Web.UI.Page
                     divOtherFeesPaidHead.Visible = false;
                 }
                 // OtherFeesPaidHead showing code End
-               //Discount Grid-------------
-                DataSet ds1 = AllMethods.GetDiscountApproval(Convert.ToInt32(Session["CompanyId"]), Convert.ToInt32(Session["SessionId"]), 2, admId);
-                GridDiscountFee.DataSource = ds1;
-                GridDiscountFee.DataBind();
+                //Discount Grid-------------
+                //DataSet ds1 = AllMethods.GetDiscountApproval(Convert.ToInt32(Session["CompanyId"]), Convert.ToInt32(Session["SessionId"]), 2, admId);
+                //GridDiscountFee.DataSource = ds1;
+                //GridDiscountFee.DataBind();
                 //-----------------------------
                 string str = "", year = "";
                 str = DATA.First().Session;
@@ -431,9 +440,9 @@ public partial class Pages_FeesRecieve : System.Web.UI.Page
                 if (year == str1)
                 {
                     var Other_Fee = from o in obj.Other_Fees
-                                                 where o.CourseId == Convert.ToInt32(DATA.First().CourseId)
-                                                 && o.Remove == false && o.CompanyId == Convert.ToInt32(Session["CompanyId"]) && o.SessionId == Convert.ToInt32(Session["SessionId"])
-                                                 select o;
+                                    where o.CourseId == Convert.ToInt32(DATA.First().CourseId)
+                                    && o.Remove == false && o.CompanyId == Convert.ToInt32(Session["CompanyId"]) && o.SessionId == Convert.ToInt32(Session["SessionId"])
+                                    select o;
 
                     comOtherFeesType.DataSource = Other_Fee;
                     comOtherFeesType.DataTextField = "FeesType";
@@ -466,9 +475,9 @@ public partial class Pages_FeesRecieve : System.Web.UI.Page
                 else
                 {
                     var Other_Fee = from o in obj.Other_Fees
-                                                 where o.CourseId == Convert.ToInt32(DATA.First().CourseId) && o.FeesType != "CAUTION MONEY"
-                                                 && o.Remove == false && o.CompanyId == Convert.ToInt32(Session["CompanyId"]) && o.SessionId == Convert.ToInt32(Session["SessionId"])
-                                                 select o;
+                                    where o.CourseId == Convert.ToInt32(DATA.First().CourseId) && o.FeesType != "CAUTION MONEY"
+                                    && o.Remove == false && o.CompanyId == Convert.ToInt32(Session["CompanyId"]) && o.SessionId == Convert.ToInt32(Session["SessionId"])
+                                    select o;
 
                     comOtherFeesType.DataSource = Other_Fee;
                     comOtherFeesType.DataTextField = "FeesType";
@@ -492,7 +501,7 @@ public partial class Pages_FeesRecieve : System.Web.UI.Page
                                 if (i == 1)
                                     AllOthers = AllOthers + comOtherFeesType.Items[i].ToString();
                                 else
-                                    AllOthers = AllOthers +" & " + comOtherFeesType.Items[i].ToString();
+                                    AllOthers = AllOthers + " & " + comOtherFeesType.Items[i].ToString();
                             }
                         }
                     }
@@ -520,7 +529,7 @@ public partial class Pages_FeesRecieve : System.Web.UI.Page
                         latefees = latefees + Convert.ToDecimal(row.Cells[8].Text);
                         OtherFees = OtherFees + Convert.ToDecimal(row.Cells[10].Text);
                         CourseFees = CourseFees + Convert.ToDecimal(row.Cells[11].Text);
-                        TransportFees = TransportFees + Convert.ToDecimal(row.Cells[12].Text);                       
+                        TransportFees = TransportFees + Convert.ToDecimal(row.Cells[12].Text);
                         Total = Total + Convert.ToDecimal(row.Cells[14].Text);
                         DiscountType = row.Cells[16].Text.ToString();
                         if (DiscountType != string.Empty && DiscountType != null)
@@ -549,8 +558,8 @@ public partial class Pages_FeesRecieve : System.Web.UI.Page
                     GridStudentFees.FooterRow.Cells[12].Text = TransportFees.ToString();
                     GridStudentFees.FooterRow.Cells[14].Text = Total.ToString();
                 }
-                GetTotals(DATA.ToList(), ds, classFeeDiscount,transportFeeDiscount, otherFeeDiscount, CourseFees, TransportFees, OtherFees, TotalFees);
-                lbMessage.Text = "<b>Total Fees : " + TotalFees + " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Received Fees : " + (CourseFees + TransportFees + OtherFees) + " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Balance : " + (Convert.ToDecimal(TotalFees) - (CourseFees + TransportFees + OtherFees))+"</b>";
+                GetTotals(DATA.ToList(), ds, classFeeDiscount, transportFeeDiscount, otherFeeDiscount, CourseFees, TransportFees, OtherFees, TotalFees);
+                lbMessage.Text = "<b>Total Fees : " + TotalFees + " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Received Fees : " + (CourseFees + TransportFees + OtherFees) + " &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Balance : " + (Convert.ToDecimal(TotalFees) - (CourseFees + TransportFees + OtherFees)) + "</b>";
                 IEnumerable<PreviousBalance> PreviousBalances1 = from Cons in obj.PreviousBalances
                                                                  where Cons.AdmissionNo == txtAdminNo.Text && Cons.Remove == false && Cons.CompanyId == Convert.ToInt32(Session["CompanyId"]) && Cons.SessionId == Convert.ToInt32(Session["SessionId"])
                                                                  select Cons;
@@ -585,7 +594,7 @@ public partial class Pages_FeesRecieve : System.Web.UI.Page
             // Create a file to write to.
             using (StreamWriter sw = File.CreateText(path))
             {
-                sw.WriteLine(DateTime.Now + " - " +  page + " - "+ MethodName);
+                sw.WriteLine(DateTime.Now + " - " + page + " - " + MethodName);
                 sw.WriteLine(error + " @ " + ex.Message);
             }
         }
@@ -1748,9 +1757,9 @@ public partial class Pages_FeesRecieve : System.Web.UI.Page
                 admId = DATA.First().AdmissionId;
                 if (IdInstallments.Visible == true || IdMonthlyInstallments.Visible == true || chkPreviouse.Checked)
                 {
-                    if (txtTotal.Text != "" && txtTotal.Text != "0" && txtTotal.Text != "0.00")
+                    if ((txtInstallCourseFees.Text != "" && txtInstallCourseFees.Text != "0") || (txtInstallTransportFees.Text!="" && txtInstallTransportFees.Text != "0"))
                     {
-                        if (Convert.ToDecimal(txtTotal.Text) > 0)
+                        if (Convert.ToDecimal(txtInstallCourseFees.Text) + Convert.ToDecimal(txtInstallTransportFees.Text) > 0)
                         {
                             if (ddlPaymentMode.SelectedItem.Text != "")
                             {
@@ -2213,7 +2222,8 @@ public partial class Pages_FeesRecieve : System.Web.UI.Page
     {
         try
         {
-            var MaxPaymentId = obj.Payments.Max(x => x.PaymentId);
+            var MaxPaymentId = obj.Payments.Where(i => i.SessionId == Convert.ToInt32(Session["SessionId"])
+                && i.ComapanyId == Convert.ToInt32(Session["CompanyId"])).Max(x => x.PaymentId);
             lblDelete.Text = (sender as LinkButton).CommandArgument;
             int paymentId = Convert.ToInt32(lblDelete.Text);
             var _PaymentsData = from p in obj.Payments where p.PaymentId == Convert.ToInt32(lblDelete.Text) select p;
@@ -2235,10 +2245,6 @@ public partial class Pages_FeesRecieve : System.Web.UI.Page
                                 decimal transportPaidAmt = Convert.ToDecimal(item.TransportPaid);
 
                                 obj.SP_RecieptHistory(3, 0, Convert.ToInt32(lblDelete.Text), respectTo, admissionId, Convert.ToDouble(classPaidAmt), Convert.ToDouble(transportPaidAmt), "", "", "", "", Convert.ToInt32(Session["CompanyId"]), Convert.ToInt32(Session["SessionId"]), Convert.ToInt32(Session["UserId"]));
-                            }
-                            if (_AddmisionsData.First().DiscountApproval == 3)
-                            {
-                                obj.Sp_DiscountApproval(1, admissionId);
                             }
                             if (obj.SP_RecieptHistory(2, 0, Convert.ToInt32(lblDelete.Text), 0, 0, Convert.ToDouble(0), Convert.ToDouble(0), "", Session["UserId"].ToString(), "", "", Convert.ToInt32(Session["CompanyId"]), Convert.ToInt32(Session["SessionId"]), Convert.ToInt32(Session["UserId"])) == 0)
                             {

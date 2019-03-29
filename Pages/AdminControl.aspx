@@ -57,7 +57,7 @@
                              </div>
                         </div>
                          <div class="form-group"  style="margin-top:-5px">
-                             <label for="message" class="col-xs-4">Contact Number:<span for="message" style="color: Red">*</span></label>
+                             <label for="message" class="col-xs-4">Admin Contact(Msg):<span for="message" style="color: Red">*</span></label>
                              <div class="col-xs-8">
                              <asp:TextBox ID="txtContactNumber" CssClass="form-control  input-sm" runat="server"></asp:TextBox>
                              </div>

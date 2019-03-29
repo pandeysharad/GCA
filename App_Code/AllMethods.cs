@@ -750,8 +750,23 @@ FROM         Addmision where R1='ACTIVE' and Remove=0 AND CompanyId=@CompanyId A
     {
         DataSet ds = new DataSet();
         SqlCommand cm = new SqlCommand();
-        cm = new SqlCommand(@"SELECT  a.StudentName, a.ContactNo, a.FatherName, a.MotherName, a.CourseName,a.DOB,a.PMADate,a.AdmissionId,a.BirthdayMsgFlag,a.PMAMsgFlag,s.SchoolName
+        cm = new SqlCommand(@"SELECT  a.StudentName, a.ContactNo, a.FatherName, a.MotherName, a.CourseName,a.DOB,a.PMADate,a.AdmissionId,a.BirthdayMsgFlag,a.PMAMsgFlag,s.SchoolName,a.AdmissionNo
 FROM         Addmision a join Setting s on a.CompanyId=s.CompanyId  where R1='ACTIVE' and a.Remove=0 and cast(SUBSTRING(a.DOB, 1, 2)as int)=DAY(getdate()) and cast(SUBSTRING(a.DOB,4, 2)as int)=Month(GETDATE()) and a.BirthdayMsgFlag=0 AND a.CompanyId=@CompanyId AND a.SessionId=@SessionId", con);
+        cm.Parameters.AddWithValue("@CompanyId", CompanyId);
+        cm.Parameters.AddWithValue("@SessionId", SessionId);
+        cm.CommandType = CommandType.Text;
+        con.Close();
+        con.Open();
+        SqlDataAdapter da = new SqlDataAdapter(cm);
+        da.Fill(ds);
+        return ds;
+    }
+    public static DataSet StudentBirthdayDisplay(int CompanyId, int SessionId)
+    {
+        DataSet ds = new DataSet();
+        SqlCommand cm = new SqlCommand();
+        cm = new SqlCommand(@"SELECT  a.StudentName, a.ContactNo, a.FatherName, a.MotherName, a.CourseName,a.DOB,a.PMADate,a.AdmissionId,a.BirthdayMsgFlag,a.PMAMsgFlag,s.SchoolName,a.AdmissionNo
+FROM         Addmision a join Setting s on a.CompanyId=s.CompanyId  where R1='ACTIVE' and a.Remove=0 and cast(SUBSTRING(a.DOB, 1, 2)as int)=DAY(getdate()) and cast(SUBSTRING(a.DOB,4, 2)as int)=Month(GETDATE()) AND a.CompanyId=@CompanyId AND a.SessionId=@SessionId", con);
         cm.Parameters.AddWithValue("@CompanyId", CompanyId);
         cm.Parameters.AddWithValue("@SessionId", SessionId);
         cm.CommandType = CommandType.Text;
@@ -777,12 +792,44 @@ FROM         Addmision a join Setting s on a.CompanyId=s.CompanyId  where R1='AC
         return ds;
     }
 
+    public static DataSet DisplayParentMAMsg(int CompanyId, int SessionId)
+    {
+        DataSet ds = new DataSet();
+        SqlCommand cm = new SqlCommand();
+        cm = new SqlCommand(@"SELECT  a.StudentName, a.ContactNo, a.FatherName, a.MotherName, a.CourseName,a.DOB,a.PMADate,a.AdmissionId,a.BirthdayMsgFlag,a.PMAMsgFlag,s.SchoolName,LEFT(a.ParentContact,10)ParentMobileNo,a.AdmissionNo
+FROM         Addmision a join Setting s on a.CompanyId=s.CompanyId  where R1='ACTIVE' and a.Remove=0 and isnull(DAY(a.PMADate),0)=DAY(getdate()) and isnull(Month(PMADate),0)=Month(GETDATE()) AND a.CompanyId=@CompanyId AND a.SessionId=@SessionId", con);
+        cm.Parameters.AddWithValue("@CompanyId", CompanyId);
+        cm.Parameters.AddWithValue("@SessionId", SessionId);
+        cm.CommandType = CommandType.Text;
+        con.Close();
+        con.Open();
+        SqlDataAdapter da = new SqlDataAdapter(cm);
+        da.Fill(ds);
+        return ds;
+    }
+
     public static DataSet SendStaffBirthdayMsg(int CompanyId, int SessionId)
     {
         DataSet ds = new DataSet();
         SqlCommand cm = new SqlCommand();
         cm = new SqlCommand(@"SELECT  st.StaffName, st.ContactNo, st.FatherName, st.MotherName,st.DOB,st.BirthdayMsgFlag,st.PMAMsgFlag,s.SchoolName,st.StaffPId
 FROM         Staff st join Setting s on st.CompanyId=s.CompanyId  where st.Remove=0 and isnull(DAY(st.DOB),0)=DAY(getdate()) and isnull(Month(st.DOB),0)=Month(GETDATE()) and st.BirthdayMsgFlag=0 AND st.CompanyId=@CompanyId AND st.SessionId=@SessionId", con);
+        cm.Parameters.AddWithValue("@CompanyId", CompanyId);
+        cm.Parameters.AddWithValue("@SessionId", SessionId);
+        cm.CommandType = CommandType.Text;
+        con.Close();
+        con.Open();
+        SqlDataAdapter da = new SqlDataAdapter(cm);
+        da.Fill(ds);
+        return ds;
+    }
+
+    public static DataSet DispayStaffBirthdayMsg(int CompanyId, int SessionId)
+    {
+        DataSet ds = new DataSet();
+        SqlCommand cm = new SqlCommand();
+        cm = new SqlCommand(@"SELECT  st.StaffName, st.ContactNo, st.FatherName, st.MotherName,st.DOB,st.BirthdayMsgFlag,st.PMAMsgFlag,s.SchoolName,st.StaffPId,st.StaffId,st.Department,st.StaffType
+FROM         Staff st join Setting s on st.CompanyId=s.CompanyId  where st.Remove=0 and isnull(DAY(st.DOB),0)=DAY(getdate()) and isnull(Month(st.DOB),0)=Month(GETDATE()) AND st.CompanyId=@CompanyId AND st.SessionId=@SessionId", con);
         cm.Parameters.AddWithValue("@CompanyId", CompanyId);
         cm.Parameters.AddWithValue("@SessionId", SessionId);
         cm.CommandType = CommandType.Text;
@@ -998,6 +1045,24 @@ FROM         Addmision where R1='ACTIVE' and Remove=0 AND CompanyId=@CompanyId A
         cm.Parameters.AddWithValue("@CompanyId", CompanyId);
         cm.Parameters.AddWithValue("@SessionId", SessionId);
         cm.Parameters.AddWithValue("@AdmissionId", AdmissionId);
+        cm.CommandType = CommandType.Text;
+        con.Close();
+        con.Open();
+        SqlDataAdapter da = new SqlDataAdapter(cm);
+        da.Fill(ds);
+        return ds;
+
+    }
+
+    public static DataSet SendMsgEnquiryStudent(int CompanyId, int SessionId, int EnquiryId)
+    {
+        DataSet ds = new DataSet();
+        SqlCommand cm = new SqlCommand();
+        cm = new SqlCommand(@"SELECT [StudentName],[ContactNo],[Address],[EmailId]
+  FROM Enquiry where  EnquiryId=@EnquiryId and SessionId=@SessionId and CompanyId=@CompanyId", con);
+        cm.Parameters.AddWithValue("@CompanyId", CompanyId);
+        cm.Parameters.AddWithValue("@SessionId", SessionId);
+        cm.Parameters.AddWithValue("@EnquiryId", EnquiryId);
         cm.CommandType = CommandType.Text;
         con.Close();
         con.Open();
@@ -1511,15 +1576,24 @@ FROM         Staff where Status='ACTIVE' and Remove=0 AND CompanyId=@CompanyId A
     public static DataSet GetOtherFeesByCourse(int CompanyId, int SessionId, int CourseId, int aa, int AdmissionId)
     {
         DataSet ds = new DataSet();
-        SqlCommand cm = new SqlCommand("GetOtherFeesByAdmissionId", con);
-        con.Close();
-        con.Open();
-        cm.CommandType = CommandType.StoredProcedure;
+        SqlCommand cm = new SqlCommand();
+        //cm = new SqlCommand(@"select OtherFeesId, CourseId, SerialNo, FeesType,  case when FeesType='CAUTION MONEY' and @aa=1 then 0 else Fees end as Fees from Other_fees where Remove=0 and CompanyId=@CompanyId and SessionId=@SessionId and CourseId=@CourseId", con);
+        cm = new SqlCommand(@"declare @NotInHead nvarchar(max)=''; if(@aa=1) set @NotInHead ='ADMISSION FEES,REGISTRATION FEES,CAUTION MONEY'; select OtherFeesId, CourseId, SerialNo, FeesType, Fees from Other_fees where Remove=0 and CompanyId=@CompanyId and SessionId=@SessionId and CourseId=@CourseId and FeesType not in (select * from [dbo].fnSplitString(@NotInHead,','))
+and FeesType not in (select OtherFeesType from Payment where OtherFeesType not like '%&%' and AdmissionId=@AdmissionId and Remove=0) 
+and FeesType not in (select RTRIM(LTRIM(splitdata)) from [dbo].fnSplitString(
+   (SELECT REPLACE(STUFF((SELECT '&' + upper(left(OtherFeesType,1)) + substring(OtherFeesType,2,len(OtherFeesType))
+            FROM Payment where OtherFeesType like '%&%' and AdmissionId=@AdmissionId
+            and Remove=0 and SessionId=@SessionId and ComapanyId=@CompanyId
+            FOR XML PATH('')) ,1,1,''),'amp;','') AS OtherFeesType),'&')
+   )", con);
         cm.Parameters.AddWithValue("@CompanyId", CompanyId);
         cm.Parameters.AddWithValue("@SessionId", SessionId);
         cm.Parameters.AddWithValue("@CourseId", CourseId);
         cm.Parameters.AddWithValue("@aa", aa);
         cm.Parameters.AddWithValue("@AdmissionId", AdmissionId);
+        cm.CommandType = CommandType.Text;
+        con.Close();
+        con.Open();
         SqlDataAdapter da = new SqlDataAdapter(cm);
         da.Fill(ds);
         return ds;
@@ -1665,16 +1739,33 @@ FROM         Staff where Status='ACTIVE' and Remove=0 AND CompanyId=@CompanyId A
         da.Fill(ds);
         return ds;
     }
-    public static DataTable GetPaymentReceiptNoByAdmissionId(int CompanyId, int SessionId,  int AdmissionId)
+    public static DataTable GetPaymentReceiptNoByAdmissionId(int CompanyId, int SessionId, int AdmissionId)
     {
         DataTable dt = new DataTable();
         SqlCommand cm = new SqlCommand();
         cm = new SqlCommand(@"select PaymentId,PaymentDate ,ReceiptNo ,PaymentType ,PreviousSession ,PreviousPaid ,AdmissionFees ,(select TableValue from SINGLEVALUEDATA where SVID=payment.LateFeeType) TABLEVALUE,LateFees ,
-OtherFeesType ,OtherFees ,CourseFees ,TransportFees ,Discount ,TotalFees ,PayMonths ,DiscountType  
-from payment where Admissionid=@Admissionid and ComapanyId=@ComapanyId and SessionId=@SessionId order by PaymentId asc ", con);
+OtherFeesType ,OtherFees ,CourseFees ,TransportFees ,Discount ,TotalFees ,PayMonths ,DiscountType
+from payment where Remove=0 and Admissionid=@Admissionid and ComapanyId=@ComapanyId and SessionId=@SessionId order by PaymentId asc ", con);
         cm.Parameters.AddWithValue("@ComapanyId", CompanyId);
         cm.Parameters.AddWithValue("@SessionId", SessionId);
         cm.Parameters.AddWithValue("@Admissionid", AdmissionId);
+        cm.CommandType = CommandType.Text;
+        con.Close();
+        con.Open();
+        SqlDataAdapter da = new SqlDataAdapter(cm);
+        da.Fill(dt);
+        return dt;
+    }
+    public static DataTable GetEnquiryStudentNextCall(int CompanyId, int SessionId)
+    {
+        DataTable dt = new DataTable();
+        SqlCommand cm = new SqlCommand();
+        cm = new SqlCommand(@"SELECT [EnquiryId],[EnquiryNo],[StudentName],[Address],[ContactNo],[EmailId],[PreviousClass],[PCP],[EnquiryForCourse]
+      ,[fees],[EnquiryDate],[NextCallDate],[Image],[Remarks],[Status],[Remove]
+      ,[Cdate],[UserId],[CompanyId],[PreviousSchool],[Village],[SessionId]
+  FROM [Enquiry] where NextCallDate=cast(GETDATE() as date) and CompanyId=@CompanyId and SessionId=@SessionId", con);
+        cm.Parameters.AddWithValue("@CompanyId", CompanyId);
+        cm.Parameters.AddWithValue("@SessionId", SessionId);
         cm.CommandType = CommandType.Text;
         con.Close();
         con.Open();

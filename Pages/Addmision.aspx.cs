@@ -74,6 +74,13 @@ public partial class Pages_Addmision : System.Web.UI.Page
                 TrasportType.Visible = false;
                 ChkTransport.Visible = false;
                 ddlStudentComingFrom.SelectedIndex = 1;
+                string ComIdSessionId = "";
+                ComIdSessionId = Session["CompanyId"].ToString();
+                ComIdSessionId += "," + Session["SessionId"].ToString();
+                AutoCompleteExtender12.ContextKey = ComIdSessionId;
+                AutoCompleteExtender13.ContextKey = ComIdSessionId;
+                AutoCompleteExtender14.ContextKey = ComIdSessionId;
+
                 try
                 {
                     ddlStudentComingFrom_SelectedIndexChanged(null, null);
@@ -237,6 +244,10 @@ public partial class Pages_Addmision : System.Web.UI.Page
 
                 }
                 CheckHideShowStudentCommingFrom();
+                if (!string.IsNullOrEmpty(Request.QueryString["AdmissionIdFromGoTo"]))
+                {
+                    Session["AdmissionId"] = Request.QueryString["AdmissionIdFromGoTo"].ToString();
+                }
                 if (Session["AdmissionId"] != null)
                 {
                     SelectAdimissionData();
@@ -1634,6 +1645,21 @@ public partial class Pages_Addmision : System.Web.UI.Page
             ScriptManager.RegisterStartupScript(this, GetType(), "MessageShow", "MessageShow('" + msg + "');", true);
             val = false;
             txtNoOfInstallment.Focus();
+        }
+        else if (dt_BOD.Text != "")
+        {
+            try
+            {
+                string Date = "";
+                Date = Convert.ToDateTime(dt_BOD.Text).ToString("dd/MM/yyyy");
+            }
+            catch (Exception eee)
+            {
+                msg = "Enter Valid Date";
+                ScriptManager.RegisterStartupScript(this, GetType(), "MessageShow", "MessageShow('" + msg + "');", true);
+                val = false;
+                dt_BOD.Focus();
+            }
         }
         return val;
     }

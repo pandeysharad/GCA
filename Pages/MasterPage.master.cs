@@ -6,12 +6,14 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data;
 using System.Net;
+using System.IO;
 
 public partial class Pages_MasterPage : System.Web.UI.MasterPage
 {
    
     string msg;
     DataClassesDataContext obj = new DataClassesDataContext();
+    public int srno = 0;
     protected void Page_Load(object sender, EventArgs e)
     {
         try
@@ -33,6 +35,42 @@ public partial class Pages_MasterPage : System.Web.UI.MasterPage
                             Session["SendSMSFlag"] = DATA.First().SendMsg;
                             Session["AdminContactNo"] = DATA.First().ContactNo;
                             CompanyName.Text = DATA.First().SchoolName;
+                            DataTable dt = AllMethods.GetEnquiryStudentNextCall(Convert.ToInt32(Session["CompanyId"]), Convert.ToInt32(Session["SessionId"]));
+                            if (dt.Rows.Count > 0)
+                            {
+                                IdEnquiryCall.Visible = true;
+                            }
+                            else
+                            {
+                                IdEnquiryCall.Visible = false;
+                            }
+                            DataSet ds = AllMethods.StudentBirthdayDisplay(Convert.ToInt32(Session["CompanyId"]), Convert.ToInt32(Session["SessionId"]));
+                            if (ds.Tables[0].Rows.Count > 0)
+                            {
+                                IdBirthday.Visible = true;
+                            }
+                            else
+                            {
+                                IdBirthday.Visible = false;
+                            }
+                           DataSet ds1= AllMethods.DisplayParentMAMsg(Convert.ToInt32(Session["CompanyId"]), Convert.ToInt32(Session["SessionId"]));
+                           if (ds1.Tables[0].Rows.Count > 0)
+                           {
+                               IdParentAnniversary.Visible = true;
+                           }
+                           else
+                           {
+                               IdParentAnniversary.Visible = false;
+                           }
+                           DataSet ds2 = AllMethods.DispayStaffBirthdayMsg(Convert.ToInt32(Session["CompanyId"]), Convert.ToInt32(Session["SessionId"]));
+                           if (ds2.Tables[0].Rows.Count > 0)
+                           {
+                               IdStaffBirthday.Visible = true;
+                           }
+                           else
+                           {
+                               IdStaffBirthday.Visible = false;
+                           }
                         }
                         catch (Exception ex)
                         { }
@@ -46,6 +84,39 @@ public partial class Pages_MasterPage : System.Web.UI.MasterPage
                             if (Session["UserType"].ToString() != "Admin")
                             {
                                 ShowModule();
+                            }
+                            else if (Session["UserType"].ToString() == "Admin")
+                            {
+                                IdStudentStatus.Visible = true;
+                                IdOverAllFeeDetails.Visible = true;
+                                IdTop20DefaulterStudent.Visible = true;
+                                var _GridUpdateApprovals = from p in obj.GridUpdateApprovals
+                                                           where p.UpdateStatus == "Request" && p.isdel == false
+                                                           select new
+                                                           {
+                                                               AdmissionId = p.AdmissionId,
+                                                               AdmissionNo = p.AdmissionNo,
+                                                               R2 = p.R2
+                                                           };
+
+                                if (_GridUpdateApprovals.Count() > 0)
+                                {
+                                    IdGridUpdateApprovals.Visible = true;
+                                }
+                                else
+                                {
+                                    IdGridUpdateApprovals.Visible = false;
+                                }
+
+                                DataSet ds = AllMethods.GetDiscountApproval(Convert.ToInt32(Session["CompanyId"]), Convert.ToInt32(Session["SessionId"]), 1, 0);
+                                if (ds.Tables[0].Rows.Count > 0)
+                                {
+                                    IdDiscountApprovals.Visible = true;
+                                }
+                                else
+                                {
+                                    IdDiscountApprovals.Visible = false;
+                                }
                             }
                             //try
                             //{
@@ -555,4 +626,26 @@ public partial class Pages_MasterPage : System.Web.UI.MasterPage
         catch (Exception ex)
         { }
     }
+    //public override void VerifyRenderingInServerForm(Control control)
+    //{
+    //    /* Verifies that the control is rendered */
+    //}
+    //protected void btnExpotToExcel_OnClick(object sender, EventArgs e)
+    //{
+    //    Response.Clear();
+    //    Response.Buffer = true;
+    //    Response.ContentType = "application/vnd.ms-excel";
+    //    Response.AddHeader("content-disposition", "attachment;filename=ClassWiseReport-" + System.DateTime.Now.ToString("dd/MM/yyyy") + ".xls");
+    //    Response.Charset = "";
+    //    this.EnableViewState = false;
+
+    //    System.IO.StringWriter sw = new System.IO.StringWriter();
+    //    System.Web.UI.HtmlTextWriter htw = new System.Web.UI.HtmlTextWriter(sw);
+    //    EnquiryStudentNextCall.RenderControl(htw);
+
+    //    //Page.RenderControl(htw);
+    //    Response.Write(sw.ToString());
+    //    Response.End();
+    //}
+    
 }

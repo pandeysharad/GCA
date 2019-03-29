@@ -47,15 +47,16 @@ public class SendSMS
         //college
         //MSG = "http://203.129.225.68/API/WebSMS/Http/v1.0a/index.php?username=metc&password=metc1990&sender=METCmp&to=addmobile&message=addmsg&reqid=1&format={json|text}&route_id=113&msgtype=adducode
             //MSG = "http://203.129.225.68/API/WebSMS/Http/v1.0a/index.php?username=metc&password=metc1990&sender=METCmp&to=" + mobileNumber + "&message=" + msgtext + "&reqid=1&format={json|text}&route_id=113&msgtype=" + ucode + "";
-
+        //New API for GCA http://zapsms.co.in/vendorsms/pushsms.aspx?user=gcajbp&password=gca1990&msisdn=addmobile&sid=GCAjbp&msg=addmsg&fl=0&dc=8&gwid=2
+        //New API For METC http://zapsms.co.in/vendorsms/pushsms.aspx?user=metcnew&password=metcjbp&msisdn=addmobile&sid=METCmp&msg=addmsg&fl=0&dc=8&gwid=2
             string api = MsgApi;
             string api1 = (api.Replace("addmobile", mobileNumber));
             string api2 = (api1.Replace("addmsg", msgtext));
-            string api3 = (api2.Replace("adducode", ucode));
+            //string api3 = (api2.Replace("adducode", ucode));
             try
             {
                WebClient client = new WebClient();
-                string baseURL = api3;
+                string baseURL = api2;
                 client.OpenRead(baseURL);
             }
             catch (Exception ex)

@@ -23,6 +23,7 @@ public partial class Reports_InstallmentsDueSheet : System.Web.UI.Page
             {
 
                 var DATA = from Cons in obj.Settings
+                           where Cons.CompanyId == Convert.ToInt32(Session["CompanyId"])
                            select Cons;
                 SchoolName = DATA.First().SchoolName;
                 if (!string.IsNullOrEmpty(Request.QueryString["From"]))
@@ -104,7 +105,7 @@ public partial class Reports_InstallmentsDueSheet : System.Web.UI.Page
                           {
                               StudentName = a.StudentName,
                               ContactNumber = a.ContactNo,
-                              TotalCourseFees = a.CourseFeesAfterDisc,
+                              TotalCourseFees = a.CourseFees,
                               TotalTransportFees = a.TransportFeesAfterDisc,
                               AdmiId = a.AdmissionId,
                               ClassName = a.CourseName,
@@ -168,7 +169,7 @@ public partial class Reports_InstallmentsDueSheet : System.Web.UI.Page
             if (e.Row.RowType == DataControlRowType.Header)
             {
 
-                e.Row.Cells[6].Text = "<table><tr><td class='installr'>DATE</td><td class='installr'>ClASS DUE</td><td class='installr'>TRANSPORT DUE</td></tr></table>";
+                e.Row.Cells[6].Text = "<table><tr><td class='installr'>DATE</td><td class='installr'>CLASS/COURSE DUE</td><td class='installr'>TRANSPORT DUE</td></tr></table>";
             }
             if (e.Row.RowType == DataControlRowType.Footer)
             {
@@ -292,5 +293,24 @@ public partial class Reports_InstallmentsDueSheet : System.Web.UI.Page
         }
         catch (Exception ex)
         { }
+    }
+    public override void VerifyRenderingInServerForm(Control control)
+    {
+        /* Verifies that the control is rendered */
+    }
+    protected void ExportToExcel(object sender, EventArgs e)
+    {
+        Response.Clear();
+        Response.Buffer = true;
+        Response.ContentType = "application/vnd.ms-excel";
+        Response.AddHeader("content-disposition", "attachment;filename=FeeDueReport-" + System.DateTime.Now.ToString("dd/MM/yyyy") + ".xls");
+        Response.Charset = "";
+        this.EnableViewState = false;
+        System.IO.StringWriter sw = new System.IO.StringWriter();
+        System.Web.UI.HtmlTextWriter htw = new System.Web.UI.HtmlTextWriter(sw);
+        Grid.RenderControl(htw);
+        //Page.RenderControl(htw);
+        Response.Write(sw.ToString());
+        Response.End();
     }
 }

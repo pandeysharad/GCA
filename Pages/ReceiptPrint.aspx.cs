@@ -56,7 +56,7 @@ public partial class Pages_ReceiptPrint : System.Web.UI.Page
                 var Course = from Cons in obj.Courses
                              where Cons.CourseId == Admission.First().CourseId
                              select Cons;
-                var _SINGLEVALUEDATAs= obj.SINGLEVALUEDATAs.FirstOrDefault(x=>x.SVID==Convert.ToInt32(Payment.First().LateFeeType));
+
                 DropDownList1.DataSource = CourseId;
                 DropDownList1.DataTextField = "CourseHeadId";
                 DropDownList1.DataBind();
@@ -229,7 +229,7 @@ public partial class Pages_ReceiptPrint : System.Web.UI.Page
                 print += "<tr><th colspan='3' style='width:75%;font-weight: bold;'  align='center'>Perticulars</th><th style='width:25%;font-weight: bold;' align='center'>Amount(Rs.)</th></tr>";
                 if (Payment.First().AdmissionFees != 0)
                 {
-                    print += "<tr><td colspan='3' style='width:75%;'>" + _SINGLEVALUEDATAs.TABLEVALUE + "</td><td style='width:25%;' align='center'>" + Payment.First().AdmissionFees + "</td></tr>";
+                    print += "<tr><td colspan='3' style='width:75%;'>Adminssion Fees</td><td style='width:25%;' align='center'>" + Payment.First().AdmissionFees + "</td></tr>";
                     try
                     {
                         AdmFees = Convert.ToDecimal(Payment.First().AdmissionFees);
@@ -435,10 +435,10 @@ public partial class Pages_ReceiptPrint : System.Web.UI.Page
     }
     protected void GetBal()
     {
-        var DATA = from Cons in obj.Addmisions
-                   where Cons.AdmissionId == Convert.ToInt32(Session["StudentId"]) && Cons.Remove == false && Cons.CompanyId == Convert.ToInt32(Session["CompanyId"]) && Cons.SessionId == Convert.ToInt32(Session["SessionId"])
-                   select Cons;
-        decimal otherbalcheckinAddmisionTable = (Convert.ToDecimal(DATA.First().TotalFees) - (Convert.ToDecimal(DATA.First().CourseFeesAfterDisc)));
+        //var DATA = from Cons in obj.Addmisions
+        //           where Cons.AdmissionId == Convert.ToInt32(Session["StudentId"]) && Cons.Remove == false && Cons.CompanyId == Convert.ToInt32(Session["CompanyId"]) && Cons.SessionId == Convert.ToInt32(Session["SessionId"])
+        //           select Cons;
+        //decimal otherbalcheckinAddmisionTable = (Convert.ToDecimal(DATA.First().TotalFees) - (Convert.ToDecimal(DATA.First().CourseFeesAfterDisc)));
         DataSet ds = AllMethods.GetReciptBal(1, Convert.ToInt32(Session["StudentId"]));
         foreach (DataRow dr in ds.Tables[0].Rows)
         {
@@ -446,7 +446,9 @@ public partial class Pages_ReceiptPrint : System.Web.UI.Page
             BusFee = Convert.ToDouble(dr[1]);
             //OtherFee = Convert.ToDouble(dr[2]);
             prevbla = Convert.ToDouble(dr[3]);
-            OtherFee = Convert.ToDouble(otherbalcheckinAddmisionTable) - Convert.ToDouble(dr[2]);
+            //OtherFee = Convert.ToDouble(otherbalcheckinAddmisionTable) - Convert.ToDouble(dr[2]);
+            OtherFee = Convert.ToDouble(dr[2]);
+
         }
     }
 }

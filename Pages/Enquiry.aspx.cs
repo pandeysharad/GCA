@@ -55,6 +55,15 @@ public partial class Pages_Enquiry : System.Web.UI.Page
             {
                 if (Session["CompanyId"] != null)
                 {
+                    var S = from Cons in obj.Sessions
+                               where Cons.Remove == false
+                               select Cons;
+                    ddlSession.DataSource = S;
+                    ddlSession.DataTextField = "SessionName";
+                    ddlSession.DataValueField = "Sessionid";
+                    ddlSession.DataBind();
+                    ddlSession.Items.Insert(0, "Select Session");
+
                     Img1.ImageUrl = "~/images/male.png";
                     ViewState["Status"] = "ALL";
                     Session["Status"] = "ALL";
@@ -336,7 +345,7 @@ public partial class Pages_Enquiry : System.Web.UI.Page
                         if (Enquiries.Count<Enquiry>() <= 0)
                         {
                             if (obj.SP_Enquiry(1, 0, Convert.ToInt32(txtEnquiryNo.Text), txtStudentName.Text, txtAddress.Text, txtContactNo.Text.Trim(), txtEmailId.Text, ddl_EnquiryForCourse.SelectedItem.Text, ddl_PreviousClass.SelectedItem.Text, ddl_PreviousClass.SelectedIndex != 0 ? txtPCP.Text : "0",
-                                txtFees.Text, Convert.ToDateTime(dtEnquiryDate.Text), Convert.ToDateTime(dtNextCallDate.Text), Img1.ImageUrl != null ? Img1.ImageUrl : "", txtRemarks.Text, ddl_Status.Text, Convert.ToInt32(Session["UserId"]), Convert.ToInt32(Session["CompanyId"]), txtPreviousSchool.Text, txtVillage.Text, Convert.ToInt32(Session["SessionId"])) == 0)
+                                txtFees.Text, Convert.ToDateTime(dtEnquiryDate.Text), Convert.ToDateTime(dtNextCallDate.Text), Img1.ImageUrl != null ? Img1.ImageUrl : "", txtRemarks.Text, ddl_Status.Text, Convert.ToInt32(Session["UserId"]), Convert.ToInt32(Session["CompanyId"]), txtPreviousSchool.Text, txtVillage.Text,ddlSession.SelectedIndex!=0 ? Convert.ToInt32(ddlSession.SelectedValue) :Convert.ToInt32(Session["SessionId"])) == 0)
                             {
                                 if (Convert.ToBoolean(Session["SendMsg"]) == true)
                                 {
@@ -391,7 +400,7 @@ public partial class Pages_Enquiry : System.Web.UI.Page
                     if (role.Update.Value)
                     {
                         if (obj.SP_Enquiry(2, Convert.ToInt32(Session["id"]), Convert.ToInt32(txtEnquiryNo.Text), txtStudentName.Text, txtAddress.Text, txtContactNo.Text.Trim(), txtEmailId.Text, ddl_EnquiryForCourse.SelectedItem.Text, ddl_PreviousClass.SelectedItem.Text, ddl_PreviousClass.SelectedIndex != 0 ? txtPCP.Text : "0",
-                            txtFees.Text, Convert.ToDateTime(dtEnquiryDate.Text), Convert.ToDateTime(dtNextCallDate.Text), Img1.ImageUrl != null ? Img1.ImageUrl : "", txtRemarks.Text, ddl_Status.Text, Convert.ToInt32(Session["UserId"]), Convert.ToInt32(Session["CompanyId"]), txtPreviousSchool.Text, txtVillage.Text, Convert.ToInt32(Session["SessionId"])) == 0)
+                            txtFees.Text, Convert.ToDateTime(dtEnquiryDate.Text), Convert.ToDateTime(dtNextCallDate.Text), Img1.ImageUrl != null ? Img1.ImageUrl : "", txtRemarks.Text, ddl_Status.Text, Convert.ToInt32(Session["UserId"]), Convert.ToInt32(Session["CompanyId"]), txtPreviousSchool.Text, txtVillage.Text, ddlSession.SelectedIndex != 0 ? Convert.ToInt32(ddlSession.SelectedValue) : Convert.ToInt32(Session["SessionId"])) == 0)
                         {
                             Clear();
                             msg = "Record updated Successfully!!";
@@ -456,7 +465,7 @@ public partial class Pages_Enquiry : System.Web.UI.Page
         Img1.ImageUrl =DATA1.First().Image;
         txtRemarks.Text =DATA1.First().Remarks;
         ddl_Status.Text =DATA1.First().Status;
-
+        ddlSession.SelectedValue = DATA1.First().SessionId.ToString();
     }
     protected void ddl_EnquiryForCourse_SelectedIndexChanged(object sender, EventArgs e)
     {

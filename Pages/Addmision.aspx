@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="Addmision" Language="C#" MasterPageFile="~/Pages/MasterPage.master" AutoEventWireup="true"
-    CodeFile="Addmision.aspx.cs" Inherits="Pages_Addmision" %>
+    CodeFile="Addmision.aspx.cs" Inherits="Pages_Addmision"%>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 
@@ -75,7 +75,7 @@
         function IsNumeric(e) {
             var keyCode = e.which ? e.which : e.keyCode
             var ret = ((keyCode >= 48 && keyCode <= 57) || specialKeys.indexOf(keyCode) != -1);
-           
+
             return ret;
         }
         function toUpper(obj) {
@@ -97,7 +97,7 @@
         var isShift = false;
         var seperator = "/";
         function CheckDateFormate(e) {
-           
+
             //Set Max Length.
             e.setAttribute("maxlength", 10);
 
@@ -833,14 +833,14 @@
                                                         AutoPostBack="True" ></asp:TextBox>
                                                 </div>
                                             </div>
-                                            <div class="form-group" runat="server">
+                                            <div id="Div2" class="form-group" runat="server">
                                                 <label for="message" class="col-xs-4">
                                                 Fees After Disc:<span for="message" style="color: Red">*</span></label>
                                                 <div class="col-xs-8">
                                                     <asp:TextBox ID="txtFeesAfterDisc" CssClass="form-control  input-sm" runat="server"></asp:TextBox>
                                                 </div>
                                             </div>
-                                            <div class="form-group" runat="server">
+                                            <div id="Div3" class="form-group" runat="server">
                                                 <label for="message" class="col-xs-4">
                                                     Discount Reason:</label>
                                                 <div class="col-xs-8">
@@ -1059,7 +1059,7 @@
                                                     <asp:TextBox ID="txtTransportFees" CssClass="form-control  input-sm" runat="server"></asp:TextBox>
                                                 </div>
                                             </div>
-                                            <div class="form-group" runat="server" visible="false">
+                                            <div id="Div4" class="form-group" runat="server" visible="false">
                                                 <label for="message" class="col-xs-4">
                                                     Discount Type:</label>
                                                 <div class="col-xs-4">
@@ -1074,7 +1074,7 @@
                                                         runat="server" OnTextChanged="txtTransportDisc_TextChanged"></asp:TextBox>
                                                 </div>
                                             </div>
-                                            <div class="form-group" runat="server" visible="false">
+                                            <div id="Div5" class="form-group" runat="server" visible="false">
                                                 <label for="message" class="col-xs-4">
                                                     Fees After Disc:</label>
                                                 <div class="col-xs-8">
@@ -1264,14 +1264,32 @@
                                                             <div class="col-xs-2" id="divStudent" runat="server">
                                                                 <asp:TextBox ID="txtSearchByStudentName" CssClass="form-control  input-sm" placeholder="STUDENT NAME"
                                                                     runat="server"> </asp:TextBox>
+                                                                     <cc1:AutoCompleteExtender runat="server" ID="AutoCompleteExtender13" ServicePath="~/AutoComplete.asmx"
+                                                                    ServiceMethod="GetStudentName" MinimumPrefixLength="1" CompletionInterval="0" UseContextKey="true"
+                                                                    CompletionSetCount="20" CompletionListCssClass="CompletionListCssClass" CompletionListHighlightedItemCssClass="CompletionListHighlightedItemCssClass"
+                                                                    CompletionListItemCssClass="CompletionListItemCssClass" DelimiterCharacters="&nbsp;,:"
+                                                                    Enabled="True" TargetControlID="txtSearchByStudentName">
+                                                                </cc1:AutoCompleteExtender>
                                                             </div>
                                                             <div class="col-xs-2" id="divAdimissionNo" runat="server" hidden="true">
                                                                 <asp:TextBox ID="txtSearchByAdimissionNo" CssClass="form-control  input-sm" placeholder="ADMISSION NO"
                                                                     runat="server"> </asp:TextBox>
+                                                                     <cc1:AutoCompleteExtender runat="server" ID="AutoCompleteExtender12" ServicePath="~/AutoComplete.asmx"
+                                                                    ServiceMethod="GetAdmNo" MinimumPrefixLength="1" CompletionInterval="0" UseContextKey="true"
+                                                                    CompletionSetCount="20" CompletionListCssClass="CompletionListCssClass" CompletionListHighlightedItemCssClass="CompletionListHighlightedItemCssClass"
+                                                                    CompletionListItemCssClass="CompletionListItemCssClass" DelimiterCharacters="&nbsp;,:"
+                                                                    Enabled="True" TargetControlID="txtSearchByAdimissionNo">
+                                                                </cc1:AutoCompleteExtender>
                                                             </div>
                                                             <div class="col-xs-2" id="divContact" runat="server" hidden="true">
                                                                 <asp:TextBox ID="txtSearchByContact" CssClass="form-control  input-sm" placeholder="CONTACT No."
                                                                     runat="server"></asp:TextBox>
+                                                                     <cc1:AutoCompleteExtender runat="server" ID="AutoCompleteExtender14" ServicePath="~/AutoComplete.asmx"
+                                                                    ServiceMethod="GetContactNo" MinimumPrefixLength="1" CompletionInterval="0" UseContextKey="true"
+                                                                    CompletionSetCount="20" CompletionListCssClass="CompletionListCssClass" CompletionListHighlightedItemCssClass="CompletionListHighlightedItemCssClass"
+                                                                    CompletionListItemCssClass="CompletionListItemCssClass" DelimiterCharacters="&nbsp;,:"
+                                                                    Enabled="True" TargetControlID="txtSearchByContact">
+                                                                </cc1:AutoCompleteExtender>
                                                             </div>
                                                             <div class="col-xs-2" id="divSdate" runat="server" hidden="true">
                                                                 <asp:TextBox ID="dtSDate" CssClass="form-control  input-sm" placeholder="DD/MM/YYYY"
@@ -1300,6 +1318,7 @@
                                                                     Style="margin-left: -20px;" OnClick="btnPrint_Click"> 
                                 <span aria-hidden="true" class="glyphicon glyphicon-print"> Print</span>
                                                                 </asp:LinkButton>
+                                                                  
                                                             </div>
                                                         </div>
                                                         <div class="form-group">

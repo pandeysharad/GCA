@@ -139,9 +139,9 @@
                     <asp:BoundField DataField="FatherName" HeaderText="Father Name" />
                     <asp:BoundField DataField="EnrollmentNo" HeaderText="Area" />
                     <asp:BoundField DataField="ContactNo" HeaderText="ContactNo" />
-                    <asp:BoundField DataField="CourseFees" HeaderText="School Tot" />
-                    <asp:BoundField DataField="TransportFees" HeaderText="Tran. Tot" />
-                    <asp:BoundField DataField="CourseBalance" HeaderText="School Due" />
+                    <asp:BoundField DataField="CourseFees" HeaderText="Total Sch./Course Fee" />
+                    <asp:BoundField DataField="TransportFees" HeaderText="Total Tran. Fee" />
+                    <asp:BoundField DataField="CourseBalance" HeaderText="School/Course Due Fee" />
                     <asp:BoundField DataField="TransportBalance" HeaderText="Tran. Due" />
                     <asp:BoundField DataField="PreviousBalance" HeaderText="Prev. Due" />
                     <asp:BoundField DataField="OverAllFee" HeaderText="Total Amt to be collected overall" />
@@ -149,10 +149,11 @@
                     <asp:BoundField DataField="OverAllBla" HeaderText="OverAll Bal Amt" />
                     <asp:BoundField DataField="StellBla" HeaderText="OverAll to be collected till date" />
                     <asp:BoundField DataField="StellBla1" HeaderText="Due Amt Till Date" />
-                    <asp:BoundField DataField="CMT1T2" HeaderText="CM/T1/T2 Fee" />
-                    <asp:BoundField DataField="CMT1T2REC" HeaderText="CM/T1/T2 Rec" />
-                    <asp:BoundField DataField="CMT1T2BLA" HeaderText="CM/T1/T2 Bal." />
-                    <asp:BoundField DataField="TotBla" HeaderText="Total. Due" />
+                    <asp:BoundField DataField="CMT1T2" HeaderText="Other Fee" />
+                    <asp:BoundField DataField="CMT1T2REC" HeaderText="Other Rec." />
+                    <asp:BoundField DataField="CMT1T2BLA" HeaderText="Other Bal." />
+                    <asp:BoundField DataField="TotBla" HeaderText="Overall Due Amount" />
+                    <asp:BoundField DataField="LastPaymentDate" HeaderText="Last Payment Date" DataFormatString="{0:dd/MM/yyyy}" />
                 </Columns>
                 <HeaderStyle BackColor="#EDEDED" ForeColor="#0487B2" />
                 <FooterStyle BackColor="#EDEDED" ForeColor="#0487B2" />
